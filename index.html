@@ -56,6 +56,7 @@ h2:first-child{margin-top:2px;}
 .kv:last-child{border-bottom:none;}
 .kv .k{font-weight:700;color:var(--deep);display:block;font-size:14px;}
 .kv .v{color:#3a4a55;font-size:14px;margin-top:1px;}
+ul.check .tx small{display:block;color:#66757e;font-size:12.6px;line-height:1.55;margin-top:2px;}
 .tip{border-radius:10px;padding:10px 12px;font-size:13.5px;line-height:1.7;margin:10px 0;}
 .tip.y{background:#fdf6e6;border-left:4px solid #e0a72b;color:#5a4a20;}
 .tip.r{background:#fdeceb;border-left:4px solid var(--red);color:#7a2b24;}
@@ -163,91 +164,89 @@ details .body{padding-top:9px;font-size:14px;color:#33424c;line-height:1.75;}
 
 <!-- ============ 景点 ============ -->
 <section id="p2">
-  <div class="tip y">这些点的特点写在下面，现场按"人和体力"灵活取舍。评级是<b>带 2.5 岁孩子 + 老人的友好度</b>。</div>
+  <div class="tip y">按天列「建议去」+「可选」，现场按人和体力灵活取舍。星级＝<b>带 2.5 岁孩子 + 老人的友好度</b>。</div>
 
-  <h2>海西（10/3 包车线）</h2>
+  <div class="card day">
+    <div class="dh"><span class="date">9/30 周三 · 昆明</span><span class="pill ok">落地夜</span></div>
+    <div class="line">19:15 落地，机场→市区 40–50 分钟，到了就近吃晚饭就好。</div>
+    <div class="line"><span class="lab">可选</span>住老街旁就顺路夜逛 <b>昆明老街 / 南屏街</b>；不逛直接睡，明天还要赶动车。</div>
+  </div>
 
-  <details open>
-    <summary>才村码头 <span class="stars">★★★★★</span></summary>
-    <div class="body">洱海西岸的小码头，本地感最强。看苍山倒影、日出日落都好。平地、可推车，老人孩子都能走。30–45 分钟。</div>
-  </details>
+  <div class="card day">
+    <div class="dh"><span class="date">10/1 周四 · 昆明上午 + 大理傍晚</span></div>
+    <div class="line"><span class="lab">可选A</span><b>昆明老街 / 文明街 / 钱王街</b>——老建筑 + 小吃，离住处近 ★★★★★</div>
+    <div class="line"><span class="lab">可选B</span><b>翠湖公园 + 云南陆军讲武堂</b>——同一片区，步行可达，平地好推车 ★★★★</div>
+    <div class="line"><span class="lab">必吃</span>过桥米线（午餐）</div>
+    <div class="line"><span class="lab">傍晚</span>抵大理古城后夜逛：<b>人民路</b>（小吃小店）· 复兴路 · 五华楼夜景</div>
+  </div>
 
-  <details open>
-    <summary>生态廊道 <span class="stars">★★★★★</span> <span class="pill ok">建议保留</span></summary>
-    <div class="body">沿湖修的无机动车栈道，<b>洱海最舒服的打开方式</b>。可散步或骑车，冬天有海鸥（10 月还没有）。平坦，能租亲子自行车，孩子可以撒欢、老人能慢走。1–1.5 小时。</div>
-  </details>
+  <div class="card day">
+    <div class="dh"><span class="date">10/2 周五 · 古城周边</span><span class="pill ok">不用包车</span></div>
+    <div class="line"><span class="lab">建议</span>古城内步行：复兴路 · 人民路 · 五华楼 · 洋人街 · <b>床单厂艺术区</b></div>
+    <div class="line"><span class="lab">可选A</span><b>崇圣寺三塔</b>——古城西北约 1.5km，观光车/打车 10 分钟 ★★★★</div>
+    <div class="line"><span class="lab">可选B</span><b>才村 / 龙龛码头</b>——东边 4–6km，看日落，平地可推车 ★★★★</div>
+    <div class="line"><span class="lab">可选C</span><b>苍山索道 / 寂照庵</b>——要爬山，带娃带老人吃力，<b>不建议</b></div>
+    <div class="line"><span class="lab">取舍</span>这天全部在 6km 内，体力留着给 3、4 号</div>
+  </div>
 
-  <details>
-    <summary>龙龛码头 <span class="stars">★★★</span></summary>
-    <div class="body">网红"天空之镜"打卡点，水面倒影、婚纱照热门。<b>人多、拍照要排队</b>，适合拍完就走。30–45 分钟。</div>
-  </details>
+  <div class="card day">
+    <div class="dh"><span class="date">10/3 周六 · 海西</span><span class="pill warn">包车 day1</span></div>
+    <div class="line"><span class="lab">建议</span><b>才村码头</b> ★★★★★ → <b>生态廊道骑行</b>（才村→龙龛，平地、可租亲子车）★★★★★ → <b>喜洲古镇</b>（午餐 + 严家大院 + 稻田 + 粑粑）★★★★★</div>
+    <div class="line"><span class="lab">可选A</span><b>磻溪 S 湾</b>——出片，旁边有海景咖啡可休息 ★★★★</div>
+    <div class="line"><span class="lab">可选B</span><b>龙龛码头</b>——"天空之镜"网红点，人多要排队 ★★★</div>
+    <div class="line"><span class="lab">可选C</span><b>海舌公园</b>——半岛清净，但<b>土路碎石、推车进不去</b> ★★</div>
+    <div class="line"><span class="lab">可砍顺序</span>海舌 → 龙龛 → S 湾 → 廊道缩短</div>
+    <div class="line"><span class="lab">收尾</span>海西看日落 → 回古城</div>
+  </div>
 
-  <details>
-    <summary>磻溪 S 湾 <span class="stars">★★★★</span></summary>
-    <div class="body">环海西路上一段 S 形弯道，出片；旁边有海景咖啡店，可以坐着休息。40 分钟。</div>
-  </details>
+  <div class="card day">
+    <div class="dh"><span class="date">10/4 周日 · 海东</span><span class="pill warn">包车 day2 · 换酒店 · 生日</span></div>
+    <div class="line"><span class="lab">核心</span><b>双廊古镇</b>（午餐 + 浅逛，<b>车进不去、坐观光车</b>）★★★ → <b>文笔村民宿入住</b> → <b>生日晚宴</b></div>
+    <div class="line"><span class="lab">可选A</span><b>小普陀</b>——湖心小岛，岸边拍照就走，登岛要坐船 ★★★</div>
+    <div class="line"><span class="lab">可选B</span><b>挖色镇</b>——安静渔村，码头适合发呆 ★★★★</div>
+    <div class="line"><span class="lab">可选C</span><b>文笔村</b>——半山全景 + 彩虹公路，全趟最好日落位 ★★★</div>
+  </div>
 
-  <details open>
-    <summary>喜洲古镇 <span class="stars">★★★★★</span> <span class="pill ok">核心</span></summary>
-    <div class="body">白族古镇，<b>白族民居建筑最完整</b>的地方。严家大院、金黄稻田、喜洲粑粑。平地、有吃有喝，老人孩子都友好。2–3 小时（含午餐）。</div>
-  </details>
+  <div class="card day">
+    <div class="dh"><span class="date">10/5 周一 · 文笔村</span><span class="pill ok">躺为主</span></div>
+    <div class="line"><span class="lab">建议</span><b>悬崖咖啡</b>（扶光里 / 落日·山海）· <b>彩虹公路</b> · 日落（别错过）</div>
+    <div class="line"><span class="lab">可选A</span>短途去 <b>挖色 / 小普陀</b>（南 10 分钟，需叫车）</div>
+    <div class="line"><span class="lab">可选B</span>短途去 <b>双廊</b>（北 30 分钟，需叫车）</div>
+    <div class="line"><span class="lab">晚上</span>收行李，次日 13:00 出发</div>
+  </div>
 
-  <details>
-    <summary>海舌公园 <span class="stars">★★</span> <span class="pill warn">建议砍掉</span></summary>
-    <div class="body">伸进洱海的半岛，人少清静、有野趣。但<b>土路碎石，推车很难推</b>，最考验体力，性价比最低。1 小时。</div>
-  </details>
+  <div class="card day">
+    <div class="dh"><span class="date">10/6 周二 · 返程</span></div>
+    <div class="line"><span class="lab">可选</span><b>理想邦 / 罗荃半岛</b>——去机场顺路，时间够可短停 ★★★</div>
+    <div class="line"><span class="lab">时间</span>13:00 出发 → 14:30 前到凤仪机场 → 16:30 起飞</div>
+  </div>
 
-  <h2>海东（10/4 包车线）</h2>
-
-  <details open>
-    <summary>双廊古镇 <span class="stars">★★★</span> <span class="pill ok">核心</span></summary>
-    <div class="body">海东最有名的临海古镇，客栈、咖啡、餐饮密集，日落位多，<b>生日餐厅就在这一带</b>。缺点：窄巷坡多、<b>车进不去，要坐观光车</b>；南北门走路约 40 分钟。逛 2 小时。</div>
-  </details>
-
-  <details>
-    <summary>小普陀 <span class="stars">★★★</span></summary>
-    <div class="body">湖心袖珍小岛（观音阁）。<b>岸边拍照就很好看，不一定要登岛</b>（登岛往返船票约 15 元/人）。15–30 分钟。</div>
-  </details>
-
-  <details>
-    <summary>挖色镇 <span class="stars">★★★★</span></summary>
-    <div class="body">安静的小渔村，码头适合发呆放空，开发少、人少。30 分钟。</div>
-  </details>
-
-  <details open>
-    <summary>文笔村 <span class="stars">★★★</span> <span class="pill ok">日落天花板</span></summary>
-    <div class="body">半山村落，<b>俯瞰洱海 + 苍山 + 古城全景</b>，悬崖咖啡、彩虹公路，是全趟最好的日落位。村内坡道多，主要靠车。适合躺着发呆和拍照。</div>
-  </details>
-
-  <h2>取舍建议（舒服优先）</h2>
+  <h2>一句话取舍</h2>
   <div class="card">
     <ul class="plain">
-      <li><b>廊道留着</b>：唯一一个"孩子能撒欢 + 老人能慢走"的点</li>
+      <li><b>廊道留着</b>：唯一"孩子能撒欢 + 老人能慢走"的点</li>
       <li><b>海舌砍掉</b>：推车进不去，性价比最低</li>
-      <li>龙龛 / S 湾：想拍网红照就顺路停，不想就跳过</li>
       <li>小普陀：岸边拍照就走，别登岛</li>
-      <li>10/5 日落：文笔村，全趟最好的日落，别错过</li>
+      <li>10/5 日落：文笔村，全趟最好的日落</li>
     </ul>
   </div>
 </section>
 
 <!-- ============ 预订待办 ============ -->
 <section id="p3">
-  <div class="tip r">🔴 三项必须在 9/29 落地：<b>动车票、包车（10/3+10/4 连包）、生日餐厅</b>。国庆越晚越贵越没货。</div>
+  <div class="tip r">🔴 三项今天必须落地：<b>动车票、包车（10/3+10/4 连包）、生日餐厅</b>。点一下就能打勾（记在本机）。</div>
 
-  <div class="card">
-    <div class="kv"><span class="k">🔴 动车票 昆明→大理</span><span class="v">12306 订 10/1 下午车次 ×4，建议 15:00–16:30 发车</span></div>
-    <div class="kv"><span class="k">🔴 包车 10/3 + 10/4 连包</span><span class="v">7 座车 · 儿童座椅 · 10/4 含夜间等候 · 同一司导</span></div>
-    <div class="kv"><span class="k">🔴 生日餐厅 10/4 双廊</span><span class="v">木夕大里（主案）/ 安汋（备选）—— 待皇上挑选；订临海位 + 生日布置</span></div>
-    <div class="kv"><span class="k">✅ 机票</span><span class="v">去程 CA1763（9/30 16:00）/ 返程 2U5471（10/6 16:30 大理凤仪）</span></div>
-    <div class="kv"><span class="k">✅ 酒店 3 家</span><span class="v">昆明老街 / 大理古城 / 文笔村 —— 已订（名字待补录）</span></div>
-    <div class="kv"><span class="k">🟡 10/1 接站</span><span class="v">大理站→古城，可让包车师傅一并安排</span></div>
-    <div class="kv"><span class="k">🟡 10/6 送机</span><span class="v">13:00 出发去凤仪机场，提前 1 天锁车</span></div>
-    <div class="kv"><span class="k">🟡 生日蛋糕 / 鲜花</span><span class="v">当地订，10/4 下午送到餐厅；礼物建议杭州先带</span></div>
-    <div class="kv"><span class="k">🟡 旅游意外险</span><span class="v">4 人（含儿童 / 老人），出发前买</span></div>
-    <div class="kv"><span class="k">🟡 值机</span><span class="v">去程起飞前 24h 开放（9/29 16:00 后）；返程 10/5 16:30 后</span></div>
-    <div class="kv"><span class="k">🟢 三塔门票</span><span class="v">节假日线上先买，省排队</span></div>
-  </div>
+  <div class="card"><ul class="check" data-g="订">
+    <li><span class="box">✓</span><span class="tx"><b>🔴 动车票 昆明→大理</b><small>12306 订 10/1 下午车次 ×4，建议 15:00–16:30 发车</small></span></li>
+    <li><span class="box">✓</span><span class="tx"><b>🔴 包车 10/3 + 10/4 连包</b><small>7 座车 · 同一司导 · 10/4 含夜间等候到 21:30 左右</small></span></li>
+    <li><span class="box">✓</span><span class="tx"><b>🔴 生日餐厅 10/4 双廊</b><small>木夕大里（主案）/ 安汋（备选）—— 待挑选；订临海位 + 生日布置</small></span></li>
+    <li><span class="box">✓</span><span class="tx"><b>🟡 10/1 大理站接站</b><small>大理站 → 古城，可让包车师傅一并安排</small></span></li>
+    <li><span class="box">✓</span><span class="tx"><b>🟡 10/6 送机</b><small>13:00 文笔村出发去凤仪机场，提前 1 天锁车</small></span></li>
+    <li><span class="box">✓</span><span class="tx"><b>🟡 生日蛋糕 / 鲜花</b><small>当地订，10/4 下午送到餐厅；礼物建议杭州先带</small></span></li>
+    <li><span class="box">✓</span><span class="tx"><b>🟡 值机</b><small>去程起飞前 24h 开放（9/29 16:00 后）；返程 10/5 16:30 后</small></span></li>
+    <li><span class="box">✓</span><span class="tx"><b>🟢 崇圣寺三塔门票</b><small>节假日线上先买，省排队（10/2 用）</small></span></li>
+  </ul></div>
+  <button class="btn ghost" id="resetBook">清空打勾</button>
 </section>
 
 <!-- ============ 物品 ============ -->
@@ -271,9 +270,7 @@ details .body{padding-top:9px;font-size:14px;color:#33424c;line-height:1.75;}
     <li><span class="box">✓</span><span class="tx">多口充电头 + Type-C / Lightning 数据线</span></li>
     <li><span class="box">✓</span><span class="tx">插线板（酒店插座少）</span></li>
     <li><span class="box">✓</span><span class="tx">相机 + 备用电池 + 存储卡 + 自拍杆</span></li>
-    <li><span class="box">✓</span><span class="tx">儿童平板 + 儿童耳机（长途救急）</span></li>
     <li><span class="box">✓</span><span class="tx">降噪耳机 / 颈枕 / 眼罩 / 耳塞</span></li>
-    <li><span class="box">✓</span><span class="tx">小夜灯（孩子陌生环境）</span></li>
   </ul></div>
 
   <h2>衣物（7 天 6 晚 · 洋葱式）</h2>
@@ -301,7 +298,6 @@ details .body{padding-top:9px;font-size:14px;color:#33424c;line-height:1.75;}
 
   <h2>带娃专项</h2>
   <div class="card"><ul class="check" data-g="娃">
-    <li><span class="box">✓</span><span class="tx"><b>五点式儿童安全座椅</b>（包车方多不提供，先确认或自备）</span></li>
     <li><span class="box">✓</span><span class="tx">轻便可折叠推车</span></li>
     <li><span class="box">✓</span><span class="tx">保温杯 + 儿童水杯 + 便携餐具 + 围兜</span></li>
     <li><span class="box">✓</span><span class="tx">零食（饼干 / 果泥 / 小面包）</span></li>
@@ -331,18 +327,6 @@ details .body{padding-top:9px;font-size:14px;color:#33424c;line-height:1.75;}
     <div class="kv"><span class="k">10/3 + 10/4 连包</span><span class="v">同一司导 7 座车 ｜ ¥1,500–1,800</span></div>
     <div class="kv"><span class="k">10/6 送机</span><span class="v">文笔村 → 凤仪机场 ｜ 约 ¥300</span></div>
     <div class="kv"><span class="k">合计</span><span class="v"><b>≈ ¥2,000–2,300</b>（对比全程租车 ¥2,850–4,550）</span></div>
-  </div>
-
-  <h2>包车下单话术（可直接复制）</h2>
-  <div class="card tight">
-    <div class="copy" id="script">需包车 10/3、10/4 两天连包，同一司机同一台 7 座车。4 人 + 1 名 2.5 岁儿童，需提供五点式儿童安全座椅（非增高垫）。
-
-· 10/3：大理古城 09:00 出发 → 才村 → 生态廊道 → 磻溪 S 湾 → 喜洲古镇（午餐）→ 海舌 → 海西日落 → 回古城（约 10 小时）
-· 10/4：古城 09:30 退房出发 → 双廊 → 文笔村民宿入住 → 返双廊生日晚宴 → 21:15 送回文笔村（需含夜间等候，约 12 小时）
-
-请报两天连包全包价（含油费 / 过路 / 停车），并说明超时费标准。
-另询 10/1 大理站接站、10/6 文笔村送机（凤仪机场）的单程价。</div>
-    <button class="btn" id="copyBtn">复制话术</button>
   </div>
 
   <h2>用车提醒</h2>
@@ -428,29 +412,18 @@ details .body{padding-top:9px;font-size:14px;color:#33424c;line-height:1.75;}
       })(items[b],b);
     }
   }
-  var rb=document.getElementById('resetChk');
-  if(rb) rb.addEventListener('click',function(){
-    if(!confirm('清空所有勾选？')) return;
-    state={}; save();
-    var d=document.querySelectorAll('ul.check li.done');
-    for(var i=0;i<d.length;i++) d[i].classList.remove('done');
-  });
+  function bindReset(id){
+    var rb=document.getElementById(id);
+    if(!rb) return;
+    rb.addEventListener('click',function(){
+      if(!confirm('清空所有勾选？')) return;
+      state={}; save();
+      var d=document.querySelectorAll('ul.check li.done');
+      for(var i=0;i<d.length;i++) d[i].classList.remove('done');
+    });
+  }
+  bindReset('resetChk'); bindReset('resetBook');
 
-  // copy script
-  var cb=document.getElementById('copyBtn'), sc=document.getElementById('script');
-  if(cb) cb.addEventListener('click',function(){
-    var txt=sc.innerText;
-    function ok(){ cb.textContent='已复制 ✓'; setTimeout(function(){cb.textContent='复制话术';},1600); }
-    if(navigator.clipboard&&navigator.clipboard.writeText){
-      navigator.clipboard.writeText(txt).then(ok,function(){ fallback(); });
-    } else fallback();
-    function fallback(){
-      var ta=document.createElement('textarea'); ta.value=txt; ta.style.position='fixed'; ta.style.opacity=0;
-      document.body.appendChild(ta); ta.select();
-      try{ document.execCommand('copy'); ok(); }catch(e){ alert('请长按选中复制'); }
-      document.body.removeChild(ta);
-    }
-  });
 })();
 </script>
 </body>
