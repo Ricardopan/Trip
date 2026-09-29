@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1f4e5f">
+<title>大理·洱海行 · 随身攻略</title>
+<style>
+:root{
+  --deep:#1f4e5f; --mid:#2f7d8c; --lite:#eef5f6; --bg:#f4f1ea; --ink:#22303a;
+  --red:#c9453a; --amber:#c9861a; --green:#3c8a5a; --grey:#7d8b93;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif;
+  background:var(--bg); color:var(--ink); font-size:16px; line-height:1.65;
+  padding-bottom:calc(40px + env(safe-area-inset-bottom));
+  overscroll-behavior-y:contain;
+}
+.wrap{max-width:680px;margin:0 auto;}
+header{
+  position:sticky; top:0; z-index:20;
+  background:linear-gradient(135deg,#1f4e5f 0%,#2f7d8c 60%,#5aa3ac 100%);
+  color:#fff; padding:calc(10px + env(safe-area-inset-top)) 14px 0;
+  box-shadow:0 2px 10px rgba(0,0,0,.18);
+}
+header h1{font-size:16px;font-weight:600;margin:0 0 2px;letter-spacing:.5px;}
+header .sub{font-size:11.5px;opacity:.9;margin-bottom:8px;}
+nav{display:flex;gap:6px;overflow-x:auto;padding:0 0 9px;scrollbar-width:none;}
+nav::-webkit-scrollbar{display:none;}
+nav button{
+  flex:0 0 auto; border:1px solid rgba(255,255,255,.45); background:rgba(255,255,255,.12);
+  color:#fff; font-size:13.5px; padding:8px 14px; border-radius:999px; white-space:nowrap;
+  font-family:inherit; min-height:38px;
+}
+nav button.on{background:#fff;color:var(--deep);font-weight:700;border-color:#fff;}
+main{padding:14px 14px 10px;}
+section{display:none;}
+section.on{display:block;}
+h2{font-size:15px;margin:16px 0 8px;padding-left:9px;border-left:4px solid var(--mid);line-height:1.3;}
+h2:first-child{margin-top:2px;}
+.card{background:#fff;border-radius:12px;padding:13px 14px;margin-bottom:11px;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.card.tight{padding:11px 12px;}
+.day{border-left:5px solid var(--mid);}
+.day .dh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.day .date{font-weight:800;font-size:15.5px;color:var(--deep);}
+.pill{display:inline-block;font-size:11.5px;padding:2px 8px;border-radius:999px;background:var(--lite);color:var(--deep);font-weight:600;}
+.pill.warn{background:#fdeceb;color:var(--red);}
+.pill.ok{background:#eaf6ee;color:var(--green);}
+.pill.amber{background:#fdf3e0;color:var(--amber);}
+.line{font-size:14.5px;margin:5px 0;color:#33424c;}
+.line b{color:#16232b;}
+.lab{display:inline-block;min-width:52px;font-weight:700;color:var(--deep);font-size:13.5px;}
+.kv{font-size:14.5px;padding:7px 0;border-bottom:1px solid #f0f0f0;}
+.kv:last-child{border-bottom:none;}
+.kv .k{font-weight:700;color:var(--deep);display:block;font-size:14px;}
+.kv .v{color:#3a4a55;font-size:14px;margin-top:1px;}
+.tip{border-radius:10px;padding:10px 12px;font-size:13.5px;line-height:1.7;margin:10px 0;}
+.tip.y{background:#fdf6e6;border-left:4px solid #e0a72b;color:#5a4a20;}
+.tip.r{background:#fdeceb;border-left:4px solid var(--red);color:#7a2b24;}
+.tip.g{background:#eaf6ee;border-left:4px solid var(--green);color:#215034;}
+ul.plain{list-style:none;margin:0;padding:0;}
+ul.plain li{position:relative;padding-left:16px;font-size:14.5px;margin:5px 0;color:#33424c;}
+ul.plain li:before{content:"•";position:absolute;left:2px;color:var(--mid);font-weight:700;}
+.stars{color:var(--amber);letter-spacing:1px;font-size:13px;}
+ul.check{list-style:none;margin:0;padding:0;}
+ul.check li{display:flex;align-items:flex-start;gap:9px;padding:9px 2px;border-bottom:1px solid #f2f2f2;font-size:14.5px;}
+ul.check li:last-child{border-bottom:none;}
+ul.check li .box{flex:0 0 22px;height:22px;border:2px solid var(--mid);border-radius:6px;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;}
+ul.check li.done .box{background:var(--mid);border-color:var(--mid);}
+ul.check li.done .tx{text-decoration:line-through;color:#9aa6ad;}
+ul.check li .tx{flex:1;}
+.copy{background:#f5f7f8;border:1px dashed #b9c6cc;border-radius:10px;padding:11px;font-size:13.5px;line-height:1.75;color:#33424c;white-space:pre-wrap;word-break:break-word;}
+.btn{display:block;width:100%;margin-top:8px;padding:11px;border:none;border-radius:10px;background:var(--mid);color:#fff;font-size:14.5px;font-weight:600;font-family:inherit;}
+.btn.ghost{background:#fff;color:var(--mid);border:1.5px solid var(--mid);}
+footer{text-align:center;font-size:11.5px;color:var(--grey);padding:18px 14px 26px;}
+details{background:#fff;border-radius:12px;padding:12px 14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+details summary{font-weight:700;font-size:14.5px;color:var(--deep);cursor:pointer;list-style:none;}
+details summary::-webkit-details-marker{display:none;}
+details summary:after{content:" ▾";color:var(--mid);}
+details[open] summary:after{content:" ▴";}
+details .body{padding-top:9px;font-size:14px;color:#33424c;line-height:1.75;}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>大理·洱海行 · 随身攻略</h1>
+  <div class="sub">2026/9/30–10/6 ｜ 4 人（皇上·太太·2.5岁小公子·老人）｜ 杭州→昆明→大理→文笔村→杭州</div>
+  <nav id="nav">
+    <button data-t="p1" class="on">行程</button>
+    <button data-t="p2">景点</button>
+    <button data-t="p3">预订待办</button>
+    <button data-t="p4">物品</button>
+    <button data-t="p5">用车</button>
+    <button data-t="p6">提醒</button>
+  </nav>
+</header>
+<main>
+
+<!-- ============ 行程 ============ -->
+<section id="p1" class="on">
+  <div class="tip g">基调：<b>1号昆明 · 2号古城周边 · 3号包车玩海西 · 4号包车玩海东+换酒店+生日 · 5号躺 · 6号返程</b>。全程只换一次酒店，用车集中在 3、4 号连包。</div>
+
+  <div class="card day">
+    <div class="dh"><span class="date">9/30 周三</span><span class="pill">昆明 · 老街旁</span></div>
+    <div class="line"><span class="lab">航班</span><b>CA1763</b> 16:00 杭州萧山 → <b>19:15 昆明长水</b></div>
+    <div class="line"><span class="lab">落地后</span>机场→市区 约 40–50 分钟，就近吃晚饭</div>
+    <div class="line"><span class="lab">要点</span>海拔 1900m，孩子老人早睡、别洗澡太久</div>
+  </div>
+
+  <div class="card day">
+    <div class="dh"><span class="date">10/1 周四</span><span class="pill">大理古城</span></div>
+    <div class="line"><span class="lab">上午</span>昆明老街（文明街 / 钱王街）逛 + 过桥米线午餐</div>
+    <div class="line"><span class="lab">下午</span>退房 → 昆明站（<b>提前 1h 到</b>）→ 动车约 2h → 傍晚抵大理站</div>
+    <div class="line"><span class="lab">晚上</span>接站到古城 → 人民路/复兴路 简单晚餐</div>
+    <div class="line"><span class="lab">用车</span>接站 单程（约 ¥100）</div>
+  </div>
+
+  <div class="card day">
+    <div class="dh"><span class="date">10/2 周五</span><span class="pill ok">慢日 · 不用包车</span></div>
+    <div class="line"><span class="lab">上午</span>大理古城步行：复兴路 · 人民路 · 五华楼 · 洋人街 · 床单厂艺术区</div>
+    <div class="line"><span class="lab">下午</span>崇圣寺三塔（古城西北，观光车/打车 10 分钟）</div>
+    <div class="line"><span class="lab">傍晚</span>才村 / 龙龛码头 看日落</div>
+    <div class="line"><span class="lab">用车</span>步行 + 古城观光车 / 共享电瓶车 + 短途打车（约 ¥80）</div>
+  </div>
+
+  <div class="card day">
+    <div class="dh"><span class="date">10/3 周六</span><span class="pill warn">包车 day1 · 海西</span></div>
+    <div class="line"><span class="lab">09:00</span>古城出发 → <b>才村码头</b></div>
+    <div class="line"><span class="lab">上午</span><b>生态廊道骑行</b>（才村→龙龛，约 1h，平地、可租亲子车）</div>
+    <div class="line"><span class="lab">中午</span>磻溪 S 湾（咖啡/拍照）→ <b>喜洲古镇</b>午餐 + 严家大院 + 稻田 + 喜洲粑粑</div>
+    <div class="line"><span class="lab">下午</span>海舌公园（<b>累了可砍</b>）→ 海西看日落 → 回古城</div>
+    <div class="line"><span class="lab">可砍顺序</span>海舌 → 磻溪 S 湾 → 廊道缩短</div>
+  </div>
+
+  <div class="card day">
+    <div class="dh"><span class="date">10/4 周日</span><span class="pill warn">包车 day2 · 海东+换酒店+生日</span></div>
+    <div class="line"><span class="lab">09:30</span>古城退房（行李上车）→ 北上 <b>双廊</b></div>
+    <div class="line"><span class="lab">中午</span>双廊午餐 + 浅逛（<b>古镇车进不去，坐观光车</b>）</div>
+    <div class="line"><span class="lab">14:00</span>往南 → 顺路 小普陀 / 挖色 短停（岸边拍照即可）</div>
+    <div class="line"><span class="lab">15:00</span><b>文笔村民宿入住</b>，放行李、换衣服</div>
+    <div class="line"><span class="lab">16:30</span>返回双廊，进餐厅（日落约 19:00，<b>16:30 后是最佳时段</b>）</div>
+    <div class="line"><span class="lab">18:00</span><b>生日晚宴（海景位 + 布置）</b> → 21:15 回文笔村</div>
+    <div class="line"><span class="lab">注意</span>回村约 30 分钟夜路，<b>开车/司机当晚别喝酒</b></div>
+  </div>
+
+  <div class="card day">
+    <div class="dh"><span class="date">10/5 周一</span><span class="pill ok">躺为主 · 不用车</span></div>
+    <div class="line"><span class="lab">全天</span>文笔村半山：悬崖咖啡（扶光里 / 落日·山海）· 彩虹公路 · 看日落</div>
+    <div class="line"><span class="lab">想动</span>短途去 挖色/小普陀（南 10 分钟）或 双廊（北 30 分钟）</div>
+    <div class="line"><span class="lab">晚上</span>收行李（次日 13:00 出发）</div>
+  </div>
+
+  <div class="card day">
+    <div class="dh"><span class="date">10/6 周二</span><span class="pill">返程</span></div>
+    <div class="line"><span class="lab">13:00</span>文笔村出发 → 途经 理想邦/罗荃半岛（时间够可短停）</div>
+    <div class="line"><span class="lab">14:30</span>前到 <b>大理凤仪机场</b></div>
+    <div class="line"><span class="lab">航班</span><b>2U5471</b> 16:30 大理凤仪 → 杭州（约傍晚抵达）</div>
+  </div>
+</section>
+
+<!-- ============ 景点 ============ -->
+<section id="p2">
+  <div class="tip y">这些点的特点写在下面，现场按"人和体力"灵活取舍。评级是<b>带 2.5 岁孩子 + 老人的友好度</b>。</div>
+
+  <h2>海西（10/3 包车线）</h2>
+
+  <details open>
+    <summary>才村码头 <span class="stars">★★★★★</span></summary>
+    <div class="body">洱海西岸的小码头，本地感最强。看苍山倒影、日出日落都好。平地、可推车，老人孩子都能走。30–45 分钟。</div>
+  </details>
+
+  <details open>
+    <summary>生态廊道 <span class="stars">★★★★★</span> <span class="pill ok">建议保留</span></summary>
+    <div class="body">沿湖修的无机动车栈道，<b>洱海最舒服的打开方式</b>。可散步或骑车，冬天有海鸥（10 月还没有）。平坦，能租亲子自行车，孩子可以撒欢、老人能慢走。1–1.5 小时。</div>
+  </details>
+
+  <details>
+    <summary>龙龛码头 <span class="stars">★★★</span></summary>
+    <div class="body">网红"天空之镜"打卡点，水面倒影、婚纱照热门。<b>人多、拍照要排队</b>，适合拍完就走。30–45 分钟。</div>
+  </details>
+
+  <details>
+    <summary>磻溪 S 湾 <span class="stars">★★★★</span></summary>
+    <div class="body">环海西路上一段 S 形弯道，出片；旁边有海景咖啡店，可以坐着休息。40 分钟。</div>
+  </details>
+
+  <details open>
+    <summary>喜洲古镇 <span class="stars">★★★★★</span> <span class="pill ok">核心</span></summary>
+    <div class="body">白族古镇，<b>白族民居建筑最完整</b>的地方。严家大院、金黄稻田、喜洲粑粑。平地、有吃有喝，老人孩子都友好。2–3 小时（含午餐）。</div>
+  </details>
+
+  <details>
+    <summary>海舌公园 <span class="stars">★★</span> <span class="pill warn">建议砍掉</span></summary>
+    <div class="body">伸进洱海的半岛，人少清静、有野趣。但<b>土路碎石，推车很难推</b>，最考验体力，性价比最低。1 小时。</div>
+  </details>
+
+  <h2>海东（10/4 包车线）</h2>
+
+  <details open>
+    <summary>双廊古镇 <span class="stars">★★★</span> <span class="pill ok">核心</span></summary>
+    <div class="body">海东最有名的临海古镇，客栈、咖啡、餐饮密集，日落位多，<b>生日餐厅就在这一带</b>。缺点：窄巷坡多、<b>车进不去，要坐观光车</b>；南北门走路约 40 分钟。逛 2 小时。</div>
+  </details>
+
+  <details>
+    <summary>小普陀 <span class="stars">★★★</span></summary>
+    <div class="body">湖心袖珍小岛（观音阁）。<b>岸边拍照就很好看，不一定要登岛</b>（登岛往返船票约 15 元/人）。15–30 分钟。</div>
+  </details>
+
+  <details>
+    <summary>挖色镇 <span class="stars">★★★★</span></summary>
+    <div class="body">安静的小渔村，码头适合发呆放空，开发少、人少。30 分钟。</div>
+  </details>
+
+  <details open>
+    <summary>文笔村 <span class="stars">★★★</span> <span class="pill ok">日落天花板</span></summary>
+    <div class="body">半山村落，<b>俯瞰洱海 + 苍山 + 古城全景</b>，悬崖咖啡、彩虹公路，是全趟最好的日落位。村内坡道多，主要靠车。适合躺着发呆和拍照。</div>
+  </details>
+
+  <h2>取舍建议（舒服优先）</h2>
+  <div class="card">
+    <ul class="plain">
+      <li><b>廊道留着</b>：唯一一个"孩子能撒欢 + 老人能慢走"的点</li>
+      <li><b>海舌砍掉</b>：推车进不去，性价比最低</li>
+      <li>龙龛 / S 湾：想拍网红照就顺路停，不想就跳过</li>
+      <li>小普陀：岸边拍照就走，别登岛</li>
+      <li>10/5 日落：文笔村，全趟最好的日落，别错过</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 预订待办 ============ -->
+<section id="p3">
+  <div class="tip r">🔴 三项必须在 9/29 落地：<b>动车票、包车（10/3+10/4 连包）、生日餐厅</b>。国庆越晚越贵越没货。</div>
+
+  <div class="card">
+    <div class="kv"><span class="k">🔴 动车票 昆明→大理</span><span class="v">12306 订 10/1 下午车次 ×4，建议 15:00–16:30 发车</span></div>
+    <div class="kv"><span class="k">🔴 包车 10/3 + 10/4 连包</span><span class="v">7 座车 · 儿童座椅 · 10/4 含夜间等候 · 同一司导</span></div>
+    <div class="kv"><span class="k">🔴 生日餐厅 10/4 双廊</span><span class="v">木夕大里（主案）/ 安汋（备选）—— 待皇上挑选；订临海位 + 生日布置</span></div>
+    <div class="kv"><span class="k">✅ 机票</span><span class="v">去程 CA1763（9/30 16:00）/ 返程 2U5471（10/6 16:30 大理凤仪）</span></div>
+    <div class="kv"><span class="k">✅ 酒店 3 家</span><span class="v">昆明老街 / 大理古城 / 文笔村 —— 已订（名字待补录）</span></div>
+    <div class="kv"><span class="k">🟡 10/1 接站</span><span class="v">大理站→古城，可让包车师傅一并安排</span></div>
+    <div class="kv"><span class="k">🟡 10/6 送机</span><span class="v">13:00 出发去凤仪机场，提前 1 天锁车</span></div>
+    <div class="kv"><span class="k">🟡 生日蛋糕 / 鲜花</span><span class="v">当地订，10/4 下午送到餐厅；礼物建议杭州先带</span></div>
+    <div class="kv"><span class="k">🟡 旅游意外险</span><span class="v">4 人（含儿童 / 老人），出发前买</span></div>
+    <div class="kv"><span class="k">🟡 值机</span><span class="v">去程起飞前 24h 开放（9/29 16:00 后）；返程 10/5 16:30 后</span></div>
+    <div class="kv"><span class="k">🟢 三塔门票</span><span class="v">节假日线上先买，省排队</span></div>
+  </div>
+</section>
+
+<!-- ============ 物品 ============ -->
+<section id="p4">
+  <div class="tip y">点一下就能打勾，勾选状态记在<b>本机浏览器</b>，出门也能用（别清浏览器缓存）。</div>
+
+  <h2>证件与钱款</h2>
+  <div class="card"><ul class="check" data-g="证">
+    <li><span class="box">✓</span><span class="tx">身份证 ×4（大人+老人+孩子）</span></li>
+    <li><span class="box">✓</span><span class="tx">孩子证件：户口本 / 出生证明（航空查验备用）</span></li>
+    <li><span class="box">✓</span><span class="tx">机票 / 酒店 / 包车订单截图（离线保存）</span></li>
+    <li><span class="box">✓</span><span class="tx">现金 ¥1,000–2,000 + 信用卡 ×2</span></li>
+    <li><span class="box">✓</span><span class="tx">证件电子备份（相册 + 云盘）</span></li>
+    <li><span class="box">✓</span><span class="tx">行李牌（写电话，别写住址）</span></li>
+  </ul></div>
+
+  <h2>电子设备</h2>
+  <div class="card"><ul class="check" data-g="电">
+    <li><span class="box">✓</span><span class="tx">手机 ×4 + 各自充电器</span></li>
+    <li><span class="box">✓</span><span class="tx">充电宝 ×2（≤100Wh / 20000mAh，<b>随身不托运</b>）</span></li>
+    <li><span class="box">✓</span><span class="tx">多口充电头 + Type-C / Lightning 数据线</span></li>
+    <li><span class="box">✓</span><span class="tx">插线板（酒店插座少）</span></li>
+    <li><span class="box">✓</span><span class="tx">相机 + 备用电池 + 存储卡 + 自拍杆</span></li>
+    <li><span class="box">✓</span><span class="tx">儿童平板 + 儿童耳机（长途救急）</span></li>
+    <li><span class="box">✓</span><span class="tx">降噪耳机 / 颈枕 / 眼罩 / 耳塞</span></li>
+    <li><span class="box">✓</span><span class="tx">小夜灯（孩子陌生环境）</span></li>
+  </ul></div>
+
+  <h2>衣物（7 天 6 晚 · 洋葱式）</h2>
+  <div class="tip y">大理 10 月：白天 20–23℃，清晨/夜间 10–13℃（温差 10℃+），洱海边<b>风大</b>、紫外线强。核心＝<b>薄长袖 + 针织/抓绒 + 防风外套</b>。</div>
+  <div class="card"><ul class="check" data-g="衣">
+    <li><span class="box">✓</span><span class="tx">大人：短袖/薄长袖 ×4 ｜ 薄外套 ×1–2 ｜ <b>防风冲锋衣</b> ×1 ｜ 长裤 ×2–3</span></li>
+    <li><span class="box">✓</span><span class="tx">大人：内衣裤 ×5 ｜ 袜子 ×5 ｜ 睡衣 ×1 ｜ 运动鞋 + 拖鞋</span></li>
+    <li><span class="box">✓</span><span class="tx">孩子：上衣 ×8 ｜ 长裤 ×5 ｜ 抓绒/羽绒马甲 ×1 ｜ 防风外套 ×1</span></li>
+    <li><span class="box">✓</span><span class="tx">孩子：内衣 ×6 ｜ 袜子 ×6 ｜ 睡衣 ×2 ｜ 防滑鞋 + 洞洞鞋 ｜ 围兜 ×3</span></li>
+    <li><span class="box">✓</span><span class="tx">老人：厚外套/薄羽绒 ×1 ｜ 毛衣/抓绒 ×2 ｜ 长裤 ×2–3 ｜ 围巾 ｜ 软底鞋</span></li>
+    <li><span class="box">✓</span><span class="tx">共用：遮阳帽 ×4 ｜ 墨镜 ×4 ｜ 薄围巾 ×2 ｜ 泳衣（酒店有泳池则带）</span></li>
+    <li><span class="box">✓</span><span class="tx">太太：1 条长裙（白天拍海景正好）</span></li>
+  </ul></div>
+
+  <h2>药品（有孩子 + 老人，宁多勿少）</h2>
+  <div class="card"><ul class="check" data-g="药">
+    <li><span class="box">✓</span><span class="tx">儿童：美林 / 泰诺林 + 退热贴</span></li>
+    <li><span class="box">✓</span><span class="tx">儿童：口服补液盐 III ｜ 益生菌 ｜ 蒙脱石散</span></li>
+    <li><span class="box">✓</span><span class="tx">儿童：海水鼻喷 ｜ 氯雷他定糖浆 ｜ 蚊虫叮咬膏 ｜ 创可贴/碘伏棉签</span></li>
+    <li><span class="box">✓</span><span class="tx">大人：感冒药 ｜ 肠胃药 ｜ 退烧止痛 ｜ 抗过敏 ｜ 晕车药</span></li>
+    <li><span class="box">✓</span><span class="tx">老人：<b>慢病药备足 7 天 + 应急 1 天</b>（随身不托运）｜ 血压计（如需）</span></li>
+    <li><span class="box">✓</span><span class="tx">防护：防晒霜 SPF50+（大人+儿童）｜ 润唇膏 ｜ 保湿霜 ｜ 眼药水</span></li>
+    <li><span class="box">✓</span><span class="tx">其他：驱蚊液 ｜ 口罩 ｜ 免洗洗手液 ｜ 湿巾 ｜ 电子体温计</span></li>
+  </ul></div>
+
+  <h2>带娃专项</h2>
+  <div class="card"><ul class="check" data-g="娃">
+    <li><span class="box">✓</span><span class="tx"><b>五点式儿童安全座椅</b>（包车方多不提供，先确认或自备）</span></li>
+    <li><span class="box">✓</span><span class="tx">轻便可折叠推车</span></li>
+    <li><span class="box">✓</span><span class="tx">保温杯 + 儿童水杯 + 便携餐具 + 围兜</span></li>
+    <li><span class="box">✓</span><span class="tx">零食（饼干 / 果泥 / 小面包）</span></li>
+    <li><span class="box">✓</span><span class="tx">湿巾 ×2 大包 + 纸巾 + 免洗洗手液</span></li>
+    <li><span class="box">✓</span><span class="tx">便携马桶圈 / 尿袋 ｜ 拉拉裤（如在用）</span></li>
+    <li><span class="box">✓</span><span class="tx">安抚物（毛毯/玩偶）+ 绘本 / 贴纸书</span></li>
+    <li><span class="box">✓</span><span class="tx">备用衣物 1 套放随身包</span></li>
+  </ul></div>
+
+  <h2>杂物</h2>
+  <div class="card"><ul class="check" data-g="杂">
+    <li><span class="box">✓</span><span class="tx">折叠伞 ×2（防风款）｜ 一次性雨衣</span></li>
+    <li><span class="box">✓</span><span class="tx">密封袋 / 垃圾袋 ｜ 洗衣皂 ｜ 晾衣绳 + 夹子</span></li>
+    <li><span class="box">✓</span><span class="tx">行李秤 ｜ 双肩背包 ｜ 小挎包（贵重物品）｜ 车用垃圾袋</span></li>
+    <li><span class="box">✓</span><span class="tx">保温杯 ×2 ｜ 拖鞋 ｜ 小手电</span></li>
+  </ul></div>
+  <button class="btn ghost" id="resetChk">清空所有勾选</button>
+</section>
+
+<!-- ============ 用车 ============ -->
+<section id="p5">
+  <div class="tip g"><b>不租车</b>：大理停车难（古城车位少又贵、双廊古镇车进不去、文笔村坡窄）。用车集中在 10/3、10/4 连包两天，其余打车 / 不用车。</div>
+
+  <div class="card">
+    <div class="kv"><span class="k">10/1 接站</span><span class="v">大理站 → 古城 ｜ 7 座 ｜ 约 ¥100</span></div>
+    <div class="kv"><span class="k">10/2 市区</span><span class="v">古城观光车 / 共享电瓶车 / 短途打车 ｜ 约 ¥80</span></div>
+    <div class="kv"><span class="k">10/3 + 10/4 连包</span><span class="v">同一司导 7 座车 ｜ ¥1,500–1,800</span></div>
+    <div class="kv"><span class="k">10/6 送机</span><span class="v">文笔村 → 凤仪机场 ｜ 约 ¥300</span></div>
+    <div class="kv"><span class="k">合计</span><span class="v"><b>≈ ¥2,000–2,300</b>（对比全程租车 ¥2,850–4,550）</span></div>
+  </div>
+
+  <h2>包车下单话术（可直接复制）</h2>
+  <div class="card tight">
+    <div class="copy" id="script">需包车 10/3、10/4 两天连包，同一司机同一台 7 座车。4 人 + 1 名 2.5 岁儿童，需提供五点式儿童安全座椅（非增高垫）。
+
+· 10/3：大理古城 09:00 出发 → 才村 → 生态廊道 → 磻溪 S 湾 → 喜洲古镇（午餐）→ 海舌 → 海西日落 → 回古城（约 10 小时）
+· 10/4：古城 09:30 退房出发 → 双廊 → 文笔村民宿入住 → 返双廊生日晚宴 → 21:15 送回文笔村（需含夜间等候，约 12 小时）
+
+请报两天连包全包价（含油费 / 过路 / 停车），并说明超时费标准。
+另询 10/1 大理站接站、10/6 文笔村送机（凤仪机场）的单程价。</div>
+    <button class="btn" id="copyBtn">复制话术</button>
+  </div>
+
+  <h2>用车提醒</h2>
+  <div class="card">
+    <ul class="plain">
+      <li><b>儿童座椅务必先问</b>：2.5 岁要用五点式安全座椅（增高垫不行）</li>
+      <li>10/4 一定写明<b>"含夜间等候"</b>——双廊回文笔村夜里叫不到车</li>
+      <li>双廊古镇<b>车进不去</b>，停外围停车场 + 坐观光车</li>
+      <li>环海东路多弯，晕车的人备药、坐前排</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 提醒 ============ -->
+<section id="p6">
+  <div class="card">
+    <h2 style="margin-top:2px">容易踩的坑</h2>
+    <ul class="plain">
+      <li><b>海鸥季是 11 月–次年 3 月</b>：10 月初红嘴鸥基本没到，别把"喂海鸥"当必玩项</li>
+      <li><b>双廊古镇车进不去</b>，南北门步行约 40 分钟，进镇就坐观光车</li>
+      <li><b>儿童安全座椅</b>：包车方大多没有，务必提前确认；没有就自备</li>
+      <li>丽江 / 大理古城石板路多，<b>推车不友好</b>，尽量带轻便可折叠款</li>
+      <li>洱海边风大紫外线强，<b>防晒 + 防风外套</b>白天也要带在身上</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:2px">身体与安全</h2>
+    <ul class="plain">
+      <li>海拔：昆明 1900m、大理约 2000m，正常成人无高反；孩子老人<b>别剧烈跑跳、多喝水</b></li>
+      <li>真正要防的是<b>感冒</b>：早晚温差 10℃+，外套随身</li>
+      <li>老人慢病药随身不托运，备足 7 天 + 应急 1 天</li>
+      <li>10/4 晚宴后夜路回村，<b>司机当晚别喝酒</b></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:2px">应急与联系</h2>
+    <div class="kv"><span class="k">急救 / 报警 / 交通事故</span><span class="v">120 / 110 / 122</span></div>
+    <div class="kv"><span class="k">旅游投诉与咨询</span><span class="v">12345（政务服务热线）</span></div>
+    <div class="kv"><span class="k">住宿"3 家酒店"</span><span class="v">昆明老街 □ ｜ 大理古城 □ ｜ 文笔村 □（名字/电话请补录）</span></div>
+    <div class="kv"><span class="k">包车司导</span><span class="v">□ 待补电话</span></div>
+    <div class="kv"><span class="k">生日餐厅</span><span class="v">□ 待定（木夕大里 / 安汋）</span></div>
+  </div>
+</section>
+
+</main>
+<footer>太子 · 为皇上整理 ｜ 2026-09-29 ｜ 信息随确认更新</footer>
+</div>
+
+<script>
+(function(){
+  var nav=document.getElementById('nav'), btns=nav.querySelectorAll('button');
+  function show(t,scroll){
+    for(var i=0;i<btns.length;i++) btns[i].classList.toggle('on',btns[i].dataset.t===t);
+    var ids=['p1','p2','p3','p4','p5','p6'];
+    for(var j=0;j<ids.length;j++){var el=document.getElementById(ids[j]); if(el) el.classList.toggle('on',ids[j]===t);}
+    try{localStorage.setItem('daliTab',t);}catch(e){}
+    if(scroll!==false) window.scrollTo({top:0,behavior:'instant'});
+  }
+  nav.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return; show(b.dataset.t);
+  });
+  var saved='p1'; try{ saved=localStorage.getItem('daliTab')||'p1'; }catch(e){}
+  if(!document.getElementById(saved)) saved='p1';
+  show(saved,false);
+
+  // packing checkboxes
+  var lists=document.querySelectorAll('ul.check');
+  var KEY='daliPack_v1', state={};
+  try{ state=JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ state={}; }
+  function save(){ try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} }
+  for(var a=0;a<lists.length;a++){
+    var g=lists[a].dataset.g||('g'+a), items=lists[a].querySelectorAll('li');
+    for(var b=0;b<items.length;b++){
+      (function(li,idx){
+        var id=g+'_'+idx;
+        if(state[id]) li.classList.add('done');
+        li.addEventListener('click',function(){
+          li.classList.toggle('done');
+          state[id]=li.classList.contains('done'); save();
+        });
+      })(items[b],b);
+    }
+  }
+  var rb=document.getElementById('resetChk');
+  if(rb) rb.addEventListener('click',function(){
+    if(!confirm('清空所有勾选？')) return;
+    state={}; save();
+    var d=document.querySelectorAll('ul.check li.done');
+    for(var i=0;i<d.length;i++) d[i].classList.remove('done');
+  });
+
+  // copy script
+  var cb=document.getElementById('copyBtn'), sc=document.getElementById('script');
+  if(cb) cb.addEventListener('click',function(){
+    var txt=sc.innerText;
+    function ok(){ cb.textContent='已复制 ✓'; setTimeout(function(){cb.textContent='复制话术';},1600); }
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(ok,function(){ fallback(); });
+    } else fallback();
+    function fallback(){
+      var ta=document.createElement('textarea'); ta.value=txt; ta.style.position='fixed'; ta.style.opacity=0;
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); ok(); }catch(e){ alert('请长按选中复制'); }
+      document.body.removeChild(ta);
+    }
+  });
+})();
+</script>
+</body>
+</html>
