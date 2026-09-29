@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<!-- 装修总览 · 待办(V23)+采购 · 线上版 v5
+     源文件（本地真源）：workspace 装修总览_待办+采购_20260929.html
+     线上部署路径：github.com/Ricardopan/Trip → zhuangxiu/index.html
+     线上链接：https://ricardopan.github.io/Trip/zhuangxiu/
+     状态存储：同仓库(Trip) zhuangxiu/state.json（通过 GitHub Contents API 读写）
+     ⚠️ 此文件不含任何密钥；token 只存在使用者浏览器本地。
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>装修总览 · 待办 + 采购 · 安樾杭璟府</title>
+<style>
+  :root{--bg:#f5f6f8;--card:#fff;--line:#e6e8ec;--ink:#1f2430;--muted:#6b7280;
+    --red:#e5484d;--amber:#f5a524;--green:#2ea043;--blue:#3b82f6;--violet:#8b5cf6;}
+  *{box-sizing:border-box}
+  body{margin:0;padding:16px;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.55}
+  .wrap{max-width:940px;margin:0 auto}
+  header{background:linear-gradient(135deg,#1e3a8a,#0f766e);color:#fff;border-radius:16px;padding:18px 20px;margin-bottom:12px}
+  header h1{margin:0 0 4px;font-size:20px}
+  header .sub{font-size:12.5px;opacity:.9}
+  .syncline{margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px}
+  .pill{background:rgba(255,255,255,.18);border-radius:20px;padding:3px 11px;font-weight:600}
+  .pill.ok{background:rgba(52,211,153,.28)}
+  .pill.warn{background:rgba(245,165,36,.3)}
+  .pill.err{background:rgba(229,72,77,.35)}
+  .pill.act{cursor:pointer;text-decoration:underline}
+  .prog{margin-top:11px;background:rgba(255,255,255,.15);border-radius:10px;padding:11px 13px}
+  .prog .l1{display:flex;justify-content:space-between;font-size:13px;font-weight:600}
+  .bar{height:9px;background:rgba(0,0,0,.25);border-radius:99px;margin-top:7px;overflow:hidden}
+  .bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#34d399,#10b981);border-radius:99px;transition:width .25s}
+  .prog .l2{font-size:12px;opacity:.92;margin-top:6px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 15px;margin-bottom:11px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+  .bh{display:flex;align-items:center;gap:9px;margin:0 0 3px;font-size:15px;font-weight:700}
+  .bh .idx{width:23px;height:23px;border-radius:50%;background:#1f2430;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex:0 0 auto}
+  .bh .cnt{margin-left:auto;font-size:12px;font-weight:600;color:var(--muted)}
+  .bh .cnt.full{color:var(--green)}
+  .bmeta{font-size:12.5px;color:var(--muted);margin:0 0 7px 32px}
+  .bmeta .t{color:var(--blue);font-weight:600}
+  .item{display:flex;align-items:flex-start;gap:10px;padding:8px 9px;border-radius:9px;
+    border-bottom:1px solid #f1f3f5}
+  .item{cursor:pointer}
+  .item:last-child,.item:last-child{border-bottom:none}
+  .item:hover{background:#fafbfc}
+  .item input{display:none}
+  .box{flex:0 0 auto;width:20px;height:20px;border:2px solid #cbd5e1;border-radius:6px;margin-top:1px;
+    display:flex;align-items:center;justify-content:center;transition:.12s;background:#fff}
+  .box::after{content:"";width:10px;height:6px;border-left:2.4px solid #fff;border-bottom:2.4px solid #fff;
+    transform:rotate(-45deg) translateY(-1px);opacity:0;transition:.12s}
+  .item.done .box{background:#2ea043;border-color:#2ea043}
+  .item.done .box::after{opacity:1}
+  .main{flex:1 1 auto;min-width:0}
+  .nm{font-size:14px;font-weight:600}
+  .nt{font-size:12px;color:var(--muted);margin-top:1px}
+  .rt{flex:0 0 auto;text-align:right;white-space:nowrap}
+  .pr{font-size:13px;font-variant-numeric:tabular-nums;font-weight:600;color:#111}
+  .pr.est{color:var(--muted);font-weight:500;font-size:12px}
+  .tg{display:inline-block;margin-top:3px;font-size:11px;padding:1px 7px;border-radius:20px;font-weight:600}
+  .t-must{background:#fdeaea;color:var(--red)} .t-measure{background:#fff4e5;color:#b45309}
+  .t-1111{background:#e8f0fe;color:var(--blue)} .t-end{background:#f0ecfb;color:var(--violet)}
+  .t-gray{background:#f1f3f5;color:#6b7280} .t-add{background:#e7f7ee;color:#0f7b46}
+  .item.done .nm{text-decoration:line-through;color:#9aa1ab}
+  .item.done .pr{color:#9aa1ab} .item.done .nt{color:#b9bfc7}
+  .item.done{background:#f7fdf9}
+  .acts{display:flex;gap:2px;align-items:flex-start;flex:0 0 auto;opacity:.35;transition:.12s}
+  .item:hover .acts,.item:hover .acts{opacity:1}
+  .ic{width:26px;height:26px;border:1px solid var(--line);background:#fff;border-radius:7px;font-size:12.5px;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;color:#6b7280}
+  .ic:hover{border-color:#c3cad3;color:#111}
+  .ic.del:hover{border-color:#f3b6b8;color:var(--red);background:#fff5f5}
+  .mk{font-size:10.5px;padding:1px 5px;border-radius:5px;background:#eef2ff;color:#4655d6;margin-left:6px;font-weight:700}
+  .mk.gray{background:#f1f3f5;color:#6b7280}
+  .addbtn{margin:7px 0 0 9px;font-size:12.5px;color:var(--blue);background:none;border:1px dashed #cbd5e1;
+    border-radius:8px;padding:5px 10px;cursor:pointer;font-weight:600;display:inline-block}
+  .addbtn:hover{background:#f7faff}
+  .delrow{background:#fcfcfd}
+  .delrow .nm{text-decoration:line-through;color:#9aa1ab}
+  .tools{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 6px}
+  button.tb{flex:1 1 140px;padding:10px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);
+    font-size:13px;font-weight:600;cursor:pointer}
+  button.tb.primary{background:#1f2430;color:#fff;border-color:#1f2430}
+  button.tb:active{transform:translateY(1px)}
+  .hint{font-size:12px;color:var(--muted);margin:5px 0 13px}
+  .warn{background:#fff7f7;border-left:4px solid var(--red);padding:8px 11px;border-radius:6px;margin:5px 0;font-size:12.8px}
+  .say{background:#f1f8ff;border-left:4px solid var(--blue);padding:8px 11px;border-radius:6px;margin:5px 0;font-size:12.8px}
+  .money{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:12.8px}
+  .money table{width:100%;border-collapse:collapse;margin:6px 0 0}
+  .money td{padding:3px 0;border-bottom:1px solid #eef1f4}
+  .money tr:last-child td{border-bottom:none}
+  .form{background:#f7faff;border:1px solid #d8e6fb;border-radius:10px;padding:10px;margin:6px 0}
+  .form .fr{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+  #cfgMask select{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:9px;font-size:13.5px;background:#fff}
+  .form input,.form select,.form textarea{flex:1 1 120px;min-width:0;padding:7px 9px;border:1px solid var(--line);
+    border-radius:8px;font-size:13px;font-family:inherit;background:#fff}
+  .form input.wide{flex:1 1 100%}
+  .form .fb{display:flex;gap:6px}
+  .form .fb button{padding:7px 14px;border-radius:8px;border:1px solid var(--line);background:#fff;font-size:13px;
+    font-weight:600;cursor:pointer}
+  .form .fb button.pri{background:#1f2430;color:#fff;border-color:#1f2430}
+  .mask{position:fixed;inset:0;background:rgba(20,24,32,.5);display:none;align-items:center;justify-content:center;
+    padding:16px;z-index:50}
+  .mask.on{display:flex}
+  .modal{background:#fff;border-radius:14px;padding:18px 20px;max-width:520px;width:100%;max-height:88vh;overflow:auto}
+  .modal h3{margin:0 0 10px;font-size:16px}
+  .modal p{margin:6px 0;font-size:12.8px;color:#4b5563}
+  .modal .row{margin:9px 0}
+  .modal label{display:block;font-size:12px;color:var(--muted);margin-bottom:3px;font-weight:600}
+  .modal input{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:9px;font-size:13.5px}
+  .modal .mb{display:flex;gap:8px;margin-top:14px}
+  .modal .mb button{flex:1;padding:10px;border-radius:9px;border:1px solid var(--line);background:#fff;font-weight:600;
+    font-size:13.5px;cursor:pointer}
+  .modal .mb button.pri{background:#1f2430;color:#fff;border-color:#1f2430}
+  .modal .mb button.dg{color:var(--red);border-color:#f3b6b8}
+  code{background:#f1f3f5;padding:1px 5px;border-radius:5px;font-size:12px}
+  footer{text-align:center;color:var(--muted);font-size:12px;padding:8px 0 2px}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#1f2430;color:#fff;
+    padding:9px 16px;border-radius:22px;font-size:13px;opacity:0;transition:.2s;pointer-events:none;z-index:80}
+  .toast.on{opacity:.95}
+  @media print{.tools,.addbtn,.acts,.syncline{display:none}body{background:#fff;padding:0}.card{break-inside:avoid}}
+  @media(max-width:600px){body{padding:10px}.card{padding:11px}.nm{font-size:13.5px}header h1{font-size:17px}
+    .acts{opacity:1}}
+
+  /* ===== 待办 ===== */
+  .tabs{display:flex;gap:8px;margin:0 0 12px;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:20}
+  .tabs button{flex:1;padding:11px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink);font-size:14.5px;font-weight:700;cursor:pointer}
+  .tabs button.on{background:#1f2430;color:#fff;border-color:#1f2430}
+  .view{display:none}.view.on{display:block}
+  .tcard{background:#fff;border:1px solid var(--line);border-radius:13px;padding:13px 15px;margin:11px 0}
+  h2.sec{font-size:16px;margin:18px 0 8px;padding-left:9px;border-left:4px solid var(--ink)}
+  table.t{width:100%;border-collapse:collapse;font-size:13.5px;margin:4px 0}
+  table.t th,table.t td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+  table.t th{background:#fafafa;font-weight:600}
+  table.t tr.now td,table.t tr.now th{background:#fff8e1}
+  .chip{display:inline-block;font-size:11.5px;padding:1px 6px;border-radius:999px;font-weight:600;white-space:nowrap}
+  .chip.done{background:#e8f5e9;color:#2e7d32}.chip.todo{background:#fff4e5;color:#ef6c00}.chip.risk{background:#fdecea;color:#c62828}
+  .alert{background:#fff7f7;border-left:4px solid var(--red);padding:9px 12px;border-radius:6px;margin:6px 0}
+  .okbar{background:#f1f8f2;border-left:4px solid var(--green);padding:9px 12px;border-radius:6px;margin:6px 0}
+  .titem{display:flex;gap:10px;align-items:flex-start;padding:10px 4px;border-bottom:1px solid #f1f3f5}
+  .titem:last-child{border-bottom:none}
+  .tnum{min-width:26px;height:26px;border-radius:50%;background:#f0f0f0;color:var(--muted);font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:0 0 auto;margin-top:1px}
+  .tnum.hi{background:#1f2430;color:#fff}
+  .tbd{flex:1;min-width:0}
+  .ttl{font-weight:700;font-size:15px;margin-bottom:3px}
+  .tdt{color:var(--muted);font-size:13px;line-height:1.55}.tdt b{color:var(--ink)}
+  .tchips{margin-top:5px;display:flex;gap:4px;flex-wrap:wrap}
+  .tchips span{font-size:11px;padding:2px 7px;border-radius:999px;font-weight:600}
+  .tchips .rx{background:#fdecea;color:var(--red)}.tchips .bl{background:#e3f2fd;color:var(--blue)}
+  .tchips .am{background:#fff4e5;color:#ef6c00}.tchips .gr{background:#e8f5e9;color:#2e7d32}
+  @media print{.view{display:block!important}.tabs{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>🏠 装修总览 · 待办 + 采购</h1>
+    <div class="sub">安樾杭璟府 190㎡ ｜ 待办 <b>V23（9/28 定版）</b> ｜ 红线：10/1 通风 → 12月底 CMA → 1月初入住</div>
+    <div class="syncline">
+      <span class="pill" id="syncPill">☁️ 未连接</span>
+      <span class="pill act" id="cfgBtn">云同步设置</span>
+      <span class="pill act" id="delToggle">显示已删除</span>
+      <span class="pill">预算 ¥988,900</span><span class="pill ok">已付 ¥646,900</span><span class="pill warn">待付 ¥342,000</span>
+    </div>
+    <div class="prog">
+      <div class="l1"><span>总进度</span><span id="pct">0%</span></div>
+      <div class="bar"><i id="bar"></i></div>
+      <div class="l2" id="pline">已买 0 / 0 项 ｜ 已花 ¥0 ｜ 已知合计 ¥0</div>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button id="tbTodo" class="on" onclick="showTab('todo')">📋 装修待办 V23</button>
+    <button id="tbBuy" onclick="showTab('buy')">🛒 采购清单</button>
+  </div>
+
+  <div class="view on" id="v-todo">
+
+    <div class="tcard">
+      <div class="okbar" style="margin-top:0"><b>一句话总览：</b>硬装+主材已全部下单完毕，剩下的是「等安装 + 收尾」。<b>最急一件事：不锈钢柜这两天定稿</b>（否则赶不上 10 月生产）。国庆后进入岩板/餐桌安装 + 美缝踢脚线等收尾；<b>10/1 通风红线已保住</b>，大件家电延后到 11 月底–12 月中安装。</div>
+      <table class="t" style="margin-top:8px">
+        <tr><th style="width:120px">红线</th><td>10/1 通风启动 → 12月底 CMA 检测 → 1月初入住</td></tr>
+        <tr class="now"><th>本周最急</th><td><span class="chip risk">不锈钢柜定稿</span> · 800库置物架安装 · 博洛尼整改敲定时限</td></tr>
+      </table>
+    </div>
+
+    <h2 class="sec">🔥 一、本周内（9/28–10/1）急</h2>
+    <div class="tcard">
+      <table class="t">
+        <tr class="now"><th style="width:150px">不锈钢柜</th><td><b>这两天确认定稿</b> → 10 月进产 → 最快 <b>10 月底安装</b>（含谈价 ¥9,700–10,000）<span class="chip risk">最急</span></td></tr>
+        <tr class="now"><th>800 库置物架</th><td>已到货 → <b>验收 + 安装</b>（仓库房收纳架）</td></tr>
+        <tr class="now"><th>博洛尼整改</th><td>项目已确认 → <b>敲定「完成时限」+ 跟踪复验</b></td></tr>
+      </table>
+    </div>
+
+    <h2 class="sec">🔵 二、10 月（国庆后）</h2>
+    <div class="tcard">
+      <table class="t">
+        <tr class="now"><th style="width:170px">岩板 / 餐桌</th><td><b>岩板安装</b>（国庆后）· <b>餐桌安装</b>（国庆左右）</td></tr>
+        <tr class="now"><th>不锈钢三件</th><td><b>不锈钢柜安装</b>（10 月产完后，最快月底）+ 不锈钢门套 + 不锈钢洞洞板</td></tr>
+        <tr class="now"><th>厨房墙面珐琅板</th><td>量尺定制 + 插座/烟机开孔 + 上墙 <span class="chip todo">新增</span></td></tr>
+        <tr><th>美缝（未遮挡区）</th><td>厨房 / 卫生间 / 阳台 / 玄关 / 走廊</td></tr>
+        <tr><th>踢脚线（未遮挡区）</th><td>与被家具遮挡区分开做</td></tr>
+        <tr><th>卫浴五金</th><td>浴室台盆 + 镜柜 <b>+ 毛巾架 / 置物架</b></td></tr>
+        <tr><th>家具</th><td>儿童房实木家具 + 书房家具</td></tr>
+        <tr class="now"><th>提前到 10 月</th><td><b>餐椅 ×6 · 床头柜 · 斗柜</b>（原排 11 月，皇上 9/28 提前）</td></tr>
+        <tr><th>其他</th><td>轨道插座 ×2 · 软装布置 · 智能场景调试</td></tr>
+      </table>
+    </div>
+
+    <h2 class="sec">🟣 三、11 月（双11 采购）</h2>
+    <div class="tcard">
+      <table class="t">
+        <tr class="now"><th style="width:170px">大件电器</th><td>到货（冰箱/洗烘/蒸烤箱/直饮机）→ <b>11 月底–12 月中安装</b>（终保洁前）</td></tr>
+        <tr><th>双11 清单</th><td>电视 85Q8S · 霍尼韦尔烟机 · 方太灶具 · 大疆扫地机 · 戴森 · 微波炉/电饭煲</td></tr>
+        <tr><th>软装</th><td>单人沙发 · 茶几 · 灯具 · 地毯 · 挂画</td></tr>
+        <tr class="now"><th>窗帘</th><td><b>窗帘安装</b>（挂前先水洗）<span class="chip todo">原 9 月，改 11 月</span></td></tr>
+        <tr class="now"><th>美缝 / 踢脚线</th><td><b>全屋（家具遮挡区）</b>——需挪沙发/床，施工后 24h 不能踩</td></tr>
+      </table>
+    </div>
+
+    <h2 class="sec">🟠 四、11 月底–12 月初（收尾）</h2>
+    <div class="tcard">
+      <table class="t">
+        <tr><th style="width:120px">补漆</th><td>灯具/挂画/窗帘/家电等 <b>所有打孔安装结束后</b>统一补（避免补完又被破坏）；踢脚线后仍有磕碰一并补</td></tr>
+      </table>
+    </div>
+
+    <h2 class="sec">🟢 五、12 月–1 月（入住收口）</h2>
+    <div class="tcard">
+      <table class="t">
+        <tr><th style="width:150px">持续通风</th><td>10/1 起满 3 个月</td></tr>
+        <tr class="now"><th>CMA 检测</th><td><b>12 月底</b>（封闭 12h，甲醛 ≤0.08；有小孩建议 ≤0.06）</td></tr>
+        <tr><th>终保洁</th><td>专业队，CMA 后 1–3 天</td></tr>
+        <tr><th>生活用品进场</th><td>床品被褥 · 厨具餐具 · 垃圾桶收纳 · 绿植</td></tr>
+        <tr><th>入住</th><td><b>1 月初</b> 🎉</td></tr>
+      </table>
+    </div>
+
+    <h2 class="sec">✅ 已完成 / 已安排（不再列待办）</h2>
+    <div class="tcard">
+      <div style="font-size:13.5px;line-height:2">
+        <span class="chip done">电梯厅鞋柜 ✅</span> <span class="chip done">局部保洁②取消</span>
+        <span class="chip done">循环扇 ✅</span> <span class="chip done">通风+除醛 ✅</span>
+        <span class="chip done">主沙发 / 主卧床 / 客房床 ✅</span> <span class="chip done">墙布 ✅9/21</span>
+        <span class="chip done">阳台吊顶+柜 ✅</span> <span class="chip done">厨房不锈钢台面 ✅</span>
+      </div>
+    </div>
+
+    <h2 class="sec">🔧 博洛尼整改 · 9 项明细</h2>
+    <div class="tcard">
+      <div class="titem"><div class="tnum hi">1</div><div class="tbd"><div class="ttl">玄关·正面左竖柜调整</div>
+        <div class="tdt">尝试<b>去掉正面左边竖柜</b>出效果图；可行则改造，拆下的柜子<b>搬到设备阳台</b>。</div>
+        <div class="tchips"><span class="bl">出效果图</span><span class="rx">拆+搬+装</span></div></div></div>
+      <div class="titem"><div class="tnum hi">2</div><div class="tbd"><div class="ttl">岛台·向厨房再移 10cm</div>
+        <div class="tdt">确定执行。<b>地砖换掉 + 重新开孔</b>。已沟通 @邱银江。</div>
+        <div class="tchips"><span class="gr">已沟通</span><span class="rx">拆地砖 开孔 重铺</span></div></div></div>
+      <div class="titem"><div class="tnum">3</div><div class="tbd"><div class="ttl">厨房墙面优化设计</div>
+        <div class="tdt">搭配不锈钢台面，<b>优化墙面设计</b>，出方案确认后施工。</div>
+        <div class="tchips"><span class="bl">待设计方案</span></div></div></div>
+      <div class="titem"><div class="tnum">4</div><div class="tbd"><div class="ttl">饮水机+蒸烤箱·背景板再开一孔</div>
+        <div class="tdt">测好插座位置，<b>背景板再开一个孔</b>；目前只开了上下板的孔，会被机身挡住。</div>
+        <div class="tchips"><span class="rx">定位 + 开孔</span></div></div></div>
+      <div class="titem"><div class="tnum">5</div><div class="tbd"><div class="ttl">饮水机+蒸烤箱·顶部散热确认</div>
+        <div class="tdt">确认柜子<b>顶部到吊顶留够散热空间</b>。被封在背后导致故障，<b>博世不负责</b>。</div>
+        <div class="tchips"><span class="rx">博世保修前提</span><span class="bl">量尺寸 拍照留底</span></div></div></div>
+      <div class="titem"><div class="tnum">6</div><div class="tbd"><div class="ttl">全屋插座归位 · 新增灯位</div>
+        <div class="tdt"><b>所有插座安装归位</b>；新增灯位用<b>客厅拆下的筒灯</b>（不买新的）。</div>
+        <div class="tchips"><span class="am">拆旧装新</span></div></div></div>
+      <div class="titem"><div class="tnum">7</div><div class="tbd"><div class="ttl">客厅不锈钢柜·出 CAD 图纸</div>
+        <div class="tdt">按<b>精确尺寸</b>出一版 CAD，<b>自己找厂家制作</b>。</div>
+        <div class="tchips"><span class="bl">需精确尺寸</span><span class="am">自找厂家</span></div></div></div>
+      <div class="titem"><div class="tnum">8</div><div class="tbd"><div class="ttl">更换件</div>
+        <div class="tdt">① <b>电视柜多处板材 + 灯带</b>更换<br>② <b>衣帽间左门改 180° 铰链</b></div>
+        <div class="tchips"><span class="rx">返修</span></div></div></div>
+      <div class="titem"><div class="tnum">9</div><div class="tbd"><div class="ttl">调整优化</div>
+        <div class="tdt">① 衣帽间外侧玻璃门：顶上墙体下调<br>② 厨房内踢脚线：裁剪安装<br>③ 客厅隐形门上方吊顶：漆面修补<br>④ 客厅柜子面板美容</div>
+        <div class="tchips"><span class="am">调整</span></div></div></div>
+    </div>
+
+    <h2 class="sec">💰 尾款状态</h2>
+    <div class="tcard">
+      <table class="t">
+        <tr><th style="width:190px">项目</th><th style="width:150px">金额</th><th>状态</th></tr>
+        <tr class="now"><td>华为全屋智能</td><td>¥25,000</td><td><b>完工验收后结</b></td></tr>
+        <tr><td>厨房不锈钢台面</td><td>¥4,300–4,480</td><td><b>已验收 ✅ 可结</b></td></tr>
+        <tr><td>阳台柜 + 吊顶</td><td>¥1,800</td><td><b>已完工 ✅ 可结</b></td></tr>
+        <tr><td>电梯厅鞋柜（索菲亚）</td><td>余款</td><td><b>已安装验收 ✅ 可结</b></td></tr>
+        <tr><td>不锈钢柜</td><td>¥10,000 预算（报价 ¥10,727）</td><td>定稿后付</td></tr>
+      </table>
+      <div class="say" style="margin-top:8px">预算口径（9/22 Excel）：总 <b>¥988,900</b>｜已付 <b>¥646,900</b>｜待付 <b>¥342,000</b>。博洛尼 ¥350,000 已付清 → 只能靠质保 + 书面整改单 + 官方售后。</div>
+    </div>
+
+    <h2 class="sec">❓ 待皇上确认</h2>
+    <div class="tcard">
+      <table class="t">
+        <tr class="now"><td style="width:210px"><b>① 不锈钢柜定稿</b> <span class="chip risk">今明两天，最急</span></td><td>定了才能进 10 月生产</td></tr>
+        <tr><td>② 岩板到货安装日</td><td>排安装窗口</td></tr>
+        <tr><td>③ 主卧（金可儿）+ 次卧床垫是否到位</td><td>甲醛源，越早越好</td></tr>
+        <tr><td>④ 护墙板 ¥60,000 付款状态</td><td>是否含在 35 万内（未付则是对博洛尼唯一真筹码）</td></tr>
+        <tr><td>⑤ 博洛尼整改「完成时限」</td><td>面谈后要落到书面</td></tr>
+        <tr><td>⑥ 全屋智能是否验收完工（尾款 ¥25,000）</td><td>验收通过再结</td></tr>
+        <tr><td>⑦ 珐琅板厂家 / 规格</td><td>10 月排产</td></tr>
+        <tr><td colspan="2"><b>⑧ 未圈选项是否要做</b>（一句话给我即可）：地漏/角阀软管更换 · 燃气开通+灶具验收 · 装修押金退还 · 柜体防倾倒固定 · 窗户限位器/纱窗 · 空调/新风清洗 · 门套五金 · 电动晾衣架 · 收纳小件</td></tr>
+      </table>
+    </div>
+
+    <div class="tcard" style="background:#fbfbfd"><div style="font-size:12.5px;color:var(--muted)">待办来源：装修待办时间规划 <b>V23（2026-09-28 定版）</b> ｜ 博洛尼整改 9 项（2026-09-23 面谈）</div></div>
+  </div>
+
+  <div class="view" id="v-buy">
+
+  <div class="tools">
+    <button class="tb primary" id="btnPrint">🖨 打印 / 存 PDF</button>
+    <button class="tb" id="btnCopy">📋 复制进度</button>
+    <button class="tb" id="btnSync">🔄 立即同步</button>
+    <button class="tb" id="btnReset">↺ 清空打勾</button>
+  </div>
+  <div class="hint" id="storeHint">改动会自动保存：连了云端就同步到仓库，没连就只存本机浏览器。</div>
+  <div class="say">✅ 已同步 <b>待办 V23（9/28）口径</b>：餐椅/床头柜/斗柜 → 10 月；新增 珐琅板 · 美缝 · 踢脚线 · 补漆 · 卫浴五金 · 生活用品；窗帘 → 11 月（挂前水洗）；餐桌已定 → 移出采购。</div>
+
+  <div id="app"></div>
+
+  <div class="card">
+    <div class="bh"><span class="idx">¥</span>已在途 · 待付尾款（不属于新采购）</div>
+    <div class="money">已买/已定、只差尾款或等安装的，不是新买的东西——去《装修待办》跟。
+      <table>
+        <tr><td>全屋智能（华为鸿蒙智家）尾款</td><td style="text-align:right"><b>¥25,000</b></td></tr>
+        <tr><td>厨房不锈钢台面尾款（9/15 已装 ✅）</td><td style="text-align:right"><b>¥4,300</b></td></tr>
+        <tr><td>阳台柜 + 吊顶（已完工 ✅）</td><td style="text-align:right"><b>¥1,800</b></td></tr>
+        <tr><td>餐桌（<b>已定</b>，国庆左右安装）</td><td style="text-align:right">已付款</td></tr>
+        <tr><td>岩板（已定并付款，国庆后安装）</td><td style="text-align:right">已付款</td></tr>
+        <tr><td>大件电器（冰箱/洗烘/蒸烤箱/直饮机，已购）</td><td style="text-align:right">11月底–12月中安装</td></tr>
+      </table>
+      <div style="margin-top:6px;color:#6b7280">※ 博洛尼 ¥350,000 已付清；不锈钢柜 ¥10,000 尚未下单，已计入第1批。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="bh"><span class="idx">!</span>三个"别买早"的坑</div>
+    <div class="warn"><b>① 别让双11大件 11 月前送到工地</b>——还没保洁、安装位没定型。下单统一约"延迟发货 + 预约安装"。</div>
+    <div class="warn"><b>② 墙布/岩板完成前别买"上墙件"</b>（灯具、挂画、电视壁挂、镜柜）——二次脏、二次打孔。</div>
+    <div class="warn"><b>③ 量尺前别买尺寸件</b>（餐桌椅、茶几、床头柜）——按岛台↔餐边柜实际净空定。</div>
+    <div class="say">排序四问：① 甲醛/异味源？→ 越早越好 ② 要现场量尺？→ 排在该工序之后 ③ 有大促价差不急用？→ 压双11预售 ④ 装饰/易碎最终落位？→ 保洁后、家具进场后</div>
+  </div>
+
+  </div>
+
+  <footer>太子 整理 · v5 · 待办 V23(9/28) + 采购清单 · 状态自动同步到仓库</footer>
+</div>
+
+<div class="mask" id="cfgMask">
+  <div class="modal">
+    <h3>☁️ 云同步设置</h3>
+    <p>两种方式选一个。<b>要分享给家人 → 选「云端代理」</b>：家人打开你发的链接就能用，什么都不用填。</p>
+    <div class="row"><label>同步方式</label>
+      <select id="fMode">
+        <option value="worker">云端代理（推荐 · 家人零配置）</option>
+        <option value="gh">GitHub 直连（每台设备都要填 token）</option>
+      </select></div>
+
+    <div id="wBox">
+      <div class="row"><label>Worker 地址</label><input id="fWorker" placeholder="https://xxx.workers.dev"></div>
+      <div class="row"><label>口令（可选 · 防陌生人乱改）</label><input id="fKey" placeholder="家里统一口令"></div>
+      <p>🟢 密钥（GitHub token）存在云端 Worker 里，<b>不进任何人的浏览器</b>，家人不需要任何账号。</p>
+      <p>🔗 分享给家人时用这个格式（会自动记住，打开即用）：<br>
+        <code id="shareTpl">https://…/zhuangxiu/#w=Worker地址&key=口令</code></p>
+    </div>
+
+    <div id="ghBox">
+      <div class="row"><label>仓库 owner</label><input id="fOwner" placeholder="Ricardopan"></div>
+      <div class="row"><label>仓库名</label><input id="fRepo" placeholder="report2604"></div>
+      <div class="row"><label>分支</label><input id="fBranch" placeholder="main"></div>
+      <div class="row"><label>状态文件路径</label><input id="fPath" placeholder="zhuangxiu/state.json"></div>
+      <div class="row"><label>GitHub Token（只存本机浏览器，不写进网页）</label><input id="fToken" type="password" placeholder="github_pat_..." autocomplete="off"></div>
+      <p>💡 建 token：GitHub → Settings → Developer settings → <b>Fine-grained tokens</b> → 只授权 <b>report2604</b> → <b>Contents = Read and write</b> → 90 天。</p>
+    </div>
+
+    <div class="mb">
+      <button class="pri" id="cfgSave">保存并连接</button>
+      <button id="cfgClose">关闭</button>
+      <button class="dg" id="cfgClear">断开（清除本机密钥）</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ 1. 基础数据（我维护的部分，改这里 = 以后更新清单内容） ============ */
+const BATCHES = [
+  {id:'b0', idx:'0', title:'第0批 · 本周（9/28–10/1）', time:'本周',
+   note:'<b>唯一的甲醛源批次</b>：床垫/实木家具生产 2–4 周 + 要散味满 3 个月，晚一周就少一周。'},
+  {id:'b1', idx:'1', title:'第1批 · 10 月（国庆后）', time:'国庆后 – 10月底',
+   note:'V23 将 <b>餐椅/床头柜/斗柜提前到 10 月</b>，新增 <b>珐琅板 · 美缝(未遮挡区) · 踢脚线(未遮挡区) · 卫浴五金</b>。需现场量尺的先量后定。'},
+  {id:'b2', idx:'2', title:'第2批 · 11 月（双11）', time:'10/15 预售起 → 11月发货',
+   note:'价格最优窗口。⚠️ 下单全选"延迟发货 / 预约安装"。V23 新增 <b>窗帘（挂前水洗） · 美缝/踢脚线（遮挡区）</b>。'},
+  {id:'b3', idx:'3', title:'第3批 · 11月底–12月初（收尾）', time:'打孔安装全部结束后',
+   note:'<b>补漆</b>：所有打孔安装结束后统一补，避免补完又被破坏。'},
+  {id:'b4', idx:'4', title:'第4批 · 12月–1月（入住前）', time:'CMA 后 → 入住前',
+   note:'生活用品进场：床品/厨具/垃圾桶收纳/绿植等。'},
+  {id:'b5', idx:'5', title:'第5批 · 兴趣 / 未定', time:'入住后',
+   note:'非必需不急，按实际体验再定。'}
+];
+const ITEMS = [
+  {id:'p01', b:'b0', n:'次卧床垫', nt:'次卧 · 甲醛源，越早越好', p:null, tg:'t-must', tt:'本周必须'},
+  {id:'p02', b:'b0', n:'儿童床垫', nt:'儿童房 · 甲醛源，越早越好', p:null, tg:'t-must', tt:'本周必须'},
+  {id:'p03', b:'b0', n:'次卧床', nt:'已定款，选色后下单', p:3000, tg:'t-must', tt:'本周'},
+  {id:'p04', b:'b0', n:'儿童房实木成品家具', nt:'甲醛源 · V23 列 10 月，建议提前下单散味', p:15000, tg:'t-must', tt:'本周'},
+  {id:'p05', b:'b1', n:'餐椅 ×6', nt:'与餐桌同批定，量岛台 ↔ 餐边柜净空', p:3000, tg:'t-measure', tt:'10月·提前'},
+  {id:'p06', b:'b1', n:'床头柜 ×2（主卧 + 次卧）', nt:'按床边余量定尺寸', p:null, tg:'t-measure', tt:'10月·提前'},
+  {id:'p07', b:'b1', n:'成品斗柜', nt:'主卧', p:10000, tg:'t-measure', tt:'10月·提前'},
+  {id:'p08', b:'b1', n:'厨房墙面珐琅板', nt:'量尺定制 + 插座/烟机开孔 + 上墙', p:null, tg:'t-measure', tt:'新增·10月'},
+  {id:'p09', b:'b1', n:'浴室台盆 + 镜柜', nt:'主卫 · 选型后对水电点位', p:null, tg:'t-measure', tt:'10月'},
+  {id:'p10', b:'b1', n:'卫浴五金（毛巾架/置物架/挂钩）', nt:'浴室 · V23 新增', p:null, tg:'t-measure', tt:'新增·10月'},
+  {id:'p11', b:'b1', n:'不锈钢柜', nt:'定稿后下单，10月底装（无甲醛不卡通风）', p:10000, tg:'t-measure', tt:'最急·10月'},
+  {id:'p12', b:'b1', n:'不锈钢门套', nt:'开放厨房 · 许工，复尺 → 生产 → 10月装', p:1300, tg:'t-measure', tt:'10月'},
+  {id:'p13', b:'b1', n:'不锈钢洞洞板', nt:'电梯厅 · 待定做', p:null, tg:'t-measure', tt:'10月'},
+  {id:'p14', b:'b1', n:'全屋美缝（未遮挡区）', nt:'厨房/卫生间/阳台/玄关/走廊 · V23 新增', p:null, tg:'t-measure', tt:'新增·10月'},
+  {id:'p15', b:'b1', n:'踢脚线（未遮挡区）', nt:'与被家具遮挡区分开做', p:null, tg:'t-measure', tt:'新增·10月'},
+  {id:'p16', b:'b1', n:'书房家具（升降桌 + 工学椅）', nt:'合计约 1 万', p:10000, tg:'t-measure', tt:'10月'},
+  {id:'p17', b:'b1', n:'轨道插座 ×2', nt:'V23 10月', p:null, tg:'t-measure', tt:'10月'},
+  {id:'p18', b:'b2', n:'电视 海信 85Q8S', nt:'客厅 · 壁挂等墙布完工后再做', p:15000, tg:'t-1111', tt:'双11'},
+  {id:'p19', b:'b2', n:'油烟机 + 灶具', nt:'方太灶 + 霍尼韦尔烟机', p:12000, tg:'t-1111', tt:'双11'},
+  {id:'p20', b:'b2', n:'扫地机器人（大疆）', nt:'等家具定型再选型号', p:5000, tg:'t-1111', tt:'双11'},
+  {id:'p21', b:'b2', n:'戴森吸尘器', nt:'清洁类', p:3000, tg:'t-1111', tt:'双11'},
+  {id:'p22', b:'b2', n:'微波炉', nt:'小家电', p:1000, tg:'t-1111', tt:'双11'},
+  {id:'p23', b:'b2', n:'电饭煲', nt:'小家电', p:1000, tg:'t-1111', tt:'双11'},
+  {id:'p24', b:'b2', n:'单人沙发', nt:'客厅', p:5000, tg:'t-1111', tt:'双11'},
+  {id:'p25', b:'b2', n:'茶几', nt:'量沙发 ↔ 电视墙间距', p:null, tg:'t-1111', tt:'双11'},
+  {id:'p26', b:'b2', n:'灯具（餐厅 / 落地）', nt:'主灯已在智能包内', p:10000, tg:'t-1111', tt:'双11'},
+  {id:'p27', b:'b2', n:'窗帘（挂前先水洗）', nt:'客厅 + 卧室 + 墙布 · V23 改 11 月', p:15000, tg:'t-1111', tt:'新增·11月'},
+  {id:'p28', b:'b2', n:'全屋美缝（家具遮挡区）', nt:'需挪沙发/床，施工后 24h 不能踩', p:null, tg:'t-1111', tt:'新增·11月'},
+  {id:'p29', b:'b2', n:'踢脚线（家具遮挡区）', nt:'与美缝同批做', p:null, tg:'t-1111', tt:'新增·11月'},
+  {id:'p30', b:'b2', n:'地毯', nt:'按沙发 + 茶几落位定尺寸', p:null, tg:'t-1111', tt:'11–12月'},
+  {id:'p31', b:'b2', n:'挂画 / 摆件 / 饰品', nt:'等家具落位、风格定', p:null, tg:'t-1111', tt:'11–12月'},
+  {id:'p32', b:'b3', n:'补漆（全屋统一补）', nt:'灯具/挂画/窗帘/家电等打孔安装全部结束后', p:null, tg:'t-end', tt:'新增·11月底'},
+  {id:'p33', b:'b4', n:'床品被褥（主/次/儿童）', nt:'入住前', p:null, tg:'t-end', tt:'12月–1月'},
+  {id:'p34', b:'b4', n:'厨具餐具', nt:'新家配新（预算外）', p:3500, tg:'t-end', tt:'12月–1月'},
+  {id:'p35', b:'b4', n:'垃圾桶 + 收纳小件', nt:'盒/篮/挂钩（预算外）', p:1500, tg:'t-end', tt:'12月–1月'},
+  {id:'p36', b:'b4', n:'绿植（含盆器）', nt:'V23 新增 · 入住前', p:null, tg:'t-end', tt:'新增·12月–1月'},
+  {id:'p37', b:'b4', n:'空气净化器', nt:'有小孩，冬季关窗兜底（预算外）', p:3000, tg:'t-end', tt:'12月'},
+  {id:'p38', b:'b4', n:'加湿器', nt:'冬季空调房（预算外）', p:750, tg:'t-end', tt:'12月'},
+  {id:'p39', b:'b4', n:'除湿机', nt:'杭州梅雨 / 回南天（预算外）', p:1500, tg:'t-end', tt:'明年春前'},
+  {id:'p40', b:'b4', n:'甲醛检测仪（自测）', nt:'辅助 CMA，前后都能看（预算外）', p:550, tg:'t-end', tt:'CMA前'},
+  {id:'p41', b:'b4', n:'门垫 / 地垫', nt:'玄关 + 厨卫（预算外）', p:500, tg:'t-end', tt:'11月'},
+  {id:'p42', b:'b4', n:'阳台茶桌椅', nt:'休闲区', p:null, tg:'t-end', tt:'11–12月'},
+  {id:'p43', b:'b4', n:'晾衣架（阳台）', nt:'视洗烘配置（预算外）', p:1000, tg:'t-end', tt:'11月'},
+  {id:'p44', b:'b5', n:'B&O 音响', nt:'兴趣，非必需', p:10000, tg:'t-gray', tt:'未定'},
+  {id:'p45', b:'b5', n:'咖啡机', nt:'兴趣，非必需', p:2000, tg:'t-gray', tt:'未定'},
+  {id:'p46', b:'b5', n:'投影仪', nt:'兴趣，非必需', p:6000, tg:'t-gray', tt:'未定'},
+  {id:'p47', b:'b5', n:'电脑（配置B）', nt:'兴趣，非必需', p:30000, tg:'t-gray', tt:'未定'},
+  {id:'p48', b:'b5', n:'单人沙发床', nt:'慢挑', p:null, tg:'t-gray', tt:'未定'}
+];
+
+/* ============ 2. 配置 / 状态 ============ */
+const CFG_KEY='cq_cfg_v1', ST_KEY='zx_state_v1';
+const DEF_CFG={mode:'worker',owner:'Ricardopan',repo:'report2604',branch:'main',path:'zhuangxiu/state.json',worker:'',key:'',token:''};
+const DEF_ST={v:1,updatedAt:null,checked:{},deleted:[],added:[],edited:{}};
+let cfg=Object.assign({},DEF_CFG), st=JSON.parse(JSON.stringify(DEF_ST));
+let remoteRev=null, editingId=null, addingBatch=null, showDeleted=false;
+let saveTimer=null, dirty=false;
+const LS=('localStorage' in window);
+try{ if(LS){ const c=localStorage.getItem(CFG_KEY);
+  if(c){ const sc=JSON.parse(c);
+    if(sc.mode===undefined) sc.mode=(sc.token?'gh':'worker');   // 兼容旧配置：已填 token 的继续走直连
+    cfg=Object.assign({},DEF_CFG,sc);
+    if(cfg.path==='caigou/state.json') cfg.path='zhuangxiu/state.json'; }
+  const s=localStorage.getItem(ST_KEY); if(s) st=Object.assign({},DEF_ST,JSON.parse(s)); } }catch(e){}
+
+function persistLocal(){ if(!LS) return; try{ localStorage.setItem(CFG_KEY,JSON.stringify(cfg));
+  localStorage.setItem(ST_KEY,JSON.stringify(st)); }catch(e){} }
+function toast(t){ const el=document.getElementById('toast'); el.textContent=t; el.classList.add('on');
+  clearTimeout(el._h); el._h=setTimeout(()=>el.classList.remove('on'),1900); }
+function apiUrl(p){ return 'https://api.github.com/repos/'+cfg.owner+'/'+cfg.repo+'/contents/'+(p||cfg.path); }
+function headers(){ return cfg.token?{Authorization:'Bearer '+cfg.token,Accept:'application/vnd.github+json'}
+  :{Accept:'application/vnd.github+json'}; }
+function connected(){ return cfg.mode==='worker' ? !!cfg.worker : !!cfg.token; }
+function apiBase(){ return (cfg.worker||'').replace(/\/+$/,''); }
+async function apiGet(){                       // → {rev, data}
+  if(cfg.mode==='worker'){
+    const r=await fetch(apiBase()+'/state',{headers:{'X-Key':cfg.key||''},cache:'no-store'});
+    if(r.status===403) throw new Error('403 口令不对');
+    if(!r.ok) throw new Error('http'+r.status);
+    return await r.json();
+  }
+  const r=await fetch(apiUrl(),{headers:headers(),cache:'no-store'});
+  if(r.status===404) return {rev:null,data:null};
+  if(r.status===401||r.status===403) throw new Error('403 Token 无效或无权限');
+  if(!r.ok) throw new Error('http'+r.status);
+  const j=await r.json();
+  return {rev:j.sha,data:JSON.parse(fromB64(j.content))};
+}
+async function apiPut(data,rev){               // → {rev}
+  if(cfg.mode==='worker'){
+    const r=await fetch(apiBase()+'/state',{method:'PUT',
+      headers:{'Content-Type':'application/json','X-Key':cfg.key||''},
+      body:JSON.stringify({rev:(rev===undefined?null:rev),data:data})});
+    if(r.status===403) throw new Error('403 口令不对');
+    if(r.status===409) throw new Error('conflict');
+    if(!r.ok) throw new Error('http'+r.status);
+    return await r.json();
+  }
+  const body={message:'采购清单状态 '+new Date().toLocaleString('zh-CN'),
+    content:toB64(JSON.stringify(data,null,1)),branch:cfg.branch};
+  if(rev) body.sha=rev;
+  const r=await fetch(apiUrl(),{method:'PUT',headers:headers(),body:JSON.stringify(body)});
+  if(r.status===401||r.status===403) throw new Error('403 Token 无写权限');
+  if(r.status===409||r.status===422) throw new Error('conflict');
+  if(!r.ok) throw new Error('http'+r.status);
+  const j=await r.json();
+  return {rev:(j&&j.content&&j.content.sha)||null};
+}
+function normState(o){
+  o=o||{};
+  const c={}; Object.keys(o.checked||{}).sort().forEach(k=>{ if(o.checked[k]) c[k]=true; });
+  const d=[...(o.deleted||[])].sort();
+  const am={}; (o.added||[]).forEach(x=>am[x.id]=x);
+  const e={}; Object.keys(o.edited||{}).sort().forEach(k=>e[k]=o.edited[k]);
+  return JSON.stringify({c:c,d:d,a:Object.keys(am).sort().map(k=>am[k]),e:e});
+}
+function stateEq(a,b){ return normState(a)===normState(b); }
+function hasLocal(){ return !!((st.deleted||[]).length||(st.added||[]).length||Object.keys(st.checked||{}).length); }
+function toB64(str){ const b=new TextEncoder().encode(str); let s=''; for(let i=0;i<b.length;i++) s+=String.fromCharCode(b[i]); return btoa(s); }
+function fromB64(b64){ const bin=atob((b64||'').replace(/\s/g,'')); const a=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) a[i]=bin.charCodeAt(i); return new TextDecoder().decode(a); }
+
+/* ============ 3. 合并（本地 ↔ 云端） ============ */
+function mergeState(local,remote){
+  if(!remote||!remote.v) return local;
+  if(!local||!local.updatedAt) return remote;
+  const newer = (String(remote.updatedAt) > String(local.updatedAt)) ? remote : local;
+  const older = newer===remote ? local : remote;
+  const out=JSON.parse(JSON.stringify(newer));
+  out.checked=Object.assign({},older.checked||{},newer.checked||{});
+  const dl=new Set([...(older.deleted||[]),...(newer.deleted||[])]);
+  out.deleted=Array.from(dl);
+  out.edited=Object.assign({},older.edited||{},newer.edited||{});
+  const map={}; (older.added||[]).forEach(a=>map[a.id]=a); (newer.added||[]).forEach(a=>map[a.id]=a);
+  Object.keys(map).forEach(k=>{ if(dl.has(k)) delete map[k]; });
+  out.added=Object.values(map);
+  return out;
+}
+
+/* ============ 4. 云端读写 ============ */
+function setSync(mode,msg){
+  const p=document.getElementById('syncPill'); p.className='pill';
+  const t=new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
+  if(mode==='off'){ p.textContent='☁️ 未连接（点"云同步设置"）'; p.classList.add('warn'); }
+  else if(mode==='saving'){ p.textContent='☁️ 保存中…'; }
+  else if(mode==='saved'){ p.textContent='☁️ 已同步 '+t; p.classList.add('ok'); }
+  else if(mode==='local'){ p.textContent='💾 仅本机（未连云端）'; p.classList.add('warn'); }
+  else if(mode==='err'){ p.textContent='⚠️ '+(msg||'同步失败，已存本机'); p.classList.add('err'); }
+  else { p.textContent='☁️ 就绪'; }
+}
+async function pull(){
+  if(!connected()){ setSync('local'); return; }
+  setSync('saving');
+  try{
+    const res=await apiGet();
+    remoteRev=(res.rev===undefined?null:res.rev);
+    if(!res.data){ // 云端还没有状态：把本机已有改动先传上去
+      st.updatedAt=st.updatedAt||new Date().toISOString(); persistLocal();
+      if(hasLocal()) schedulePush(200); else setSync('saved');
+      return; }
+    const merged=mergeState(st,res.data);
+    const needPush=!stateEq(merged,res.data);   // 只有"本机有、云端没有"的东西才回写
+    merged.updatedAt=new Date().toISOString();
+    const changedForUI=JSON.stringify(merged)!==JSON.stringify(st);
+    st=merged; persistLocal(); if(changedForUI) renderAll(); setSync('saved');
+    if(needPush) schedulePush(300);
+  }catch(e){
+    if(String(e.message).indexOf('403')===0) setSync('err',String(e.message).slice(4)||'口令/权限不对');
+    else setSync('err','读不到云端，已用本机数据');
+  }
+}
+async function pushNow(){
+  if(!connected()) return;
+  setSync('saving');
+  try{
+    const res=await apiPut(st,remoteRev);
+    if(res && res.rev!==undefined) remoteRev=res.rev;
+    dirty=false; setSync('saved');
+  }catch(e){
+    if(String(e.message)==='conflict'){        // 家人先写了：拉回→合并→再写一次
+      try{
+        const cur=await apiGet();
+        remoteRev=(cur.rev===undefined?null:cur.rev);
+        if(cur.data){ st=mergeState(st,cur.data); st.updatedAt=new Date().toISOString(); persistLocal(); renderAll(); }
+        const res2=await apiPut(st,remoteRev);
+        if(res2 && res2.rev!==undefined) remoteRev=res2.rev;
+        dirty=false; setSync('saved'); return;
+      }catch(e2){ setSync('err','冲突合并失败，已存本机'); return; }
+    }
+    if(String(e.message).indexOf('403')===0){ setSync('err',String(e.message).slice(4)||'口令/权限不对'); return; }
+    setSync('err','保存失败，已存本机');
+  }
+}
+function schedulePush(ms){
+  dirty=true; persistLocal();
+  if(!connected()){ setSync('local'); return; }
+  clearTimeout(saveTimer);
+  setSync('saving');
+  saveTimer=setTimeout(pushNow, ms||1200);
+}
+
+/* ============ 5. 渲染 ============ */
+function effList(){
+  const out=[];
+  ITEMS.forEach(it=>{ const e=st.edited[it.id]||{};
+    out.push({id:it.id,b:(e.b||it.b),n:(e.n!==undefined?e.n:it.n),nt:(e.nt!==undefined?e.nt:it.nt),
+      p:(e.p!==undefined?e.p:it.p),tg:(e.tg||it.tg),tt:(e.tt||it.tt),_edited:!!st.edited[it.id]}); });
+  (st.added||[]).forEach(a=>out.push(Object.assign({},a,{_added:true})));
+  return out;
+}
+function money(v){ return (v===null||v===undefined||v==='')?'待估':'¥'+Number(v).toLocaleString('zh-CN'); }
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function renderAll(){
+  const app=document.getElementById('app');
+  const list=effList();
+  app.innerHTML='';
+  BATCHES.forEach(b=>{
+    const mine=list.filter(i=>i.b===b.id);
+    const live=mine.filter(i=>!st.deleted.includes(i.id));
+    const dead=mine.filter(i=>st.deleted.includes(i.id));
+    const card=document.createElement('div'); card.className='card';
+    card.innerHTML='<div class="bh"><span class="idx">'+b.idx+'</span>'+esc(b.title)
+      +'<span class="cnt" data-cnt="'+b.id+'"></span></div>'
+      +'<div class="bmeta">📅 <span class="t">'+esc(b.time)+'</span> ｜ '+b.note+'</div><div data-list></div>'
+      +'<button class="addbtn" data-add="'+b.id+'">＋ 添加项目</button>';
+    app.appendChild(card);
+    const dl=card.querySelector('[data-list]');
+    live.forEach(it=>{ dl.appendChild(editingId===it.id?editForm(it):itemRow(it)); });
+    if(addingBatch===b.id) dl.appendChild(addForm(b.id));
+    if(showDeleted){
+      dead.forEach(it=>{ const r=itemRow(it,true); dl.appendChild(r); });
+    }
+  });
+  renderMeta();
+}
+function itemRow(it,dead){
+  const el=document.createElement('div');
+  el.className='item'+(st.checked[it.id]&&!dead?' done':'')+(dead?' delrow':'');
+  el.dataset.id=it.id;
+  const marks=(it._added?'<span class="mk">新增</span>':'')+(it._edited?'<span class="mk gray">已改</span>':'');
+  el.innerHTML='<span class="box"></span>'
+    +'<span class="main"><span class="nm">'+esc(it.n)+marks+'</span><span class="nt">'+esc(it.nt)+'</span></span>'
+    +'<span class="rt"><span class="pr'+(it.p?'':' est')+'">'+money(it.p)+'</span><br>'
+    +'<span class="tg '+esc(it.tg)+'">'+esc(it.tt)+'</span></span>'
+    +'<span class="acts">'
+      +(dead?'<button class="ic" title="恢复">↺</button><button class="ic del" title="彻底删除">✕</button>'
+            :'<button class="ic" title="编辑">✎</button><button class="ic del" title="删除">✕</button>')
+    +'</span>';
+  const cbox=el.querySelector('.box'), acts=el.querySelectorAll('.ic');
+  el.addEventListener('click',ev=>{
+    if(ev.target.closest('.acts')) return;
+    if(dead) return;
+    toggle(it.id);
+  });
+  if(dead){
+    acts[0].onclick=()=>{ st.deleted=st.deleted.filter(x=>x!==it.id);
+      if(it._added){} persist(); toast('已恢复'); renderAll(); };
+    acts[1].onclick=()=>{ if(!confirm('彻底删除"'+(it.n)+'"？不可恢复。')) return;
+      st.deleted=st.deleted.filter(x=>x!==it.id);
+      st.added=(st.added||[]).filter(a=>a.id!==it.id);
+      delete st.checked[it.id]; delete st.edited[it.id];
+      persist(); toast('已彻底删除'); renderAll(); };
+  }else{
+    acts[0].onclick=()=>{ editingId=it.id; renderAll(); };
+    acts[1].onclick=()=>{ if(!confirm('删除"'+(it.n)+'"？（可从"显示已删除"恢复）')) return;
+      if(!st.deleted.includes(it.id)) st.deleted.push(it.id);
+      persist(); toast('已删除'); renderAll(); };
+  }
+  return el;
+}
+function editForm(it){
+  const el=document.createElement('div'); el.className='form';
+  el.innerHTML='<div class="fr"><input class="wide" id="eN" value="'+esc(it.n)+'" placeholder="名称"></div>'
+    +'<div class="fr"><input class="wide" id="eT" value="'+esc(it.nt)+'" placeholder="备注（空间/说明）"></div>'
+    +'<div class="fr"><input id="eP" value="'+(it.p==null?'':it.p)+'" placeholder="金额（留空=待估）" inputmode="numeric">'
+    +'<select id="eB">'+BATCHES.map(b=>'<option value="'+b.id+'"'+(b.id===it.b?' selected':'')+'>'+esc(b.title)+'</option>').join('')+'</select></div>'
+    +'<div class="fb"><button class="pri" id="eS">保存</button><button id="eC">取消</button>'
+    +(it._edited?'<button id="eR">还原默认</button>':'')+'</div>';
+  el.querySelector('#eS').onclick=()=>{
+    const n=el.querySelector('#eN').value.trim()||'（未命名）';
+    const nt=el.querySelector('#eT').value.trim();
+    const pv=el.querySelector('#eP').value.trim();
+    const p=pv===''?null:Number(pv);
+    const b=el.querySelector('#eB').value;
+    if(it._added){ const a=(st.added||[]).find(x=>x.id===it.id); if(a){ a.n=n; a.nt=nt; a.p=p; a.b=b; } }
+    else { st.edited[it.id]=Object.assign({},st.edited[it.id],{n:n,nt:nt,p:p,b:b}); }
+    editingId=null; persist(); toast('已保存'); renderAll();
+  };
+  el.querySelector('#eC').onclick=()=>{ editingId=null; renderAll(); };
+  const r=el.querySelector('#eR'); if(r) r.onclick=()=>{ delete st.edited[it.id]; editingId=null; persist(); renderAll(); };
+  return el;
+}
+function addForm(bid){
+  const el=document.createElement('div'); el.className='form';
+  el.innerHTML='<div class="fr"><input class="wide" id="aN" placeholder="名称（必填）"></div>'
+    +'<div class="fr"><input class="wide" id="aT" placeholder="备注（可选）"></div>'
+    +'<div class="fr"><input id="aP" placeholder="金额（留空=待估）" inputmode="numeric">'
+    +'<select id="aTg"><option value="t-measure">先量尺</option><option value="t-must">必须</option>'
+    +'<option value="t-1111">双11</option><option value="t-end">收尾</option><option value="t-gray">未定</option></select></div>'
+    +'<div class="fb"><button class="pri" id="aS">添加</button><button id="aC">取消</button></div>';
+  el.querySelector('#aS').onclick=()=>{
+    const n=el.querySelector('#aN').value.trim(); if(!n){ toast('请填名称'); return; }
+    const pv=el.querySelector('#aP').value.trim();
+    st.added.push({id:'x'+Date.now().toString(36),b:bid,n:n,nt:el.querySelector('#aT').value.trim(),
+      p:pv===''?null:Number(pv),tg:el.querySelector('#aTg').value,tt:'自定义'});
+    addingBatch=null; persist(); toast('已添加'); renderAll();
+  };
+  el.querySelector('#aC').onclick=()=>{ addingBatch=null; renderAll(); };
+  return el;
+}
+function renderMeta(){
+  const list=effList().filter(i=>!st.deleted.includes(i.id));
+  let done=0,amt=0,known=0;
+  list.forEach(it=>{ if(it.p) known+=Number(it.p); if(st.checked[it.id]){ done++; if(it.p) amt+=Number(it.p); } });
+  const total=list.length, pct=total?Math.round(done/total*100):0;
+  document.getElementById('pct').textContent=pct+'%';
+  document.getElementById('bar').style.width=pct+'%';
+  document.getElementById('pline').textContent='已买 '+done+' / '+total+' 项 ｜ 已花 '+money(amt)+' ｜ 已知合计 '+money(known);
+  BATCHES.forEach(b=>{
+    const mine=list.filter(i=>i.b===b.id), d=mine.filter(i=>st.checked[i.id]).length;
+    const el=document.querySelector('[data-cnt="'+b.id+'"]');
+    if(el){ el.textContent=d+' / '+mine.length; el.classList.toggle('full',d===mine.length&&mine.length>0); }
+  });
+}
+function persist(){ st.updatedAt=new Date().toISOString(); persistLocal(); schedulePush(); }
+function toggle(id){ st.checked[id]=!st.checked[id]; if(!st.checked[id]) delete st.checked[id]; persist(); renderAll(); }
+
+/* ============ 6. 交互绑定 ============ */
+document.addEventListener('click',ev=>{
+  const a=ev.target.closest('[data-add]'); if(a){ addingBatch=a.dataset.add; editingId=null; renderAll();
+    const f=document.querySelector('.form input'); if(f) f.focus(); }
+});
+document.getElementById('btnPrint').onclick=()=>window.print();
+document.getElementById('btnSync').onclick=()=>{ if(!connected()){ openCfg(); toast('先连接云端'); return; } pull().then(()=>toast('已同步')); };
+document.getElementById('btnReset').onclick=()=>{
+  if(!confirm('清空所有打勾？（不影响删除/新增）')) return;
+  st.checked={}; persist(); renderAll(); toast('已清空打勾');
+};
+document.getElementById('btnCopy').onclick=async()=>{
+  let t='采购清单进度（'+new Date().toLocaleDateString('zh-CN')+'）\n';
+  const list=effList();
+  BATCHES.forEach(b=>{
+    const mine=list.filter(i=>i.b===b.id&&!st.deleted.includes(i.id)); if(!mine.length) return;
+    t+='\n【'+b.title+'】\n';
+    mine.forEach(i=>{ t+=(st.checked[i.id]?'[x] ':'[ ] ')+i.n+(i.p?('  ¥'+Number(i.p).toLocaleString()):'')+'\n'; });
+  });
+  try{ await navigator.clipboard.writeText(t); toast('已复制到剪贴板'); }
+  catch(e){ toast('复制失败，请手动截图'); }
+};
+document.getElementById('delToggle').onclick=()=>{
+  showDeleted=!showDeleted;
+  document.getElementById('delToggle').textContent=showDeleted?'隐藏已删除':'显示已删除';
+  renderAll();
+};
+/* 云同步设置 */
+const mask=document.getElementById('cfgMask');
+function syncModeUI(){
+  const w=document.getElementById('fMode').value==='worker';
+  document.getElementById('wBox').style.display=w?'':'none';
+  document.getElementById('ghBox').style.display=w?'none':'';
+}
+document.getElementById('fMode').onchange=syncModeUI;
+function shareLink(){
+  const base=location.origin+location.pathname;
+  const w=(document.getElementById('fWorker').value||cfg.worker||'').replace(/\/+$/,'');
+  const k=document.getElementById('fKey').value||cfg.key||'';
+  if(!w) return base;
+  return base+'#w='+encodeURIComponent(w)+(k?('&key='+encodeURIComponent(k)):'');
+}
+function openCfg(){
+  document.getElementById('fMode').value=cfg.mode==='worker'?'worker':'gh';
+  document.getElementById('fWorker').value=cfg.worker||'';
+  document.getElementById('fKey').value=cfg.key||'';
+  document.getElementById('fOwner').value=cfg.owner; document.getElementById('fRepo').value=cfg.repo;
+  document.getElementById('fBranch').value=cfg.branch; document.getElementById('fPath').value=cfg.path;
+  document.getElementById('fToken').value=cfg.token||'';
+  syncModeUI();
+  const t=document.getElementById('shareTpl'); if(t){ t.textContent=shareLink(); }
+  mask.classList.add('on');
+}
+document.getElementById('cfgBtn').onclick=openCfg;
+document.getElementById('cfgClose').onclick=()=>mask.classList.remove('on');
+document.getElementById('cfgClear').onclick=()=>{ cfg.token=''; cfg.key=''; remoteRev=null; persistLocal(); setSync('off'); mask.classList.remove('on'); toast('已断开云端（仍存本机）'); };
+document.getElementById('cfgSave').onclick=async()=>{
+  cfg.mode=document.getElementById('fMode').value;
+  cfg.worker=document.getElementById('fWorker').value.trim().replace(/\/+$/,'');
+  cfg.key=document.getElementById('fKey').value.trim();
+  cfg.owner=document.getElementById('fOwner').value.trim()||DEF_CFG.owner;
+  cfg.repo=document.getElementById('fRepo').value.trim()||DEF_CFG.repo;
+  cfg.branch=document.getElementById('fBranch').value.trim()||'main';
+  cfg.path=document.getElementById('fPath').value.trim()||DEF_CFG.path;
+  cfg.token=document.getElementById('fToken').value.trim();
+  remoteRev=null; persistLocal(); mask.classList.remove('on');
+  if(!connected()){ setSync('off'); return; }
+  await pull(); toast('已连接');
+};
+/* 启动 */
+document.getElementById('delToggle').textContent='显示已删除';
+/* 分享链接：#w=Worker地址&key=口令 → 自动记住，家人零配置 */
+(function importHash(){
+  const h=location.hash.replace(/^#/,''); if(!h) return;
+  const p=new URLSearchParams(h); let hit=false;
+  const w=p.get('w')||p.get('worker');
+  if(w){ cfg.mode='worker'; cfg.worker=w.replace(/\/+$/,''); hit=true; }
+  if(p.get('key')){ cfg.key=p.get('key'); hit=true; }
+  if(p.get('token')){ cfg.mode='gh'; cfg.token=p.get('token'); hit=true; }
+  if(hit){ persistLocal(); try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }
+})();
+renderAll();
+if(connected()) pull(); else setSync(LS?'off':'local');
+if(!LS) document.getElementById('storeHint').textContent='⚠️ 本浏览器不支持本地保存，且未连云端——改动会丢，请用 Chrome/Safari 打开。';
+window.addEventListener('beforeunload',e=>{ if(dirty&&connected()){ e.preventDefault(); e.returnValue=''; } });
+function showTab(t){
+  document.getElementById('v-todo').classList.toggle('on',t==='todo');
+  document.getElementById('v-buy').classList.toggle('on',t==='buy');
+  document.getElementById('tbTodo').classList.toggle('on',t==='todo');
+  document.getElementById('tbBuy').classList.toggle('on',t==='buy');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
