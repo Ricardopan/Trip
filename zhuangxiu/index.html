@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- 装修总览 · 待办(V23)+采购 · 线上版 v5
+<!-- 装修总览 · 待办(V23)+采购+预算 · 线上版 v6
      源文件（本地真源）：workspace 装修总览_待办+采购_20260929.html
      线上部署路径：github.com/Ricardopan/Trip → zhuangxiu/index.html
      线上链接：https://ricardopan.github.io/Trip/zhuangxiu/
@@ -150,6 +150,34 @@
   .tchips .rx{background:#fdecea;color:var(--red)}.tchips .bl{background:#e3f2fd;color:var(--blue)}
   .tchips .am{background:#fff4e5;color:#ef6c00}.tchips .gr{background:#e8f5e9;color:#2e7d32}
   @media print{.view{display:block!important}.tabs{display:none}}
+
+  /* ===== 预算 ===== */
+  .bhero{display:flex;gap:10px;margin:0 0 12px;flex-wrap:wrap}
+  .bkpi{flex:1 1 140px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 14px}
+  .bkpi .k{font-size:11.5px;color:var(--muted)}
+  .bkpi .v{font-size:21px;font-weight:800;font-variant-numeric:tabular-nums}
+  .bkpi.p .v{color:var(--green)} .bkpi.d .v{color:var(--amber)}
+  .barwrap{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 14px;margin-bottom:12px}
+  .barwrap .t{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600}
+  .barwrap .track{height:12px;background:#eef1f4;border-radius:99px;margin-top:7px;overflow:hidden}
+  .barwrap .track>i{display:block;height:100%;width:65.4%;background:linear-gradient(90deg,#34d399,#10b981)}
+  .bbig{background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px 15px;margin-bottom:10px}
+  .bbig .hd{display:flex;justify-content:space-between;align-items:baseline}
+  .bbig .hd .nm{font-weight:700;font-size:15px} .bbig .hd .pc{font-size:12.5px;font-weight:700;color:var(--green)}
+  .bbig .track{height:8px;background:#eef1f4;border-radius:99px;margin:7px 0 6px;overflow:hidden}
+  .bbig .track>i{display:block;height:100%;background:linear-gradient(90deg,#34d399,#10b981);border-radius:99px}
+  .bbig .l1{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+  .bbig .l1 .ok{color:var(--green);font-weight:600} .bbig .l1 .du{color:var(--amber);font-weight:700}
+  .bdbox{background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px 15px;margin-bottom:10px}
+  .bdbox h3{margin:0 0 8px;font-size:14.5px}
+  .bdbox h3 .sb{font-size:11.5px;color:var(--muted);font-weight:500;margin-left:4px}
+  table.bd{width:100%;border-collapse:collapse;font-size:12.8px}
+  table.bd th,table.bd td{border-bottom:1px solid #eef1f4;padding:6px 7px;text-align:left;vertical-align:top}
+  table.bd thead th{background:#fafbfc;font-weight:600;color:#4b5563;font-size:12px}
+  table.bd td.r,table.bd th.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  table.bd td.c{color:var(--muted);width:105px}
+  table.bd tr.fin td{background:#f7fdf9}
+  .bnote{font-size:12px;color:var(--muted);margin-top:5px}
 </style>
 </head>
 <body>
@@ -174,6 +202,7 @@
   <div class="tabs">
     <button id="tbTodo" class="on" onclick="showTab('todo')">📋 装修待办 V23</button>
     <button id="tbBuy" onclick="showTab('buy')">🛒 采购清单</button>
+    <button id="tbBudget" onclick="showTab('budget')">💰 预算总览</button>
   </div>
 
   <div class="view on" id="v-todo">
@@ -280,6 +309,18 @@
         <div class="tchips"><span class="am">调整</span></div></div></div>
     </div>
 
+    <h2 class="sec">⚠️ 整改的牵连分析（9/30 结论）</h2>
+    <div class="tcard">
+      <table class="t">
+        <tr><th style="width:118px">🔴 前置破坏性</th><td><b>岛台移位 · 玄关去左竖柜 · 衣帽间墙体下调</b> —— 都产生粉尘/改格局，<b>必须排在美缝 · 踢脚线 · 补漆之前</b></td></tr>
+        <tr><th>🟠 决策窗口</th><td>厨房墙面方案（→ 珐琅板下单前）· 背景板开孔（→ 电器安装前）· 顶部散热（→ 博世保修）· 插座归位+新增灯位（→ <b>智能验收/尾款前</b>）</td></tr>
+        <tr><th>🟡 只关自己</th><td>客厅不锈钢柜 <b>CAD 图纸</b>（卡采购，<b>这周就要</b>）· 更换件 + 漆面修补类（归 11 月底统一补漆）</td></tr>
+        <tr class="now"><th>施工顺序</th><td>破坏性整改 → 复尺下单（珐琅板 / 不锈钢柜 / 岩板 / 餐椅）→ 美缝 → 补漆 → 电器 → 软装</td></tr>
+        <tr class="now"><th>待确认</th><td>① <b>厨房侧过道净宽</b>（平移后 = 原宽 −10cm，需 ≥90cm）　② <b>岛台区有无地暖</b>（拆砖开孔前必查）</td></tr>
+        <tr class="now"><th>最容易漏</th><td>拆砖/拆柜粉尘 → 施工前 <b>柜体封膜 + 墙布遮挡</b>；<b>岩板安装、餐椅量尺</b>都要放在 <b>岛台移位之后</b></td></tr>
+      </table>
+    </div>
+
     <h2 class="sec">💰 尾款状态</h2>
     <div class="tcard">
       <table class="t">
@@ -348,7 +389,114 @@
 
   </div>
 
-  <footer>太子 整理 · v5 · 待办 V23(9/28) + 采购清单 · 状态自动同步到仓库</footer>
+  <div class="view" id="v-budget">
+    <div class="bhero">
+      <div class="bkpi"><div class="k">总预算</div><div class="v">¥988,900</div></div>
+      <div class="bkpi p"><div class="k">已付</div><div class="v">¥646,900</div></div>
+      <div class="bkpi d"><div class="k">待付</div><div class="v">¥342,000</div></div>
+    </div>
+    <div class="barwrap">
+      <div class="t"><span>已付进度 65.4%</span><span>还剩 34.6%</span></div>
+      <div class="track"><i></i></div>
+    </div>
+
+    <h2 class="sec">📊 五大项进度</h2>
+      <div class="bbig">
+        <div class="hd"><span class="nm">收房固定费用</span><span class="pc">18%</span></div>
+        <div class="track"><i style="width:17.6%"></i></div>
+        <div class="l1"><span>总 ¥136,500</span><span class="ok">已付 ¥24,000</span><span class="du">待付 ¥112,500</span></div>
+        <div class="bnote">契税 ¥112,500 占绝对大头（办证前必须付）</div>
+      </div>
+      <div class="bbig">
+        <div class="hd"><span class="nm">全屋定制</span><span class="pc">93%</span></div>
+        <div class="track"><i style="width:92.6%"></i></div>
+        <div class="l1"><span>总 ¥520,900</span><span class="ok">已付 ¥482,100</span><span class="du">待付 ¥38,800</span></div>
+        <div class="bnote">只剩 ¥38,800 尾款：全屋智能 ¥25,000 + 不锈钢柜/台面 ¥15,000</div>
+      </div>
+      <div class="bbig">
+        <div class="hd"><span class="nm">软装</span><span class="pc">55%</span></div>
+        <div class="track"><i style="width:55.4%"></i></div>
+        <div class="l1"><span>总 ¥144,500</span><span class="ok">已付 ¥80,000</span><span class="du">待付 ¥64,500</span></div>
+        <div class="bnote">待付 ¥64,500：儿童/书房家具、床垫尾款、窗帘尾款、灯具饰品</div>
+      </div>
+      <div class="bbig">
+        <div class="hd"><span class="nm">家电</span><span class="pc">41%</span></div>
+        <div class="track"><i style="width:41.4%"></i></div>
+        <div class="l1"><span>总 ¥145,000</span><span class="ok">已付 ¥60,000</span><span class="du">待付 ¥85,000</span></div>
+        <div class="bnote">待付 ¥85,000：双11 主战场（电视/厨电/小家电/兴趣件）</div>
+      </div>
+      <div class="bbig">
+        <div class="hd"><span class="nm">其他</span><span class="pc">2%</span></div>
+        <div class="track"><i style="width:1.9%"></i></div>
+        <div class="l1"><span>总 ¥42,000</span><span class="ok">已付 ¥800</span><span class="du">待付 ¥41,200</span></div>
+        <div class="bnote">待付 ¥41,200：主要是 ¥35,000 备用金 + 搬家/保洁/除醛</div>
+      </div>
+
+    <h2 class="sec">📋 分项明细</h2>
+      <div class="bdbox">
+        <h3>收房固定费用 <span class="sb">总 ¥136,500 · 已付 ¥24,000 · 待付 ¥112,500</span></h3>
+        <table class="bd"><thead><tr><th>类别</th><th>项目</th><th class="r">预算</th><th class="r">已付</th><th class="r">待付</th></tr></thead>
+        <tbody>
+        <tr><td class="c">税费及行政费用</td><td>契税（1.5%）</td><td class="r">¥112,500</td><td class="r">—</td><td class="r">¥112,500</td></tr>
+        <tr class="fin"><td class="c"></td><td>维修基金</td><td class="r">¥12,000</td><td class="r">¥12,000</td><td class="r">✅</td></tr>
+        <tr class="fin"><td class="c">物业及公共费用</td><td>物业费（预缴12个月）</td><td class="r">¥12,000</td><td class="r">¥12,000</td><td class="r">✅</td></tr>
+        </tbody></table>
+        <div class="bnote">印花税 / 房产证办理 / 水电燃气预存：暂未列金额</div>
+      </div>
+      <div class="bdbox">
+        <h3>全屋定制 <span class="sb">总 ¥520,900 · 已付 ¥482,100 · 待付 ¥38,800</span></h3>
+        <table class="bd"><thead><tr><th>类别</th><th>项目</th><th class="r">预算</th><th class="r">已付</th><th class="r">待付</th></tr></thead>
+        <tbody>
+        <tr class="fin"><td class="c">硬装补充和调整</td><td>墙体拆改等</td><td class="r">¥50,000</td><td class="r">¥50,000</td><td class="r">✅</td></tr>
+        <tr class="fin"><td class="c">全屋定制柜</td><td>设计费</td><td class="r">¥25,000</td><td class="r">¥25,000</td><td class="r">✅</td></tr>
+        <tr class="fin"><td class="c"></td><td>定制柜（博洛尼，≈50㎡投影）</td><td class="r">¥350,000</td><td class="r">¥350,000</td><td class="r">✅</td></tr>
+        <tr class="fin"><td class="c">电梯厅</td><td>鞋柜（索菲亚）</td><td class="r">¥5,800</td><td class="r">¥5,800</td><td class="r">✅</td></tr>
+        <tr><td class="c">阳台</td><td>阳台柜 / 吊顶 / 塑木地板</td><td class="r">¥18,800</td><td class="r">¥17,000</td><td class="r">¥1,800</td></tr>
+        <tr><td class="c">全屋智能</td><td>开关·窗帘·AC+AP·智能灯（华为）</td><td class="r">¥50,000</td><td class="r">¥25,000</td><td class="r">¥25,000</td></tr>
+        <tr><td class="c">其他</td><td>不锈钢柜子</td><td class="r">¥12,000</td><td class="r">—</td><td class="r">¥12,000</td></tr>
+        <tr class="fin"><td class="c"></td><td>厨房不锈钢台面</td><td class="r">¥9,300</td><td class="r">¥9,300</td><td class="r">✅</td></tr>
+        </tbody></table>
+        <div class="bnote">✅ 博洛尼 ¥350,000 已付清，无尾款筹码</div>
+      </div>
+      <div class="bdbox">
+        <h3>软装 <span class="sb">总 ¥144,500 · 已付 ¥80,000 · 待付 ¥64,500</span></h3>
+        <table class="bd"><thead><tr><th>类别</th><th>项目</th><th class="r">预算</th><th class="r">已付</th><th class="r">待付</th></tr></thead>
+        <tbody>
+        <tr><td class="c">客厅家具</td><td>大沙发 / 单人沙发 / 茶几 / 餐桌 / 椅子 / 地毯 / 阳台茶桌椅</td><td class="r">¥45,000</td><td class="r">¥35,000</td><td class="r">¥10,000</td></tr>
+        <tr><td class="c">卧室家具</td><td>主卧床 / 次卧床 / 床垫 / 成品斗柜 / 地毯</td><td class="r">¥41,000</td><td class="r">¥28,000</td><td class="r">¥13,000</td></tr>
+        <tr><td class="c">窗帘</td><td>客厅+卧室+其他+墙布</td><td class="r">¥15,000</td><td class="r">¥13,500</td><td class="r">¥1,500</td></tr>
+        <tr><td class="c">儿童家具</td><td>实木成品</td><td class="r">¥15,000</td><td class="r">—</td><td class="r">¥15,000</td></tr>
+        <tr><td class="c">书房家具</td><td>升降桌+工学椅</td><td class="r">¥10,000</td><td class="r">—</td><td class="r">¥10,000</td></tr>
+        <tr><td class="c">灯具 & 饰品</td><td>灯具 / 饰品</td><td class="r">¥10,000</td><td class="r">—</td><td class="r">¥10,000</td></tr>
+        <tr class="fin"><td class="c">杂项</td><td>怪物拉篮 / 800库置物架</td><td class="r">¥3,500</td><td class="r">¥3,500</td><td class="r">✅</td></tr>
+        </tbody></table>
+        
+      </div>
+      <div class="bdbox">
+        <h3>家电 <span class="sb">总 ¥145,000 · 已付 ¥60,000 · 待付 ¥85,000</span></h3>
+        <table class="bd"><thead><tr><th>类别</th><th>项目</th><th class="r">预算</th><th class="r">已付</th><th class="r">待付</th></tr></thead>
+        <tbody>
+        <tr><td class="c">大家电</td><td>冰箱 25,000 · 洗烘 15,000 · 电视 15,000</td><td class="r">¥55,000</td><td class="r">¥40,000</td><td class="r">¥15,000</td></tr>
+        <tr><td class="c">厨房电器</td><td>蒸烤箱 / 微波炉 / 燃气灶 / 抽烟机</td><td class="r">¥23,000</td><td class="r">¥10,000</td><td class="r">¥13,000</td></tr>
+        <tr><td class="c">小家电</td><td>电饭煲 / 吸尘器 / 直饮机 / 扫地机器人</td><td class="r">¥19,000</td><td class="r">¥10,000</td><td class="r">¥9,000</td></tr>
+        <tr><td class="c">兴趣（非必需）</td><td>音响 / 咖啡机 / 投影仪 / 电脑</td><td class="r">¥48,000</td><td class="r">—</td><td class="r">¥48,000</td></tr>
+        </tbody></table>
+        <div class="bnote">待付大头，建议双11 一次配齐</div>
+      </div>
+      <div class="bdbox">
+        <h3>其他 <span class="sb">总 ¥42,000 · 已付 ¥800 · 待付 ¥41,200</span></h3>
+        <table class="bd"><thead><tr><th>类别</th><th>项目</th><th class="r">预算</th><th class="r">已付</th><th class="r">待付</th></tr></thead>
+        <tbody>
+        <tr><td class="c">其他费用</td><td>搬家费用 / 开荒保洁 / 甲醛检测治理</td><td class="r">¥7,000</td><td class="r">¥800</td><td class="r">¥6,200</td></tr>
+        <tr><td class="c">备用金</td><td>机动</td><td class="r">¥35,000</td><td class="r">—</td><td class="r">¥35,000</td></tr>
+        </tbody></table>
+        
+      </div>
+
+    <div class="bdbox" style="background:#fbfbfd"><div class="bnote">数据源：《装修预算表》<b>2026-09-22 皇上更新版</b>（6 sheets：汇总/收房/全屋定制/软装/家电/杂项）。待付大头并非装修本体：<b>契税 ¥112,500 + 家电 ¥85,000 + 软装 ¥64,500</b>。</div></div>
+  </div>
+
+  <footer>太子 整理 · v6 · 待办 V23(9/28) + 采购清单 + 预算总览(9/22) · 状态自动同步到仓库</footer>
 </div>
 
 <div class="mask" id="cfgMask">
@@ -819,10 +967,11 @@ if(connected()) pull(); else setSync(LS?'off':'local');
 if(!LS) document.getElementById('storeHint').textContent='⚠️ 本浏览器不支持本地保存，且未连云端——改动会丢，请用 Chrome/Safari 打开。';
 window.addEventListener('beforeunload',e=>{ if(dirty&&connected()){ e.preventDefault(); e.returnValue=''; } });
 function showTab(t){
-  document.getElementById('v-todo').classList.toggle('on',t==='todo');
-  document.getElementById('v-buy').classList.toggle('on',t==='buy');
-  document.getElementById('tbTodo').classList.toggle('on',t==='todo');
-  document.getElementById('tbBuy').classList.toggle('on',t==='buy');
+  ['todo','buy','budget'].forEach(function(k){
+    var v=document.getElementById('v-'+k), b=document.getElementById('tb'+k.charAt(0).toUpperCase()+k.slice(1));
+    if(v) v.classList.toggle('on',k===t);
+    if(b) b.classList.toggle('on',k===t);
+  });
   window.scrollTo({top:0,behavior:'smooth'});
 }
 </script>
