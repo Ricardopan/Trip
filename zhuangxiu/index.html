@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- 装修总览 · 待办(V23)+采购+预算 · 线上版 v6
+<!-- 装修总览 · 待办(V24)+采购+预算 · 线上版 v7
      源文件（本地真源）：workspace 装修总览_待办+采购_20260929.html
      线上部署路径：github.com/Ricardopan/Trip → zhuangxiu/index.html
      线上链接：https://ricardopan.github.io/Trip/zhuangxiu/
@@ -185,7 +185,7 @@
 
   <header>
     <h1>🏠 装修总览 · 待办 + 采购</h1>
-    <div class="sub">安樾杭璟府 190㎡ ｜ 待办 <b>V23（9/28 定版）</b> ｜ 红线：10/1 通风 → 12月底 CMA → 1月初入住</div>
+    <div class="sub">安樾杭璟府 190㎡ ｜ 待办 <b>V24（10/11 更新）</b> ｜ 红线：10/1 通风 → 12月底 CMA → 1月初入住</div>
     <div class="syncline">
       <span class="pill" id="syncPill">☁️ 未连接</span>
       <span class="pill act" id="cfgBtn">云同步设置</span>
@@ -200,7 +200,7 @@
   </header>
 
   <div class="tabs">
-    <button id="tbTodo" class="on" onclick="showTab('todo')">📋 装修待办 V23</button>
+    <button id="tbTodo" class="on" onclick="showTab('todo')">📋 装修待办 V24</button>
     <button id="tbBuy" onclick="showTab('buy')">🛒 采购清单</button>
     <button id="tbBudget" onclick="showTab('budget')">💰 预算总览</button>
   </div>
@@ -208,29 +208,55 @@
   <div class="view on" id="v-todo">
 
     <div class="tcard">
-      <div class="okbar" style="margin-top:0"><b>一句话总览：</b>硬装+主材已全部下单完毕，剩下的是「等安装 + 收尾」。<b>最急一件事：不锈钢柜这两天定稿</b>（否则赶不上 10 月生产）。国庆后进入岩板/餐桌安装 + 美缝踢脚线等收尾；<b>10/1 通风红线已保住</b>，大件家电延后到 11 月底–12 月中安装。</div>
+      <div class="okbar" style="margin-top:0"><b>一句话总览：</b>国庆后进入硬装收尾。<b>本周日 10/11 是收尾大日子——五件事集中施工</b>（博洛尼非板材整改 · 岩板/餐桌安装 · 美缝 · 珐琅板量尺选色 · 800库置物架）。<b>关键在「顺序」</b>：整改产尘打头，美缝压到清洁之后。不锈钢柜仍需定稿进 10 月产；<b>10/1 通风红线已保住</b>，大件家电 11 月底–12 月中安装。</div>
       <table class="t" style="margin-top:8px">
         <tr><th style="width:120px">红线</th><td>10/1 通风启动 → 12月底 CMA 检测 → 1月初入住</td></tr>
-        <tr class="now"><th>本周最急</th><td><span class="chip risk">不锈钢柜定稿</span> · 800库置物架安装 · 博洛尼整改敲定时限</td></tr>
+        <tr class="now"><th>本周最急</th><td><span class="chip risk">周日 10/11 五项集中施工</span> · 不锈钢柜定稿（进 10 月产）</td></tr>
       </table>
     </div>
 
-    <h2 class="sec">🔥 一、本周内（9/28–10/1）急</h2>
+    <h2 class="sec">🔥 一、本周日（10/11）当天 · 5 项集中施工</h2>
+    <div class="tcard">
+      <div class="okbar" style="margin-top:0"><b>当天主线：</b>以「<b>博洛尼非板材整改</b>」打头（产尘最大）→ 清洁 → <b>岩板/餐桌安装</b> → <b>美缝</b>；<b>珐琅板量尺选色</b>穿插。<b>顺序错=返工</b>，见下方风险表。</div>
+      <table class="t">
+        <tr class="now"><th style="width:180px">① 博洛尼整改</th><td><b>完成部分「不依赖板材」的整改</b>（现场作业类：岛台移位 / 玄关拆柜 / 插座归位 / 铰链更换等）<span class="chip risk">当天产尘最多 · 最先做</span></td></tr>
+        <tr class="now"><th>② 岩板 + 餐桌</th><td><b>安装</b>（岩板＝岛台台面）——务必排在<b>岛台移位到位之后</b></td></tr>
+        <tr class="now"><th>③ 美缝</th><td><b>未遮挡区施工</b>（厨卫/阳台/玄关/走廊）<span class="chip risk">必须排在全部产尘工序 + 清洁之后</span></td></tr>
+        <tr class="now"><th>④ 珐琅板</th><td><b>不锈钢珐琅板量尺 + 选颜色</b>（厨房墙面）<span class="chip todo">量尺前确认墙面方案已定</span></td></tr>
+        <tr class="now"><th>⑤ 800 库置物架</th><td><b>安装</b>（仓库房收纳架，无甲醛，与上面互不干扰）</td></tr>
+      </table>
+    </div>
+
+    <h2 class="sec">⏱ 当天推荐顺序（按「产尘 / 湿作业」排）</h2>
     <div class="tcard">
       <table class="t">
-        <tr class="now"><th style="width:150px">不锈钢柜</th><td><b>这两天确认定稿</b> → 10 月进产 → 最快 <b>10 月底安装</b>（含谈价 ¥9,700–10,000）<span class="chip risk">最急</span></td></tr>
-        <tr class="now"><th>800 库置物架</th><td>已到货 → <b>验收 + 安装</b>（仓库房收纳架）</td></tr>
-        <tr class="now"><th>博洛尼整改</th><td>项目已确认 → <b>敲定「完成时限」+ 跟踪复验</b></td></tr>
+        <tr class="now"><th style="width:64px">① 先</th><td><b>博洛尼整改（拆砖 / 拆柜 / 移位）</b>——产尘最大，趁早；<b>开工前先封柜体膜 + 挡墙布</b></td></tr>
+        <tr><th>②</th><td><b>除尘清洁</b>（小时工或自理）——把拆改浮灰清干净</td></tr>
+        <tr><th>③</th><td><b>岩板 + 餐桌安装</b>——切割尽量工厂完成；装前确认岛台已移到位</td></tr>
+        <tr class="now"><th>④</th><td><b>再清洁 → 美缝</b>（干净、干燥、无尘 才做）</td></tr>
+        <tr><th>⑤ 穿插</th><td><b>珐琅板量尺 + 选色</b>（不产尘，可随时）</td></tr>
+        <tr><th>⑥ 独立</th><td><b>800 库置物架安装</b>（与上面互不干扰，谁先都行）</td></tr>
+      </table>
+    </div>
+
+    <h2 class="sec">⚠️ 当天 4 个必须卡住的风险</h2>
+    <div class="tcard">
+      <table class="t">
+        <tr class="now"><th style="width:150px">粉尘 vs 美缝</th><td>拆砖/切割的灰落进缝里 → <b>美缝白做</b>。铁律：<b>整改 → 清洁 → 岩板 → 清洁 → 美缝</b>，美缝永远放最后。</td></tr>
+        <tr class="now"><th>岛台移位 vs 岩板</th><td>岩板＝岛台台面，<b>必须等岛台移到位再装</b>；若先装岩板再移岛台，等于白装。</td></tr>
+        <tr class="now"><th>岛台周边美缝</th><td>岛台移位要<b>拆地砖重铺</b> → 新铺砖当天<b>不能美缝</b>（需 24–48h 固化）。<b>当天只美岛台以外区域</b>。</td></tr>
+        <tr class="now"><th>珐琅板量尺前提</th><td>量尺前须确认<b>厨房墙面方案（整改第3项）已定稿</b> + 插座/烟机位置，否则量了也要改。</td></tr>
+        <tr><th>成品保护</th><td>墙布(9/21)+柜体已完工：拆砖/拆柜前 <b>封膜 + 挡墙布</b>，否则又得柜面美容。</td></tr>
       </table>
     </div>
 
     <h2 class="sec">🔵 二、10 月（国庆后）</h2>
     <div class="tcard">
       <table class="t">
-        <tr class="now"><th style="width:170px">岩板 / 餐桌</th><td><b>岩板安装</b>（国庆后）· <b>餐桌安装</b>（国庆左右）</td></tr>
+        <tr class="now"><th style="width:170px">岩板 / 餐桌</th><td><b>岩板安装</b> · <b>餐桌安装</b> <span class="chip done">10/11 安装</span></td></tr>
         <tr class="now"><th>不锈钢三件</th><td><b>不锈钢柜安装</b>（10 月产完后，最快月底）+ 不锈钢门套 + 不锈钢洞洞板</td></tr>
-        <tr class="now"><th>厨房墙面珐琅板</th><td>量尺定制 + 插座/烟机开孔 + 上墙 <span class="chip todo">新增</span></td></tr>
-        <tr><th>美缝（未遮挡区）</th><td>厨房 / 卫生间 / 阳台 / 玄关 / 走廊</td></tr>
+        <tr class="now"><th>厨房墙面珐琅板</th><td><b>量尺 + 选色</b> <span class="chip done">10/11</span> → 下单定制 → 插座/烟机开孔 → 上墙</td></tr>
+        <tr class="now"><th>美缝（未遮挡区）</th><td>厨房 / 卫生间 / 阳台 / 玄关 / 走廊 <span class="chip done">10/11 开工（岛台以外）</span></td></tr>
         <tr><th>踢脚线（未遮挡区）</th><td>与被家具遮挡区分开做</td></tr>
         <tr><th>卫浴五金</th><td>浴室台盆 + 镜柜 <b>+ 毛巾架 / 置物架</b></td></tr>
         <tr><th>家具</th><td>儿童房实木家具 + 书房家具</td></tr>
@@ -337,7 +363,9 @@
     <h2 class="sec">❓ 待皇上确认</h2>
     <div class="tcard">
       <table class="t">
-        <tr class="now"><td style="width:210px"><b>① 不锈钢柜定稿</b> <span class="chip risk">今明两天，最急</span></td><td>定了才能进 10 月生产</td></tr>
+        <tr class="now"><td style="width:210px"><b>⓪ 周日(10/11) 整改具体哪几项</b> <span class="chip risk">决定当天顺序</span></td><td>是否含 <b>岛台移位</b>？含 → 岩板 + 岛台周边美缝必须顺延</td></tr>
+        <tr class="now"><td><b>⓪′ 美缝范围</b></td><td>当天是否含 <b>岛台周边</b>（建议不含，等砖固化）</td></tr>
+        <tr><td>① 不锈钢柜定稿</td><td>定了才能进 10 月生产（最快 10 月底装）</td></tr>
         <tr><td>② 岩板到货安装日</td><td>排安装窗口</td></tr>
         <tr><td>③ 主卧（金可儿）+ 次卧床垫是否到位</td><td>甲醛源，越早越好</td></tr>
         <tr><td>④ 护墙板 ¥60,000 付款状态</td><td>是否含在 35 万内（未付则是对博洛尼唯一真筹码）</td></tr>
@@ -496,7 +524,7 @@
     <div class="bdbox" style="background:#fbfbfd"><div class="bnote">数据源：《装修预算表》<b>2026-09-22 皇上更新版</b>（6 sheets：汇总/收房/全屋定制/软装/家电/杂项）。待付大头并非装修本体：<b>契税 ¥112,500 + 家电 ¥85,000 + 软装 ¥64,500</b>。</div></div>
   </div>
 
-  <footer>太子 整理 · v6 · 待办 V23(9/28) + 采购清单 + 预算总览(9/22) · 状态自动同步到仓库</footer>
+  <footer>太子 整理 · v7 · 待办 V24(10/11) + 采购清单 + 预算总览(9/22) · 状态自动同步到仓库</footer>
 </div>
 
 <div class="mask" id="cfgMask">
