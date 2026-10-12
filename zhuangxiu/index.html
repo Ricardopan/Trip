@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- 装修总览 · 待办(V29)+采购+预算 · 线上版 v12
+<!-- 装修总览 · 待办(V29)+采购+预算 · 线上版 v15
      源文件（本地真源）：workspace 装修总览_待办+采购_20260929.html
      线上部署路径：github.com/Ricardopan/Trip → zhuangxiu/index.html
      线上链接：https://ricardopan.github.io/Trip/zhuangxiu/
@@ -156,6 +156,12 @@
   .subh.v i{background:var(--violet)} .subh.g i{background:var(--green)} .subh.a i{background:var(--amber)} .subh.r i{background:var(--red)}
   .subh .c{font-size:11.5px;font-weight:700;color:var(--muted);background:#eef1f5;border-radius:999px;padding:1px 8px}
 
+  .bd tr.hl td{background:#fff4e4}
+  .bd tr.hl td:first-child{box-shadow:inset 3px 0 0 #f59e0b}
+  .bigl tr td{padding:9px 10px !important}
+  .bigl .amt{font-weight:900;color:#b3261e;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .bigl tr.sum td{background:#fdecec}
+
   /* ===== 预算 ===== */
   .bhero{display:flex;gap:10px;margin:0 0 12px;flex-wrap:wrap}
   .bkpi{flex:1 1 140px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 14px}
@@ -190,12 +196,12 @@
 
   <header>
     <h1>🏠 装修总览 · 待办 + 采购</h1>
-    <div class="sub">安樾杭璟府 190㎡ ｜ 待办 <b>V29（10/12 更新）</b> ｜ 红线：10/1 通风 → 12月底 CMA → 1月初入住</div>
+    <div class="sub">安樾杭璟府 190㎡ ｜ 待办 <b>V29</b> ｜ 预算 <b>10/12 版</b> ｜ 红线：10/1 通风 → 12月底 CMA → 1月初入住</div>
     <div class="syncline">
       <span class="pill" id="syncPill">☁️ 未连接</span>
       <span class="pill act" id="cfgBtn">云同步设置</span>
       <span class="pill act" id="delToggle">显示已删除</span>
-      <span class="pill">预算 ¥988,900</span><span class="pill ok">已付 ¥646,900</span><span class="pill warn">待付 ¥342,000</span>
+      <span class="pill">预算 ¥996,700</span><span class="pill ok">已付 ¥681,000</span><span class="pill warn">待付 ¥315,700</span>
     </div>
     <div class="prog">
       <div class="l1"><span>总进度</span><span id="pct">0%</span></div>
@@ -354,7 +360,7 @@
         <tr class="now"><td>客厅不锈钢柜</td><td><b>¥7,000（谈定）</b></td><td><b>生产中（10/20 完成）</b> → 到货验收后结 <span class="chip done">省 ¥3,000</span></td></tr>
         <tr class="now"><td>厨房珐琅板</td><td>≈¥11,994（新增）</td><td><b>预算略超 · 待确认</b></td></tr>
       </table>
-      <div class="say" style="margin-top:8px">预算口径（9/22 Excel）：总 <b>¥988,900</b>｜已付 <b>¥646,900</b>｜待付 <b>¥342,000</b>。不锈钢柜谈定 <b>¥7,000</b>（省 ¥3,000）。⚠️ 珐琅板等 9/28 后新增项<b>不在 98.89 万内</b> → 从备用金 ¥35,000 出，建议做一次超支盘点。</div>
+      <div class="say" style="margin-top:8px">预算口径（<b>10/12 Excel + 补录</b>）：总 <b>¥996,700</b>｜已付 <b>¥681,000</b>｜待付 <b>¥315,700</b>。大额待付：<b>契税 ¥112,500 ＋ 软装 ¥57,500 ＋ 家电 ¥55,000</b>。已补录：<b>岩板 ¥8,000（已付）</b> · <b>美缝+美容胶 ¥3,500（未付）</b>。⚠️ 珐琅板报价 ≈¥11,994（预算列 ¥10,000）。</div>
     </div>
 
     <h2 class="sec">❓ 待皇上确认</h2>
@@ -383,7 +389,7 @@
     <button class="tb" id="btnReset">↺ 清空打勾</button>
   </div>
   <div class="hint" id="storeHint">改动会自动保存：连了云端就同步到仓库，没连就只存本机浏览器。</div>
-  <div class="say">✅ 已同步 <b>待办 V23（9/28）口径</b>：餐椅/床头柜/斗柜 → 10 月；新增 珐琅板 · 美缝 · 踢脚线 · 补漆 · 卫浴五金 · 生活用品；窗帘 → 11 月（挂前水洗）；餐桌已定 → 移出采购。</div>
+  <div class="say">✅ 已同步 <b>待办 V29（10/12）+ 预算表 10/12</b>：已定/已付项移出采购（主次卧床 / 床垫 / 岩板 / 餐桌 / 不锈钢门套 / 台面 / 踢脚线）；新增 <b>美缝+美容胶 ¥3,500 · 珐琅板 ¥10,000 · 洞洞板 ¥10,000</b>；<b>电脑 ¥30,000 已从预算删除</b>；金额栏 = 预算表口径。</div>
 
   <div id="app"></div>
 
@@ -392,13 +398,17 @@
     <div class="money">已买/已定、只差尾款或等安装的，不是新买的东西——去《装修待办》跟。
       <table>
         <tr><td>全屋智能（华为鸿蒙智家）尾款</td><td style="text-align:right"><b>¥25,000</b></td></tr>
-        <tr><td>厨房不锈钢台面尾款（9/15 已装 ✅）</td><td style="text-align:right"><b>¥4,300</b></td></tr>
-        <tr><td>阳台柜 + 吊顶（已完工 ✅）</td><td style="text-align:right"><b>¥1,800</b></td></tr>
-        <tr><td>餐桌（<b>已定</b>，国庆左右安装）</td><td style="text-align:right">已付款</td></tr>
-        <tr><td>岩板（已定并付款，国庆后安装）</td><td style="text-align:right">已付款</td></tr>
+        <tr><td>客厅不锈钢柜尾款（谈定 ¥7,000，已付 ¥6,000 · 10/20 完成待装）</td><td style="text-align:right"><b>¥1,000</b></td></tr>
+        <tr><td>床垫尾款（总 ¥21,000，已付 ¥18,000）</td><td style="text-align:right"><b>¥3,000</b></td></tr>
+        <tr><td>厨房不锈钢台面（已付清 ✅ 9/15 已装）</td><td style="text-align:right">¥9,300 已付</td></tr>
+        <tr><td>不锈钢门套（已付清 ✅ 10/12 验收）</td><td style="text-align:right">¥1,300 已付</td></tr>
+        <tr><td>阳台柜 + 吊顶 + 塑木（已付清 ✅ 完工）</td><td style="text-align:right">¥18,800 已付</td></tr>
+        <tr><td>岩板（岛台台面，<b>已全额付清</b> ¥8,000，国庆后安装）</td><td style="text-align:right">已付款</td></tr>
+        <tr><td>餐桌（<b>已定</b>，已付款）</td><td style="text-align:right">已付款</td></tr>
+        <tr><td>800 库置物架（已付 ¥1,500，货到待装）· 怪物拉篮 ¥2,000（已付）</td><td style="text-align:right">已付款</td></tr>
         <tr><td>大件电器（冰箱/洗烘/蒸烤箱/直饮机，已购）</td><td style="text-align:right">11月底–12月中安装</td></tr>
       </table>
-      <div style="margin-top:6px;color:#6b7280">※ 博洛尼 ¥350,000 已付清；不锈钢柜 ¥10,000 尚未下单，已计入第1批。</div>
+      <div style="margin-top:6px;color:#6b7280">※ 博洛尼 ¥350,000 已付清；<b>踢脚线 10/12 已完成</b>（预算表未单列，含在硬装 ¥50,000 内）。</div>
     </div>
   </div>
 
@@ -414,13 +424,31 @@
 
   <div class="view" id="v-budget">
     <div class="bhero">
-      <div class="bkpi"><div class="k">总预算</div><div class="v">¥988,900</div></div>
-      <div class="bkpi p"><div class="k">已付</div><div class="v">¥646,900</div></div>
-      <div class="bkpi d"><div class="k">待付</div><div class="v">¥342,000</div></div>
+      <div class="bkpi"><div class="k">总预算</div><div class="v">¥996,700</div></div>
+      <div class="bkpi p"><div class="k">已付</div><div class="v">¥681,000</div></div>
+      <div class="bkpi d"><div class="k">待付</div><div class="v">¥315,700</div></div>
     </div>
     <div class="barwrap">
-      <div class="t"><span>已付进度 65.4%</span><span>还剩 34.6%</span></div>
+      <div class="t"><span>已付进度 68.3%</span><span>还剩 31.7%</span></div>
       <div class="track"><i></i></div>
+    </div>
+
+    <h2 class="sec">🔴 大额待支出项（单笔 ≥ ¥10,000）</h2>
+    <div class="tcard">
+      <table class="t bigl">
+        <tr><th style="width:200px">项目</th><th style="width:100px" class="r">金额</th><th>说明 / 时间</th></tr>
+        <tr class="now"><td><b>契税（1.5%）</b></td><td class="amt">¥112,500</td><td>办证前必缴 —— 收房固定费用</td></tr>
+        <tr><td>备用金（机动）</td><td class="amt">¥35,000</td><td>9/28 后新增项靠它兜底</td></tr>
+        <tr><td>全屋智能尾款（华为）</td><td class="amt">¥25,000</td><td>已验收 ✅ 可结</td></tr>
+        <tr><td>兴趣件（音响/咖啡机/投影）</td><td class="amt">¥18,000</td><td>非必需，双11 按需</td></tr>
+        <tr><td>儿童家具</td><td class="amt">¥15,000</td><td>实木成品 · 年底前进场（甲醛源，宜早）</td></tr>
+        <tr><td>电视（海信）</td><td class="amt">¥15,000</td><td>双11</td></tr>
+        <tr><td>书房家具</td><td class="amt">¥10,000</td><td>升降桌 + 工学椅</td></tr>
+        <tr><td>灯具 &amp; 饰品</td><td class="amt">¥10,000</td><td>保洁后、家具进场后</td></tr>
+        <tr><td>厨房珐琅板</td><td class="amt">¥10,000</td><td>⚠️ 实际报价 ≈¥11,994 略超</td></tr>
+        <tr><td>不锈钢洞洞板</td><td class="amt">¥10,000</td><td>延后 11 月</td></tr>
+        <tr class="sum"><td><b>以上合计</b></td><td class="amt">¥260,500</td><td><b>占待付 83%</b> —— 其余 17% 是零散小项</td></tr>
+      </table>
     </div>
 
     <h2 class="sec">📊 五大项进度</h2>
@@ -431,95 +459,119 @@
         <div class="bnote">契税 ¥112,500 占绝对大头（办证前必须付）</div>
       </div>
       <div class="bbig">
-        <div class="hd"><span class="nm">全屋定制</span><span class="pc">93%</span></div>
-        <div class="track"><i style="width:92.6%"></i></div>
-        <div class="l1"><span>总 ¥520,900</span><span class="ok">已付 ¥482,100</span><span class="du">待付 ¥38,800</span></div>
-        <div class="bnote">只剩 ¥38,800 尾款：全屋智能 ¥25,000 + 不锈钢柜/台面 ¥15,000</div>
+        <div class="hd"><span class="nm">全屋定制</span><span class="pc">92%</span></div>
+        <div class="track"><i style="width:91.6%"></i></div>
+        <div class="l1"><span>总 ¥545,200</span><span class="ok">已付 ¥499,200</span><span class="du">待付 ¥46,000</span></div>
+        <div class="bnote">待付：全屋智能尾款 ¥25,000 + 珐琅板 ¥10,000 + 洞洞板 ¥10,000 + 不锈钢柜尾款 ¥1,000</div>
       </div>
       <div class="bbig">
-        <div class="hd"><span class="nm">软装</span><span class="pc">55%</span></div>
-        <div class="track"><i style="width:55.4%"></i></div>
-        <div class="l1"><span>总 ¥144,500</span><span class="ok">已付 ¥80,000</span><span class="du">待付 ¥64,500</span></div>
-        <div class="bnote">待付 ¥64,500：儿童/书房家具、床垫尾款、窗帘尾款、灯具饰品</div>
+        <div class="hd"><span class="nm">软装</span><span class="pc">63%</span></div>
+        <div class="track"><i style="width:62.8%"></i></div>
+        <div class="l1"><span>总 ¥154,500</span><span class="ok">已付 ¥97,000</span><span class="du">待付 ¥57,500</span></div>
+        <div class="bnote">待付：儿童/书房家具 ¥25,000 · 卧室家具 ¥13,000 · 灯具饰品 ¥10,000 · 客厅家具 ¥8,000 · 窗帘尾款 ¥1,500</div>
       </div>
       <div class="bbig">
-        <div class="hd"><span class="nm">家电</span><span class="pc">41%</span></div>
-        <div class="track"><i style="width:41.4%"></i></div>
-        <div class="l1"><span>总 ¥145,000</span><span class="ok">已付 ¥60,000</span><span class="du">待付 ¥85,000</span></div>
-        <div class="bnote">待付 ¥85,000：双11 主战场（电视/厨电/小家电/兴趣件）</div>
+        <div class="hd"><span class="nm">家电</span><span class="pc">52%</span></div>
+        <div class="track"><i style="width:52.2%"></i></div>
+        <div class="l1"><span>总 ¥115,000</span><span class="ok">已付 ¥60,000</span><span class="du">待付 ¥55,000</span></div>
+        <div class="bnote">待付：双11 主战场（电视/厨电/小家电/兴趣件）；较 9/22 版<b>删掉「电脑 ¥30,000」</b> → 大项预算 −3 万</div>
       </div>
       <div class="bbig">
         <div class="hd"><span class="nm">其他</span><span class="pc">2%</span></div>
         <div class="track"><i style="width:1.9%"></i></div>
-        <div class="l1"><span>总 ¥42,000</span><span class="ok">已付 ¥800</span><span class="du">待付 ¥41,200</span></div>
-        <div class="bnote">待付 ¥41,200：主要是 ¥35,000 备用金 + 搬家/保洁/除醛</div>
+        <div class="l1"><span>总 ¥45,500</span><span class="ok">已付 ¥800</span><span class="du">待付 ¥44,700</span></div>
+        <div class="bnote">待付：备用金 ¥35,000 + 搬家/保洁/除醛 ¥6,200</div>
       </div>
 
-    <h2 class="sec">📋 分项明细</h2>
+    <h2 class="sec">📋 分项明细 <span style="font-size:12.5px;font-weight:500;color:var(--muted)">（橙色 = 大额待付）</span></h2>
       <div class="bdbox">
         <h3>收房固定费用 <span class="sb">总 ¥136,500 · 已付 ¥24,000 · 待付 ¥112,500</span></h3>
         <table class="bd"><thead><tr><th>类别</th><th>项目</th><th class="r">预算</th><th class="r">已付</th><th class="r">待付</th></tr></thead>
         <tbody>
-        <tr><td class="c">税费及行政费用</td><td>契税（1.5%）</td><td class="r">¥112,500</td><td class="r">—</td><td class="r">¥112,500</td></tr>
+        <tr class="hl"><td class="c">税费及行政费用</td><td>契税（1.5%）</td><td class="r">¥112,500</td><td class="r">—</td><td class="r">¥112,500</td></tr>
         <tr class="fin"><td class="c"></td><td>维修基金</td><td class="r">¥12,000</td><td class="r">¥12,000</td><td class="r">✅</td></tr>
         <tr class="fin"><td class="c">物业及公共费用</td><td>物业费（预缴12个月）</td><td class="r">¥12,000</td><td class="r">¥12,000</td><td class="r">✅</td></tr>
         </tbody></table>
         <div class="bnote">印花税 / 房产证办理 / 水电燃气预存：暂未列金额</div>
       </div>
       <div class="bdbox">
-        <h3>全屋定制 <span class="sb">总 ¥520,900 · 已付 ¥482,100 · 待付 ¥38,800</span></h3>
+        <h3>全屋定制 <span class="sb">总 ¥545,200 · 已付 ¥499,200 · 待付 ¥46,000</span></h3>
         <table class="bd"><thead><tr><th>类别</th><th>项目</th><th class="r">预算</th><th class="r">已付</th><th class="r">待付</th></tr></thead>
         <tbody>
         <tr class="fin"><td class="c">硬装补充和调整</td><td>墙体拆改等</td><td class="r">¥50,000</td><td class="r">¥50,000</td><td class="r">✅</td></tr>
         <tr class="fin"><td class="c">全屋定制柜</td><td>设计费</td><td class="r">¥25,000</td><td class="r">¥25,000</td><td class="r">✅</td></tr>
         <tr class="fin"><td class="c"></td><td>定制柜（博洛尼，≈50㎡投影）</td><td class="r">¥350,000</td><td class="r">¥350,000</td><td class="r">✅</td></tr>
         <tr class="fin"><td class="c">电梯厅</td><td>鞋柜（索菲亚）</td><td class="r">¥5,800</td><td class="r">¥5,800</td><td class="r">✅</td></tr>
-        <tr><td class="c">阳台</td><td>阳台柜 / 吊顶 / 塑木地板</td><td class="r">¥18,800</td><td class="r">¥17,000</td><td class="r">¥1,800</td></tr>
-        <tr><td class="c">全屋智能</td><td>开关·窗帘·AC+AP·智能灯（华为）</td><td class="r">¥50,000</td><td class="r">¥25,000</td><td class="r">¥25,000</td></tr>
-        <tr><td class="c">其他</td><td>不锈钢柜子</td><td class="r">¥12,000</td><td class="r">—</td><td class="r">¥12,000</td></tr>
+        <tr class="fin"><td class="c">阳台</td><td>阳台柜 / 吊顶 / 塑木地板</td><td class="r">¥18,800</td><td class="r">¥18,800</td><td class="r">✅</td></tr>
+        <tr class="hl"><td class="c">全屋智能</td><td>开关·窗帘·AC+AP·智能灯（华为）</td><td class="r">¥50,000</td><td class="r">¥25,000</td><td class="r">¥25,000</td></tr>
+        <tr><td class="c">其他</td><td>不锈钢柜子（谈定 ¥7,000）</td><td class="r">¥7,000</td><td class="r">¥6,000</td><td class="r">¥1,000</td></tr>
+        <tr class="fin"><td class="c"></td><td>厨房不锈钢门套</td><td class="r">¥1,300</td><td class="r">¥1,300</td><td class="r">✅</td></tr>
+        <tr class="hl"><td class="c"></td><td>厨房珐琅板</td><td class="r">¥10,000</td><td class="r">—</td><td class="r">¥10,000</td></tr>
+        <tr class="hl"><td class="c"></td><td>不锈钢洞洞板</td><td class="r">¥10,000</td><td class="r">—</td><td class="r">¥10,000</td></tr>
         <tr class="fin"><td class="c"></td><td>厨房不锈钢台面</td><td class="r">¥9,300</td><td class="r">¥9,300</td><td class="r">✅</td></tr>
+        <tr class="fin"><td class="c"></td><td>岩板（岛台台面）</td><td class="r">¥8,000</td><td class="r">¥8,000</td><td class="r">✅</td></tr>
         </tbody></table>
-        <div class="bnote">✅ 博洛尼 ¥350,000 已付清，无尾款筹码</div>
+        <div class="bnote">✅ 博洛尼 ¥350,000 已付清，无尾款筹码 ｜ 岩板 ¥8,000 已全额付清 ｜ ⚠️ 珐琅板预算 ¥10,000，实际报价 ≈¥11,994</div>
       </div>
       <div class="bdbox">
-        <h3>软装 <span class="sb">总 ¥144,500 · 已付 ¥80,000 · 待付 ¥64,500</span></h3>
+        <h3>软装 <span class="sb">总 ¥154,500 · 已付 ¥97,000 · 待付 ¥57,500</span></h3>
         <table class="bd"><thead><tr><th>类别</th><th>项目</th><th class="r">预算</th><th class="r">已付</th><th class="r">待付</th></tr></thead>
         <tbody>
-        <tr><td class="c">客厅家具</td><td>大沙发 / 单人沙发 / 茶几 / 餐桌 / 椅子 / 地毯 / 阳台茶桌椅</td><td class="r">¥45,000</td><td class="r">¥35,000</td><td class="r">¥10,000</td></tr>
-        <tr><td class="c">卧室家具</td><td>主卧床 / 次卧床 / 床垫 / 成品斗柜 / 地毯</td><td class="r">¥41,000</td><td class="r">¥28,000</td><td class="r">¥13,000</td></tr>
-        <tr><td class="c">窗帘</td><td>客厅+卧室+其他+墙布</td><td class="r">¥15,000</td><td class="r">¥13,500</td><td class="r">¥1,500</td></tr>
-        <tr><td class="c">儿童家具</td><td>实木成品</td><td class="r">¥15,000</td><td class="r">—</td><td class="r">¥15,000</td></tr>
-        <tr><td class="c">书房家具</td><td>升降桌+工学椅</td><td class="r">¥10,000</td><td class="r">—</td><td class="r">¥10,000</td></tr>
-        <tr><td class="c">灯具 & 饰品</td><td>灯具 / 饰品</td><td class="r">¥10,000</td><td class="r">—</td><td class="r">¥10,000</td></tr>
+        <tr><td class="c">客厅家具</td><td>大沙发✅ / 单人沙发 / 餐椅 / 餐桌✅ / 茶几 / 地毯</td><td class="r">¥50,000</td><td class="r">¥42,000</td><td class="r">¥8,000</td></tr>
+        <tr class="hl"><td class="c">卧室家具</td><td>主卧床✅ / 次卧床✅ / 床垫(尾3k) / 成品斗柜</td><td class="r">¥41,000</td><td class="r">¥28,000</td><td class="r">¥13,000</td></tr>
+        <tr><td class="c">窗帘 / 墙布</td><td>客厅窗帘（尾1.5k） / 墙布✅</td><td class="r">¥25,000</td><td class="r">¥23,500</td><td class="r">¥1,500</td></tr>
+        <tr class="hl"><td class="c">儿童家具</td><td>实木成品</td><td class="r">¥15,000</td><td class="r">—</td><td class="r">¥15,000</td></tr>
+        <tr class="hl"><td class="c">书房家具</td><td>升降桌 + 工学椅</td><td class="r">¥10,000</td><td class="r">—</td><td class="r">¥10,000</td></tr>
+        <tr class="hl"><td class="c">灯具 &amp; 饰品</td><td>灯具 / 饰品</td><td class="r">¥10,000</td><td class="r">—</td><td class="r">¥10,000</td></tr>
         <tr class="fin"><td class="c">杂项</td><td>怪物拉篮 / 800库置物架</td><td class="r">¥3,500</td><td class="r">¥3,500</td><td class="r">✅</td></tr>
         </tbody></table>
-        
+        <div class="bnote">✅ 800库置物架 ¥1,500 已付（货到待安装）</div>
       </div>
       <div class="bdbox">
-        <h3>家电 <span class="sb">总 ¥145,000 · 已付 ¥60,000 · 待付 ¥85,000</span></h3>
+        <h3>家电 <span class="sb">总 ¥115,000 · 已付 ¥60,000 · 待付 ¥55,000</span></h3>
         <table class="bd"><thead><tr><th>类别</th><th>项目</th><th class="r">预算</th><th class="r">已付</th><th class="r">待付</th></tr></thead>
         <tbody>
-        <tr><td class="c">大家电</td><td>冰箱 25,000 · 洗烘 15,000 · 电视 15,000</td><td class="r">¥55,000</td><td class="r">¥40,000</td><td class="r">¥15,000</td></tr>
-        <tr><td class="c">厨房电器</td><td>蒸烤箱 / 微波炉 / 燃气灶 / 抽烟机</td><td class="r">¥23,000</td><td class="r">¥10,000</td><td class="r">¥13,000</td></tr>
-        <tr><td class="c">小家电</td><td>电饭煲 / 吸尘器 / 直饮机 / 扫地机器人</td><td class="r">¥19,000</td><td class="r">¥10,000</td><td class="r">¥9,000</td></tr>
-        <tr><td class="c">兴趣（非必需）</td><td>音响 / 咖啡机 / 投影仪 / 电脑</td><td class="r">¥48,000</td><td class="r">—</td><td class="r">¥48,000</td></tr>
+        <tr class="hl"><td class="c">大家电</td><td>冰箱✅ / 洗烘✅ / 电视（待买）</td><td class="r">¥55,000</td><td class="r">¥40,000</td><td class="r">¥15,000</td></tr>
+        <tr><td class="c">厨房电器</td><td>蒸烤箱✅ / 微波炉 / 燃气灶 / 抽烟机</td><td class="r">¥23,000</td><td class="r">¥10,000</td><td class="r">¥13,000</td></tr>
+        <tr><td class="c">小家电</td><td>电饭煲 / 吸尘器 / 直饮机✅ / 扫地机器人</td><td class="r">¥19,000</td><td class="r">¥10,000</td><td class="r">¥9,000</td></tr>
+        <tr class="hl"><td class="c">兴趣（非必需）</td><td>音响 / 咖啡机 / 投影仪</td><td class="r">¥18,000</td><td class="r">—</td><td class="r">¥18,000</td></tr>
         </tbody></table>
-        <div class="bnote">待付大头，建议双11 一次配齐</div>
+        <div class="bnote">待付大头，建议双11 一次配齐（下单约「延迟发货 + 预约安装」）</div>
       </div>
       <div class="bdbox">
-        <h3>其他 <span class="sb">总 ¥42,000 · 已付 ¥800 · 待付 ¥41,200</span></h3>
+        <h3>其他 <span class="sb">总 ¥45,500 · 已付 ¥800 · 待付 ¥44,700</span></h3>
         <table class="bd"><thead><tr><th>类别</th><th>项目</th><th class="r">预算</th><th class="r">已付</th><th class="r">待付</th></tr></thead>
         <tbody>
-        <tr><td class="c">其他费用</td><td>搬家费用 / 开荒保洁 / 甲醛检测治理</td><td class="r">¥7,000</td><td class="r">¥800</td><td class="r">¥6,200</td></tr>
-        <tr><td class="c">备用金</td><td>机动</td><td class="r">¥35,000</td><td class="r">—</td><td class="r">¥35,000</td></tr>
+        <tr class="hl"><td class="c">备用金</td><td>机动（9/28 后新增项兜底）</td><td class="r">¥35,000</td><td class="r">—</td><td class="r">¥35,000</td></tr>
+        <tr><td class="c">其他费用</td><td>搬家 ¥3,000 / 开荒保洁 ¥2,000 / 甲醛检测治理 ¥2,000</td><td class="r">¥7,000</td><td class="r">¥800</td><td class="r">¥6,200</td></tr>
+        <tr><td class="c">美缝</td><td>美缝 + 美容胶（客厅地面 + 3 个卫生间）</td><td class="r">¥3,500</td><td class="r">—</td><td class="r">¥3,500</td></tr>
         </tbody></table>
-        
+        <div class="bnote">✅ 美缝 + 美容胶 <b>¥3,500</b> 已补列（未付）｜ 备用金 ¥35,000 为其余机动</div>
       </div>
 
-    <div class="bdbox" style="background:#fbfbfd"><div class="bnote">数据源：《装修预算表》<b>2026-09-22 皇上更新版</b>（6 sheets：汇总/收房/全屋定制/软装/家电/杂项）。待付大头并非装修本体：<b>契税 ¥112,500 + 家电 ¥85,000 + 软装 ¥64,500</b>。</div></div>
+    <h2 class="sec">🔄 预算 ↔ 待办 对账</h2>
+    <div class="tcard">
+      <table class="t">
+        <tr><th style="width:200px">项</th><th>结论</th></tr>
+        <tr><td>不锈钢柜 ¥7,000</td><td>✅ 对得上（已付 ¥6,000，待付 ¥1,000）</td></tr>
+        <tr><td>不锈钢门套 ¥1,300</td><td>✅ 对得上（已付清，已验收）</td></tr>
+        <tr><td>厨房不锈钢台面 ¥9,300</td><td>✅ 对得上（已付清）</td></tr>
+        <tr><td>全屋智能尾款 ¥25,000</td><td>✅ 对得上（已验收可结）</td></tr>
+        <tr><td>不锈钢洞洞板 ¥10,000</td><td>✅ 对得上（待付，延后 11 月）</td></tr>
+        <tr><td>契税 ¥112,500</td><td>✅ 对得上（收房固定费用）</td></tr>
+        <tr><td>阳台柜/吊顶/塑木 ¥18,800</td><td>✅ 已全额付清（此前剩余 ¥1,800 已结）</td></tr>
+        <tr><td>美缝 + 美容胶</td><td>✅ 已补列 <b>¥3,500</b>（未付）</td></tr>
+        <tr><td>岩板（岛台台面）</td><td>✅ 已补列 <b>¥8,000</b>（已全额付清）</td></tr>
+        <tr class="now"><td>厨房珐琅板</td><td>⚠️ 预算列 <b>¥10,000</b>，实际报价 <b>≈¥11,994</b> → 缺口约 <b>¥2,000</b>（按 1 万预算控制）</td></tr>
+        <tr><td>家电口径变化</td><td>ℹ️ 10/12 版<b>删掉「电脑 ¥30,000」</b> → 家电 145,000 → 115,000</td></tr>
+        <tr><td>总预算变化</td><td>ℹ️ 9/22 ¥988,900 → 10/12 <b>¥996,700（+7,800）</b>：补录 岩板 8,000 + 美缝 3,500 · 新增珐琅板/洞洞板/门套 +21,300 · 不锈钢柜 −5,000 · 家电 −30,000 · 软装 +10,000</td></tr>
+      </table>
+    </div>
+
+    <div class="bdbox" style="background:#fbfbfd"><div class="bnote">数据源：《装修预算表》<b>2026-10-12 版</b>（6 sheets：汇总/收房/全屋定制/软装/家电/杂项）。待付大头并非装修本体：<b>契税 ¥112,500 ＋ 软装 ¥57,500 ＋ 家电 ¥55,000</b>（占待付 71%）。</div></div>
   </div>
 
-  <footer>太子 整理 · v12 · 待办 V29(10/12) + 采购清单 + 预算总览(9/22) · 状态自动同步到仓库</footer>
+  <footer>太子 整理 · v15 · 待办 V29(10/12) + 采购清单(V29+预算10/12) + 预算总览(10/12 补录) · 状态自动同步到仓库</footer>
 </div>
 
 <div class="mask" id="cfgMask">
@@ -562,68 +614,60 @@
 <script>
 /* ============ 1. 基础数据（我维护的部分，改这里 = 以后更新清单内容） ============ */
 const BATCHES = [
-  {id:'b0', idx:'0', title:'第0批 · 本周（9/28–10/1）', time:'本周',
-   note:'<b>唯一的甲醛源批次</b>：床垫/实木家具生产 2–4 周 + 要散味满 3 个月，晚一周就少一周。'},
-  {id:'b1', idx:'1', title:'第1批 · 10 月（国庆后）', time:'国庆后 – 10月底',
-   note:'V23 将 <b>餐椅/床头柜/斗柜提前到 10 月</b>，新增 <b>珐琅板 · 美缝(未遮挡区) · 踢脚线(未遮挡区) · 卫浴五金</b>。需现场量尺的先量后定。'},
-  {id:'b2', idx:'2', title:'第2批 · 11 月（双11）', time:'10/15 预售起 → 11月发货',
-   note:'价格最优窗口。⚠️ 下单全选"延迟发货 / 预约安装"。V23 新增 <b>窗帘（挂前水洗） · 美缝/踢脚线（遮挡区）</b>。'},
+  {id:'b0', idx:'0', title:'第0批 · 立即下单（甲醛源 + 需量尺）', time:'现在 – 10月',
+   note:'新家具 = <b>甲醛源</b>，越早下单/进场，通风期越充分。价格已按预算表 10/12 口径。'},
+  {id:'b1', idx:'1', title:'第1批 · 10 月剩余（量尺 / 待确认）', time:'10月',
+   note:'以现场量尺为前提；<b>珐琅板</b>报价超预算待谈，<b>洞洞板</b>延后 11 月。'},
+  {id:'b2', idx:'2', title:'第2批 · 11 月（双11 + 美缝）', time:'10/20 预售 → 11月',
+   note:'价格最优窗口。⚠️ 下单全选「延迟发货 / 预约安装」。<b>美缝 + 美容胶一次做完</b>（11 月中下旬）。'},
   {id:'b3', idx:'3', title:'第3批 · 11月底–12月初（收尾）', time:'打孔安装全部结束后',
-   note:'<b>补漆</b>：所有打孔安装结束后统一补，避免补完又被破坏。'},
+   note:'<b>补漆</b>：所有打孔安装结束后统一补。（两处小补漆已交博洛尼，不在此列）'},
   {id:'b4', idx:'4', title:'第4批 · 12月–1月（入住前）', time:'CMA 后 → 入住前',
-   note:'生活用品进场：床品/厨具/垃圾桶收纳/绿植等。'},
+   note:'生活用品进场。<b>标「预算外」的由备用金 ¥35,000 兜底</b>。'},
   {id:'b5', idx:'5', title:'第5批 · 兴趣 / 未定', time:'入住后',
-   note:'非必需不急，按实际体验再定。'}
+   note:'非必需不急。⚠️ <b>电脑 ¥30,000 已在 10/12 预算中删除</b>，如要买属超预算。'}
 ];
 const ITEMS = [
-  {id:'p01', b:'b0', n:'次卧床垫', nt:'次卧 · 甲醛源，越早越好', p:null, tg:'t-must', tt:'本周必须'},
-  {id:'p02', b:'b0', n:'儿童床垫', nt:'儿童房 · 甲醛源，越早越好', p:null, tg:'t-must', tt:'本周必须'},
-  {id:'p03', b:'b0', n:'次卧床', nt:'已定款，选色后下单', p:3000, tg:'t-must', tt:'本周'},
-  {id:'p04', b:'b0', n:'儿童房实木成品家具', nt:'甲醛源 · V23 列 10 月，建议提前下单散味', p:15000, tg:'t-must', tt:'本周'},
-  {id:'p05', b:'b1', n:'餐椅 ×6', nt:'与餐桌同批定，量岛台 ↔ 餐边柜净空', p:3000, tg:'t-measure', tt:'10月·提前'},
-  {id:'p06', b:'b1', n:'床头柜 ×2（主卧 + 次卧）', nt:'按床边余量定尺寸', p:null, tg:'t-measure', tt:'10月·提前'},
-  {id:'p07', b:'b1', n:'成品斗柜', nt:'主卧', p:10000, tg:'t-measure', tt:'10月·提前'},
-  {id:'p08', b:'b1', n:'厨房墙面珐琅板', nt:'量尺定制 + 插座/烟机开孔 + 上墙', p:null, tg:'t-measure', tt:'新增·10月'},
-  {id:'p09', b:'b1', n:'浴室台盆 + 镜柜', nt:'主卫 · 选型后对水电点位', p:null, tg:'t-measure', tt:'10月'},
-  {id:'p10', b:'b1', n:'卫浴五金（毛巾架/置物架/挂钩）', nt:'浴室 · V23 新增', p:null, tg:'t-measure', tt:'新增·10月'},
-  {id:'p11', b:'b1', n:'不锈钢柜', nt:'定稿后下单，10月底装（无甲醛不卡通风）', p:10000, tg:'t-measure', tt:'最急·10月'},
-  {id:'p12', b:'b1', n:'不锈钢门套', nt:'开放厨房 · 许工，复尺 → 生产 → 10月装', p:1300, tg:'t-measure', tt:'10月'},
-  {id:'p13', b:'b1', n:'不锈钢洞洞板', nt:'电梯厅 · 待定做', p:null, tg:'t-measure', tt:'10月'},
-  {id:'p14', b:'b1', n:'全屋美缝（未遮挡区）', nt:'厨房/卫生间/阳台/玄关/走廊 · V23 新增', p:null, tg:'t-measure', tt:'新增·10月'},
-  {id:'p15', b:'b1', n:'踢脚线（未遮挡区）', nt:'与被家具遮挡区分开做', p:null, tg:'t-measure', tt:'新增·10月'},
-  {id:'p16', b:'b1', n:'书房家具（升降桌 + 工学椅）', nt:'合计约 1 万', p:10000, tg:'t-measure', tt:'10月'},
-  {id:'p17', b:'b1', n:'轨道插座 ×2', nt:'V23 10月', p:null, tg:'t-measure', tt:'10月'},
-  {id:'p18', b:'b2', n:'电视 海信 85Q8S', nt:'客厅 · 壁挂等墙布完工后再做', p:15000, tg:'t-1111', tt:'双11'},
-  {id:'p19', b:'b2', n:'油烟机 + 灶具', nt:'方太灶 + 霍尼韦尔烟机', p:12000, tg:'t-1111', tt:'双11'},
-  {id:'p20', b:'b2', n:'扫地机器人（大疆）', nt:'等家具定型再选型号', p:5000, tg:'t-1111', tt:'双11'},
-  {id:'p21', b:'b2', n:'戴森吸尘器', nt:'清洁类', p:3000, tg:'t-1111', tt:'双11'},
-  {id:'p22', b:'b2', n:'微波炉', nt:'小家电', p:1000, tg:'t-1111', tt:'双11'},
-  {id:'p23', b:'b2', n:'电饭煲', nt:'小家电', p:1000, tg:'t-1111', tt:'双11'},
-  {id:'p24', b:'b2', n:'单人沙发', nt:'客厅', p:5000, tg:'t-1111', tt:'双11'},
-  {id:'p25', b:'b2', n:'茶几', nt:'量沙发 ↔ 电视墙间距', p:null, tg:'t-1111', tt:'双11'},
-  {id:'p26', b:'b2', n:'灯具（餐厅 / 落地）', nt:'主灯已在智能包内', p:10000, tg:'t-1111', tt:'双11'},
-  {id:'p27', b:'b2', n:'窗帘（挂前先水洗）', nt:'客厅 + 卧室 + 墙布 · V23 改 11 月', p:15000, tg:'t-1111', tt:'新增·11月'},
-  {id:'p28', b:'b2', n:'全屋美缝（家具遮挡区）', nt:'需挪沙发/床，施工后 24h 不能踩', p:null, tg:'t-1111', tt:'新增·11月'},
-  {id:'p29', b:'b2', n:'踢脚线（家具遮挡区）', nt:'与美缝同批做', p:null, tg:'t-1111', tt:'新增·11月'},
-  {id:'p30', b:'b2', n:'地毯', nt:'按沙发 + 茶几落位定尺寸', p:null, tg:'t-1111', tt:'11–12月'},
-  {id:'p31', b:'b2', n:'挂画 / 摆件 / 饰品', nt:'等家具落位、风格定', p:null, tg:'t-1111', tt:'11–12月'},
-  {id:'p32', b:'b3', n:'补漆（全屋统一补）', nt:'灯具/挂画/窗帘/家电等打孔安装全部结束后', p:null, tg:'t-end', tt:'新增·11月底'},
-  {id:'p33', b:'b4', n:'床品被褥（主/次/儿童）', nt:'入住前', p:null, tg:'t-end', tt:'12月–1月'},
-  {id:'p34', b:'b4', n:'厨具餐具', nt:'新家配新（预算外）', p:3500, tg:'t-end', tt:'12月–1月'},
-  {id:'p35', b:'b4', n:'垃圾桶 + 收纳小件', nt:'盒/篮/挂钩（预算外）', p:1500, tg:'t-end', tt:'12月–1月'},
-  {id:'p36', b:'b4', n:'绿植（含盆器）', nt:'V23 新增 · 入住前', p:null, tg:'t-end', tt:'新增·12月–1月'},
-  {id:'p37', b:'b4', n:'空气净化器', nt:'有小孩，冬季关窗兜底（预算外）', p:3000, tg:'t-end', tt:'12月'},
-  {id:'p38', b:'b4', n:'加湿器', nt:'冬季空调房（预算外）', p:750, tg:'t-end', tt:'12月'},
-  {id:'p39', b:'b4', n:'除湿机', nt:'杭州梅雨 / 回南天（预算外）', p:1500, tg:'t-end', tt:'明年春前'},
-  {id:'p40', b:'b4', n:'甲醛检测仪（自测）', nt:'辅助 CMA，前后都能看（预算外）', p:550, tg:'t-end', tt:'CMA前'},
-  {id:'p41', b:'b4', n:'门垫 / 地垫', nt:'玄关 + 厨卫（预算外）', p:500, tg:'t-end', tt:'11月'},
-  {id:'p42', b:'b4', n:'阳台茶桌椅', nt:'休闲区', p:null, tg:'t-end', tt:'11–12月'},
-  {id:'p43', b:'b4', n:'晾衣架（阳台）', nt:'视洗烘配置（预算外）', p:1000, tg:'t-end', tt:'11月'},
-  {id:'p44', b:'b5', n:'B&O 音响', nt:'兴趣，非必需', p:10000, tg:'t-gray', tt:'未定'},
-  {id:'p45', b:'b5', n:'咖啡机', nt:'兴趣，非必需', p:2000, tg:'t-gray', tt:'未定'},
-  {id:'p46', b:'b5', n:'投影仪', nt:'兴趣，非必需', p:6000, tg:'t-gray', tt:'未定'},
-  {id:'p47', b:'b5', n:'电脑（配置B）', nt:'兴趣，非必需', p:30000, tg:'t-gray', tt:'未定'},
-  {id:'p48', b:'b5', n:'单人沙发床', nt:'慢挑', p:null, tg:'t-gray', tt:'未定'}
+  {id:'p04', b:'b0', n:'儿童房实木成品家具', nt:'甲醛源 · ¥15,000（预算内）· 越早越好', p:15000, tg:'t-must', tt:'立即'},
+  {id:'p05', b:'b0', n:'餐椅 ×6', nt:'与餐桌同批 · 量岛台 ↔ 餐边柜净空', p:3000, tg:'t-must', tt:'10月·尽早'},
+  {id:'p06', b:'b0', n:'床头柜 ×2（主卧 + 次卧）', nt:'按床边余量定尺寸 · 预算表未列', p:null, tg:'t-must', tt:'10月·尽早'},
+  {id:'p07', b:'b0', n:'成品斗柜', nt:'主卧 · ¥10,000（预算内）', p:10000, tg:'t-must', tt:'10月·尽早'},
+  {id:'p16', b:'b0', n:'书房家具（升降桌 + 工学椅）', nt:'¥10,000（预算内）', p:10000, tg:'t-must', tt:'10月·尽早'},
+  {id:'p08', b:'b1', n:'厨房墙面珐琅板', nt:'颜色 + 量尺已定 ✅ · 报价 ≈¥11,994 → 谈价 / 缩到灶台背板', p:10000, tg:'t-measure', tt:'10月·待确认'},
+  {id:'p13', b:'b1', n:'不锈钢洞洞板', nt:'电梯厅 / 厨房 · ¥10,000（预算内）· 延后', p:10000, tg:'t-measure', tt:'11月'},
+  {id:'p17', b:'b1', n:'轨道插座 ×2', nt:'预算表未列（预算外）', p:null, tg:'t-measure', tt:'10月'},
+  {id:'p09', b:'b1', n:'浴室台盆', nt:'主卫 · 镜柜「先不换」 · 预算表未列', p:null, tg:'t-measure', tt:'11月·待确认'},
+  {id:'p10', b:'b1', n:'卫浴五金（毛巾架 / 置物架 / 挂钩）', nt:'预算表未列（预算外）', p:null, tg:'t-measure', tt:'11月·待确认'},
+  {id:'p18', b:'b2', n:'电视 海信 85Q8S', nt:'客厅 · 壁挂等墙布完工后再做 · ¥15,000（预算内）', p:15000, tg:'t-1111', tt:'双11'},
+  {id:'p19', b:'b2', n:'油烟机 + 灶具', nt:'方太灶 ¥4,000 + 霍尼韦尔烟机 ¥8,000（预算内）', p:12000, tg:'t-1111', tt:'双11'},
+  {id:'p20', b:'b2', n:'扫地机器人（大疆）', nt:'等家具定型再选型号 · ¥5,000（预算内）', p:5000, tg:'t-1111', tt:'双11'},
+  {id:'p21', b:'b2', n:'戴森吸尘器', nt:'清洁类 · ¥3,000（预算内）', p:3000, tg:'t-1111', tt:'双11'},
+  {id:'p22', b:'b2', n:'微波炉', nt:'小家电 · ¥1,000（预算内）', p:1000, tg:'t-1111', tt:'双11'},
+  {id:'p23', b:'b2', n:'电饭煲', nt:'小家电 · ¥1,000（预算内）', p:1000, tg:'t-1111', tt:'双11'},
+  {id:'p24', b:'b2', n:'单人沙发', nt:'客厅 · ¥5,000（预算内）', p:5000, tg:'t-1111', tt:'双11'},
+  {id:'p25', b:'b2', n:'茶几', nt:'量沙发 ↔ 电视墙间距 · 预算表未列', p:null, tg:'t-1111', tt:'双11'},
+  {id:'p26', b:'b2', n:'灯具（餐厅 / 落地）', nt:'主灯已在智能包内 · ¥10,000（含饰品）', p:10000, tg:'t-1111', tt:'双11'},
+  {id:'p27', b:'b2', n:'窗帘（挂前先水洗）', nt:'客厅 + 卧室 · 预算窗帘/墙布共 ¥25,000', p:15000, tg:'t-1111', tt:'11月'},
+  {id:'p14', b:'b2', n:'全屋美缝 + 美容胶', nt:'3 个卫生间 + 客厅地面 · 一次做完 · 颜色已定 · ¥3,500', p:3500, tg:'t-1111', tt:'11月·中下旬'},
+  {id:'p30', b:'b2', n:'地毯', nt:'按沙发 + 茶几落位定尺寸 · 预算表未列', p:null, tg:'t-1111', tt:'11–12月'},
+  {id:'p31', b:'b2', n:'挂画 / 摆件 / 饰品', nt:'等家具落位 · 含在灯具饰品 ¥10,000 内', p:null, tg:'t-1111', tt:'11–12月'},
+  {id:'p32', b:'b3', n:'补漆（全屋统一补）', nt:'灯具/挂画/窗帘/家电等打孔安装全部结束后 · 预算表未列', p:null, tg:'t-end', tt:'11月底'},
+  {id:'p33', b:'b4', n:'床品被褥（主/次/儿童）', nt:'入住前 · 预算外', p:null, tg:'t-end', tt:'12月–1月'},
+  {id:'p34', b:'b4', n:'厨具餐具', nt:'新家配新 · 预算外', p:3500, tg:'t-end', tt:'12月–1月'},
+  {id:'p35', b:'b4', n:'垃圾桶 + 收纳小件', nt:'盒/篮/挂钩 · 预算外', p:1500, tg:'t-end', tt:'12月–1月'},
+  {id:'p36', b:'b4', n:'绿植（含盆器）', nt:'入住前 · 预算外', p:null, tg:'t-end', tt:'12月–1月'},
+  {id:'p37', b:'b4', n:'空气净化器', nt:'有小孩，冬季关窗兜底 · 预算外', p:3000, tg:'t-end', tt:'12月'},
+  {id:'p38', b:'b4', n:'加湿器', nt:'冬季空调房 · 预算外', p:750, tg:'t-end', tt:'12月'},
+  {id:'p39', b:'b4', n:'除湿机', nt:'杭州梅雨 / 回南天 · 预算外', p:1500, tg:'t-end', tt:'明年春前'},
+  {id:'p40', b:'b4', n:'甲醛检测仪（自测）', nt:'辅助 CMA，前后都能看 · 预算外', p:550, tg:'t-end', tt:'CMA前'},
+  {id:'p41', b:'b4', n:'门垫 / 地垫', nt:'玄关 + 厨卫 · 预算外', p:500, tg:'t-end', tt:'11月'},
+  {id:'p42', b:'b4', n:'阳台茶桌椅', nt:'休闲区 · 预算表未列', p:null, tg:'t-end', tt:'11–12月'},
+  {id:'p43', b:'b4', n:'晾衣架（阳台）', nt:'视洗烘配置 · 预算外', p:1000, tg:'t-end', tt:'11月'},
+  {id:'p44', b:'b5', n:'B&O 音响', nt:'兴趣 · 预算内 ¥10,000', p:10000, tg:'t-gray', tt:'未定'},
+  {id:'p45', b:'b5', n:'咖啡机', nt:'兴趣 · 预算内 ¥2,000', p:2000, tg:'t-gray', tt:'未定'},
+  {id:'p46', b:'b5', n:'投影仪', nt:'兴趣 · 预算内 ¥6,000', p:6000, tg:'t-gray', tt:'未定'},
+  {id:'p47', b:'b5', n:'电脑（配置B）', nt:'⚠️ 10/12 预算表已删除此项 → 属超预算', p:30000, tg:'t-gray', tt:'已删·未定'},
+  {id:'p48', b:'b5', n:'单人沙发床', nt:'慢挑 · 预算表未列', p:null, tg:'t-gray', tt:'未定'}
 ];
 
 /* ============ 2. 配置 / 状态 ============ */
