@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- 装修总览 · 待办(V29)+采购+预算 · 线上版 v16
+<!-- 装修总览 · 待办(V29)+采购+预算 · 线上版 v18
      源文件（本地真源）：workspace 装修总览_待办+采购_20260929.html
      线上部署路径：github.com/Ricardopan/Trip → zhuangxiu/index.html
      线上链接：https://ricardopan.github.io/Trip/zhuangxiu/
@@ -73,6 +73,14 @@
   .ic.del:hover{border-color:#f3b6b8;color:var(--red);background:#fff5f5}
   .mk{font-size:10.5px;padding:1px 5px;border-radius:5px;background:#eef2ff;color:#4655d6;margin-left:6px;font-weight:700}
   .mk.gray{background:#f1f3f5;color:#6b7280}
+  .fh{font-size:10.5px;padding:1px 6px;border-radius:5px;margin-left:6px;font-weight:700;white-space:nowrap;vertical-align:1px}
+  .fh.h{background:#fdecec;color:#b3261e;border:1px solid #f3c9c6}
+  .fh.m{background:#fff4e4;color:#b46b00;border:1px solid #f4d9b0}
+  .fh.l{background:#eef7ee;color:#2e7d32;border:1px solid #cfe4d0}
+  .grp{display:flex;align-items:center;gap:8px;margin:11px 3px 3px;font-size:12px;font-weight:800;color:#3f4a5a;letter-spacing:.4px}
+  .grp:first-child{margin-top:2px}
+  .grp i{font-style:normal;background:#eef2f7;color:#46586f;border-radius:6px;padding:1px 7px;font-size:11px;font-weight:700}
+  .grp::after{content:"";flex:1;height:1px;background:#e6e9ee}
   .addbtn{margin:7px 0 0 9px;font-size:12.5px;color:var(--blue);background:none;border:1px dashed #cbd5e1;
     border-radius:8px;padding:5px 10px;cursor:pointer;font-weight:600;display:inline-block}
   .addbtn:hover{background:#f7faff}
@@ -390,6 +398,7 @@
     <button class="tb" id="btnReset">↺ 清空打勾</button>
   </div>
   <div class="hint" id="storeHint">改动会自动保存：连了云端就同步到仓库，没连就只存本机浏览器。</div>
+  <div class="say">🏷 <b>甲醛标签</b>（按类目经验，实际看材质与背板）：<span class="fh h">甲醛·高</span> 板式/人造板为主 <span class="fh m">甲醛·中</span> 实木指接·布艺·胶漆 <span class="fh l">甲醛·低</span> 可水洗 / 释放少 —— <b>带标签的都尽量早下单</b>，越早进场越早散味。</div>
   <div class="say">✅ 已同步 <b>待办 V29（10/12）+ 预算表 10/12</b>：已定/已付项移出采购（主次卧床 / 床垫 / 岩板 / 餐桌 / 不锈钢门套 / 台面 / 踢脚线）；新增 <b>美缝+美容胶 ¥3,500 · 珐琅板 ¥10,000 · 洞洞板 ¥10,000</b>；<b>电脑 ¥30,000 已从预算删除</b>；金额栏 = 预算表口径。</div>
 
   <div id="app"></div>
@@ -574,7 +583,7 @@
     <div class="bdbox" style="background:#fbfbfd"><div class="bnote">数据源：《装修预算表》<b>2026-10-12 版</b>（6 sheets：汇总/收房/全屋定制/软装/家电/杂项）。待付大头并非装修本体：<b>契税 ¥112,500 ＋ 软装 ¥59,500 ＋ 家电 ¥55,000</b>（占待付 71%）。</div></div>
   </div>
 
-  <footer>太子 整理 · v16 · 待办 V29(10/12) + 采购清单(V29+预算10/12) + 预算总览(10/12 补录+餐厅吊灯) · 状态自动同步到仓库</footer>
+  <footer>太子 整理 · v18 · 待办 V29(10/12) + 采购清单(V29+预算10/12+甲醛标签+二级分类) + 预算总览(10/12 补录) · 状态自动同步到仓库</footer>
 </div>
 
 <div class="mask" id="cfgMask">
@@ -616,62 +625,61 @@
 
 <script>
 /* ============ 1. 基础数据（我维护的部分，改这里 = 以后更新清单内容） ============ */
+const GRP=['家具','灯具','软装 · 布艺','软装 · 饰品','家电','卫浴 / 五金','主材 / 安装','生活用品','施工收尾','兴趣'];
 const BATCHES = [
-  {id:'b0', idx:'0', title:'第0批 · 立即下单（甲醛源 + 需量尺）', time:'现在 – 10月',
-   note:'新家具 = <b>甲醛源</b>，越早下单/进场，通风期越充分。价格已按预算表 10/12 口径。'},
-  {id:'b1', idx:'1', title:'第1批 · 10 月剩余（量尺 / 待确认）', time:'10月',
-   note:'以现场量尺为前提；<b>珐琅板</b>报价超预算待谈，<b>洞洞板</b>延后 11 月。'},
-  {id:'b2', idx:'2', title:'第2批 · 11 月（双11 + 美缝）', time:'10/20 预售 → 11月',
+  {id:'b0', idx:'0', title:'第0批 · 10 月批次（原第 0+1 批合并）', time:'现在 – 10月',
+   note:'<b>甲醛源先下单</b>（越早进场越早散味，纳入通风）；其余项以现场量尺 / 待确认为前提。'},
+  {id:'b2', idx:'1', title:'第1批 · 11 月（双11 + 美缝）', time:'10/20 预售 → 11月',
    note:'价格最优窗口。⚠️ 下单全选「延迟发货 / 预约安装」。<b>美缝 + 美容胶一次做完</b>（11 月中下旬）。'},
-  {id:'b3', idx:'3', title:'第3批 · 11月底–12月初（收尾）', time:'打孔安装全部结束后',
+  {id:'b3', idx:'2', title:'第2批 · 11月底–12月初（收尾）', time:'打孔安装全部结束后',
    note:'<b>补漆</b>：所有打孔安装结束后统一补。（两处小补漆已交博洛尼，不在此列）'},
-  {id:'b4', idx:'4', title:'第4批 · 12月–1月（入住前）', time:'CMA 后 → 入住前',
+  {id:'b4', idx:'3', title:'第3批 · 12月–1月（入住前）', time:'CMA 后 → 入住前',
    note:'生活用品进场。<b>标「预算外」的由备用金 ¥35,000 兜底</b>。'},
-  {id:'b5', idx:'5', title:'第5批 · 兴趣 / 未定', time:'入住后',
+  {id:'b5', idx:'4', title:'第4批 · 兴趣 / 未定', time:'入住后',
    note:'非必需不急。⚠️ <b>电脑 ¥30,000 已在 10/12 预算中删除</b>，如要买属超预算。'}
 ];
 const ITEMS = [
-  {id:'p04', b:'b0', n:'儿童房实木成品家具', nt:'甲醛源 · ¥15,000（预算内）· 越早越好', p:15000, tg:'t-must', tt:'立即'},
-  {id:'p05', b:'b0', n:'餐椅 ×6', nt:'与餐桌同批 · 量岛台 ↔ 餐边柜净空', p:3000, tg:'t-must', tt:'10月·尽早'},
-  {id:'p06', b:'b0', n:'床头柜 ×2（主卧 + 次卧）', nt:'按床边余量定尺寸 · 预算表未列', p:null, tg:'t-must', tt:'10月·尽早'},
-  {id:'p07', b:'b0', n:'成品斗柜', nt:'主卧 · ¥10,000（预算内）', p:10000, tg:'t-must', tt:'10月·尽早'},
-  {id:'p16', b:'b0', n:'书房家具（升降桌 + 工学椅）', nt:'¥10,000（预算内）', p:10000, tg:'t-must', tt:'10月·尽早'},
-  {id:'p08', b:'b1', n:'厨房墙面珐琅板', nt:'颜色 + 量尺已定 ✅ · 报价 ≈¥11,994 → 谈价 / 缩到灶台背板', p:10000, tg:'t-measure', tt:'10月·待确认'},
-  {id:'p13', b:'b1', n:'不锈钢洞洞板', nt:'电梯厅 / 厨房 · ¥10,000（预算内）· 延后', p:10000, tg:'t-measure', tt:'11月'},
-  {id:'p17', b:'b1', n:'轨道插座 ×2', nt:'预算表未列（预算外）', p:null, tg:'t-measure', tt:'10月'},
-  {id:'p09', b:'b1', n:'浴室台盆', nt:'主卫 · 镜柜「先不换」 · 预算表未列', p:null, tg:'t-measure', tt:'11月·待确认'},
-  {id:'p10', b:'b1', n:'卫浴五金（毛巾架 / 置物架 / 挂钩）', nt:'预算表未列（预算外）', p:null, tg:'t-measure', tt:'11月·待确认'},
-  {id:'p49', b:'b1', n:'餐厅吊灯（选择 + 安装）', nt:'餐厅 · 现场定位 / 量高度 · ¥2,000（软装新增）', p:2000, tg:'t-measure', tt:'10月内'},
-  {id:'p18', b:'b2', n:'电视 海信 85Q8S', nt:'客厅 · 壁挂等墙布完工后再做 · ¥15,000（预算内）', p:15000, tg:'t-1111', tt:'双11'},
-  {id:'p19', b:'b2', n:'油烟机 + 灶具', nt:'方太灶 ¥4,000 + 霍尼韦尔烟机 ¥8,000（预算内）', p:12000, tg:'t-1111', tt:'双11'},
-  {id:'p20', b:'b2', n:'扫地机器人（大疆）', nt:'等家具定型再选型号 · ¥5,000（预算内）', p:5000, tg:'t-1111', tt:'双11'},
-  {id:'p21', b:'b2', n:'戴森吸尘器', nt:'清洁类 · ¥3,000（预算内）', p:3000, tg:'t-1111', tt:'双11'},
-  {id:'p22', b:'b2', n:'微波炉', nt:'小家电 · ¥1,000（预算内）', p:1000, tg:'t-1111', tt:'双11'},
-  {id:'p23', b:'b2', n:'电饭煲', nt:'小家电 · ¥1,000（预算内）', p:1000, tg:'t-1111', tt:'双11'},
-  {id:'p24', b:'b2', n:'单人沙发', nt:'客厅 · ¥5,000（预算内）', p:5000, tg:'t-1111', tt:'双11'},
-  {id:'p25', b:'b2', n:'茶几', nt:'量沙发 ↔ 电视墙间距 · 预算表未列', p:null, tg:'t-1111', tt:'双11'},
-  {id:'p26', b:'b2', n:'灯具（餐厅 / 落地）', nt:'主灯已在智能包内 · ¥10,000（含饰品）', p:10000, tg:'t-1111', tt:'双11'},
-  {id:'p27', b:'b2', n:'窗帘（挂前先水洗）', nt:'客厅 + 卧室 · 预算窗帘/墙布共 ¥25,000', p:15000, tg:'t-1111', tt:'11月'},
-  {id:'p14', b:'b2', n:'全屋美缝 + 美容胶', nt:'3 个卫生间 + 客厅地面 · 一次做完 · 颜色已定 · ¥3,500', p:3500, tg:'t-1111', tt:'11月·中下旬'},
-  {id:'p30', b:'b2', n:'地毯', nt:'按沙发 + 茶几落位定尺寸 · 预算表未列', p:null, tg:'t-1111', tt:'11–12月'},
-  {id:'p31', b:'b2', n:'挂画 / 摆件 / 饰品', nt:'等家具落位 · 含在灯具饰品 ¥10,000 内', p:null, tg:'t-1111', tt:'11–12月'},
-  {id:'p32', b:'b3', n:'补漆（全屋统一补）', nt:'灯具/挂画/窗帘/家电等打孔安装全部结束后 · 预算表未列', p:null, tg:'t-end', tt:'11月底'},
-  {id:'p33', b:'b4', n:'床品被褥（主/次/儿童）', nt:'入住前 · 预算外', p:null, tg:'t-end', tt:'12月–1月'},
-  {id:'p34', b:'b4', n:'厨具餐具', nt:'新家配新 · 预算外', p:3500, tg:'t-end', tt:'12月–1月'},
-  {id:'p35', b:'b4', n:'垃圾桶 + 收纳小件', nt:'盒/篮/挂钩 · 预算外', p:1500, tg:'t-end', tt:'12月–1月'},
-  {id:'p36', b:'b4', n:'绿植（含盆器）', nt:'入住前 · 预算外', p:null, tg:'t-end', tt:'12月–1月'},
-  {id:'p37', b:'b4', n:'空气净化器', nt:'有小孩，冬季关窗兜底 · 预算外', p:3000, tg:'t-end', tt:'12月'},
-  {id:'p38', b:'b4', n:'加湿器', nt:'冬季空调房 · 预算外', p:750, tg:'t-end', tt:'12月'},
-  {id:'p39', b:'b4', n:'除湿机', nt:'杭州梅雨 / 回南天 · 预算外', p:1500, tg:'t-end', tt:'明年春前'},
-  {id:'p40', b:'b4', n:'甲醛检测仪（自测）', nt:'辅助 CMA，前后都能看 · 预算外', p:550, tg:'t-end', tt:'CMA前'},
-  {id:'p41', b:'b4', n:'门垫 / 地垫', nt:'玄关 + 厨卫 · 预算外', p:500, tg:'t-end', tt:'11月'},
-  {id:'p42', b:'b4', n:'阳台茶桌椅', nt:'休闲区 · 预算表未列', p:null, tg:'t-end', tt:'11–12月'},
-  {id:'p43', b:'b4', n:'晾衣架（阳台）', nt:'视洗烘配置 · 预算外', p:1000, tg:'t-end', tt:'11月'},
-  {id:'p44', b:'b5', n:'B&O 音响', nt:'兴趣 · 预算内 ¥10,000', p:10000, tg:'t-gray', tt:'未定'},
-  {id:'p45', b:'b5', n:'咖啡机', nt:'兴趣 · 预算内 ¥2,000', p:2000, tg:'t-gray', tt:'未定'},
-  {id:'p46', b:'b5', n:'投影仪', nt:'兴趣 · 预算内 ¥6,000', p:6000, tg:'t-gray', tt:'未定'},
-  {id:'p47', b:'b5', n:'电脑（配置B）', nt:'⚠️ 10/12 预算表已删除此项 → 属超预算', p:30000, tg:'t-gray', tt:'已删·未定'},
-  {id:'p48', b:'b5', n:'单人沙发床', nt:'慢挑 · 预算表未列', p:null, tg:'t-gray', tt:'未定'}
+  {id:'p04', b:'b0', g:'家具', fh:'l', n:'儿童房实木成品家具', nt:'实木为主（背板/抽屉底要查）· ¥15,000（预算内）· 越早越好', p:15000, tg:'t-must', tt:'立即'},
+  {id:'p05', b:'b0', g:'家具', fh:'m', n:'餐椅 ×6', nt:'与餐桌同批 · 量岛台 ↔ 餐边柜净空', p:3000, tg:'t-must', tt:'10月·尽早'},
+  {id:'p06', b:'b0', g:'家具', fh:'h', n:'床头柜 ×2（主卧 + 次卧）', nt:'按床边余量定尺寸 · 预算表未列', p:null, tg:'t-must', tt:'10月·尽早'},
+  {id:'p07', b:'b0', g:'家具', fh:'h', n:'成品斗柜', nt:'主卧 · ¥10,000（预算内）', p:10000, tg:'t-must', tt:'10月·尽早'},
+  {id:'p16', b:'b0', g:'家具', fh:'h', n:'书房家具（升降桌 + 工学椅）', nt:'¥10,000（预算内）', p:10000, tg:'t-must', tt:'10月·尽早'},
+  {id:'p49', b:'b0', g:'灯具', n:'餐厅吊灯（选择 + 安装）', nt:'餐厅 · 现场定位 / 量高度 · ¥2,000（软装新增）', p:2000, tg:'t-measure', tt:'10月内'},
+  {id:'p08', b:'b0', g:'主材 / 安装', n:'厨房墙面珐琅板', nt:'颜色 + 量尺已定 ✅ · 报价 ≈¥11,994 → 谈价 / 缩到灶台背板', p:10000, tg:'t-measure', tt:'10月·待确认'},
+  {id:'p13', b:'b0', g:'主材 / 安装', n:'不锈钢洞洞板', nt:'电梯厅 / 厨房 · ¥10,000（预算内）· 延后', p:10000, tg:'t-measure', tt:'11月'},
+  {id:'p17', b:'b0', g:'主材 / 安装', n:'轨道插座 ×2', nt:'预算表未列（预算外）', p:null, tg:'t-measure', tt:'10月'},
+  {id:'p09', b:'b0', g:'卫浴 / 五金', n:'浴室台盆', nt:'主卫 · 镜柜「先不换」 · 预算表未列', p:null, tg:'t-measure', tt:'11月·待确认'},
+  {id:'p10', b:'b0', g:'卫浴 / 五金', n:'卫浴五金（毛巾架 / 置物架 / 挂钩）', nt:'预算表未列（预算外）', p:null, tg:'t-measure', tt:'11月·待确认'},
+  {id:'p18', b:'b2', g:'家电', n:'电视 海信 85Q8S', nt:'客厅 · 壁挂等墙布完工后再做 · ¥15,000（预算内）', p:15000, tg:'t-1111', tt:'双11'},
+  {id:'p19', b:'b2', g:'家电', n:'油烟机 + 灶具', nt:'方太灶 ¥4,000 + 霍尼韦尔烟机 ¥8,000（预算内）', p:12000, tg:'t-1111', tt:'双11'},
+  {id:'p20', b:'b2', g:'家电', n:'扫地机器人（大疆）', nt:'等家具定型再选型号 · ¥5,000（预算内）', p:5000, tg:'t-1111', tt:'双11'},
+  {id:'p21', b:'b2', g:'家电', n:'戴森吸尘器', nt:'清洁类 · ¥3,000（预算内）', p:3000, tg:'t-1111', tt:'双11'},
+  {id:'p22', b:'b2', g:'家电', n:'微波炉', nt:'小家电 · ¥1,000（预算内）', p:1000, tg:'t-1111', tt:'双11'},
+  {id:'p23', b:'b2', g:'家电', n:'电饭煲', nt:'小家电 · ¥1,000（预算内）', p:1000, tg:'t-1111', tt:'双11'},
+  {id:'p24', b:'b2', g:'家具', fh:'m', n:'单人沙发', nt:'客厅 · 布艺/海绵 · ¥5,000（预算内）', p:5000, tg:'t-1111', tt:'双11'},
+  {id:'p25', b:'b2', g:'家具', fh:'h', n:'茶几', nt:'量沙发 ↔ 电视墙间距 · 预算表未列', p:null, tg:'t-1111', tt:'双11'},
+  {id:'p26', b:'b2', g:'灯具', n:'灯具（餐厅 / 落地）', nt:'主灯已在智能包内 · ¥10,000（含饰品）', p:10000, tg:'t-1111', tt:'双11'},
+  {id:'p27', b:'b2', g:'软装 · 布艺', fh:'l', n:'窗帘（挂前先水洗）', nt:'客厅 + 卧室 · 后整理助剂，水洗可去大部分 · 预算窗帘/墙布共 ¥25,000', p:15000, tg:'t-1111', tt:'11月'},
+  {id:'p14', b:'b2', g:'施工收尾', fh:'m', n:'全屋美缝 + 美容胶', nt:'3 个卫生间 + 客厅地面 · 一次做完 · 颜色已定 · ¥3,500', p:3500, tg:'t-1111', tt:'11月·中下旬'},
+  {id:'p30', b:'b2', g:'软装 · 布艺', fh:'m', n:'地毯', nt:'背胶/纤维 · 按沙发 + 茶几落位定尺寸 · 预算表未列', p:null, tg:'t-1111', tt:'11–12月'},
+  {id:'p31', b:'b2', g:'软装 · 饰品', fh:'l', n:'挂画 / 摆件 / 饰品', nt:'等家具落位 · 含在灯具饰品 ¥10,000 内', p:null, tg:'t-1111', tt:'11–12月'},
+  {id:'p32', b:'b3', g:'施工收尾', fh:'m', n:'补漆（全屋统一补）', nt:'漆类 VOC · 打孔安装全部结束后 · 预算表未列', p:null, tg:'t-end', tt:'11月底'},
+  {id:'p33', b:'b4', g:'软装 · 布艺', fh:'l', n:'床品被褥（主/次/儿童）', nt:'入住前 · 先水洗 · 预算外', p:null, tg:'t-end', tt:'12月–1月'},
+  {id:'p34', b:'b4', g:'生活用品', n:'厨具餐具', nt:'新家配新 · 预算外', p:3500, tg:'t-end', tt:'12月–1月'},
+  {id:'p35', b:'b4', g:'生活用品', n:'垃圾桶 + 收纳小件', nt:'盒/篮/挂钩 · 预算外', p:1500, tg:'t-end', tt:'12月–1月'},
+  {id:'p36', b:'b4', g:'软装 · 饰品', n:'绿植（含盆器）', nt:'入住前 · 预算外', p:null, tg:'t-end', tt:'12月–1月'},
+  {id:'p37', b:'b4', g:'家电', n:'空气净化器', nt:'有小孩，冬季关窗兜底 · 预算外', p:3000, tg:'t-end', tt:'12月'},
+  {id:'p38', b:'b4', g:'家电', n:'加湿器', nt:'冬季空调房 · 预算外', p:750, tg:'t-end', tt:'12月'},
+  {id:'p39', b:'b4', g:'家电', n:'除湿机', nt:'杭州梅雨 / 回南天 · 预算外', p:1500, tg:'t-end', tt:'明年春前'},
+  {id:'p40', b:'b4', g:'生活用品', n:'甲醛检测仪（自测）', nt:'辅助 CMA，前后都能看 · 预算外', p:550, tg:'t-end', tt:'CMA前'},
+  {id:'p41', b:'b4', g:'软装 · 布艺', fh:'l', n:'门垫 / 地垫', nt:'背胶 · 玄关 + 厨卫 · 预算外', p:500, tg:'t-end', tt:'11月'},
+  {id:'p42', b:'b4', g:'家具', fh:'m', n:'阳台茶桌椅', nt:'休闲区 · 预算表未列', p:null, tg:'t-end', tt:'11–12月'},
+  {id:'p43', b:'b4', g:'生活用品', n:'晾衣架（阳台）', nt:'视洗烘配置 · 预算外', p:1000, tg:'t-end', tt:'11月'},
+  {id:'p44', b:'b5', g:'兴趣', n:'B&O 音响', nt:'兴趣 · 预算内 ¥10,000', p:10000, tg:'t-gray', tt:'未定'},
+  {id:'p45', b:'b5', g:'兴趣', n:'咖啡机', nt:'兴趣 · 预算内 ¥2,000', p:2000, tg:'t-gray', tt:'未定'},
+  {id:'p46', b:'b5', g:'兴趣', n:'投影仪', nt:'兴趣 · 预算内 ¥6,000', p:6000, tg:'t-gray', tt:'未定'},
+  {id:'p47', b:'b5', g:'兴趣', n:'电脑（配置B）', nt:'⚠️ 10/12 预算表已删除此项 → 属超预算', p:30000, tg:'t-gray', tt:'已删·未定'},
+  {id:'p48', b:'b5', g:'家具', fh:'h', n:'单人沙发床', nt:'慢挑 · 预算表未列', p:null, tg:'t-gray', tt:'未定'}
 ];
 
 /* ============ 2. 配置 / 状态 ============ */
@@ -830,7 +838,7 @@ function effList(){
   const out=[];
   ITEMS.forEach(it=>{ const e=st.edited[it.id]||{};
     out.push({id:it.id,b:(e.b||it.b),n:(e.n!==undefined?e.n:it.n),nt:(e.nt!==undefined?e.nt:it.nt),
-      p:(e.p!==undefined?e.p:it.p),tg:(e.tg||it.tg),tt:(e.tt||it.tt),_edited:!!st.edited[it.id]}); });
+      p:(e.p!==undefined?e.p:it.p),tg:(e.tg||it.tg),tt:(e.tt||it.tt),fh:(e.fh!==undefined?e.fh:it.fh),g:(e.g!==undefined?e.g:it.g),_edited:!!st.edited[it.id]}); });
   (st.added||[]).forEach(a=>out.push(Object.assign({},a,{_added:true})));
   return out;
 }
@@ -852,7 +860,13 @@ function renderAll(){
       +'<button class="addbtn" data-add="'+b.id+'">＋ 添加项目</button>';
     app.appendChild(card);
     const dl=card.querySelector('[data-list]');
-    live.forEach(it=>{ dl.appendChild(editingId===it.id?editForm(it):itemRow(it)); });
+    const gs={}; live.forEach(i=>{ const k=i.g||'其他'; (gs[k]=gs[k]||[]).push(i); });
+    const keys=GRP.filter(k=>gs[k]).concat(Object.keys(gs).filter(k=>GRP.indexOf(k)<0));
+    keys.forEach(k=>{
+      const h=document.createElement('div'); h.className='grp';
+      h.innerHTML=esc(k)+'<i>'+gs[k].length+'</i>'; dl.appendChild(h);
+      gs[k].forEach(it=>{ dl.appendChild(editingId===it.id?editForm(it):itemRow(it)); });
+    });
     if(addingBatch===b.id) dl.appendChild(addForm(b.id));
     if(showDeleted){
       dead.forEach(it=>{ const r=itemRow(it,true); dl.appendChild(r); });
@@ -866,7 +880,7 @@ function itemRow(it,dead){
   el.dataset.id=it.id;
   const marks=(it._added?'<span class="mk">新增</span>':'')+(it._edited?'<span class="mk gray">已改</span>':'');
   el.innerHTML='<span class="box"></span>'
-    +'<span class="main"><span class="nm">'+esc(it.n)+marks+'</span><span class="nt">'+esc(it.nt)+'</span></span>'
+    +'<span class="main"><span class="nm">'+esc(it.n)+marks+(it.fh?'<span class="fh '+it.fh+'">甲醛·'+(it.fh==='h'?'高':it.fh==='m'?'中':'低')+'</span>':'')+'</span><span class="nt">'+esc(it.nt)+'</span></span>'
     +'<span class="rt"><span class="pr'+(it.p?'':' est')+'">'+money(it.p)+'</span><br>'
     +'<span class="tg '+esc(it.tg)+'">'+esc(it.tt)+'</span></span>'
     +'<span class="acts">'
@@ -901,6 +915,7 @@ function editForm(it){
     +'<div class="fr"><input class="wide" id="eT" value="'+esc(it.nt)+'" placeholder="备注（空间/说明）"></div>'
     +'<div class="fr"><input id="eP" value="'+(it.p==null?'':it.p)+'" placeholder="金额（留空=待估）" inputmode="numeric">'
     +'<select id="eB">'+BATCHES.map(b=>'<option value="'+b.id+'"'+(b.id===it.b?' selected':'')+'>'+esc(b.title)+'</option>').join('')+'</select></div>'
+    +'<div class="fr"><select id="eG">'+GRP.map(g=>'<option'+(g===(it.g||'其他')?' selected':'')+'>'+g+'</option>').join('')+'</select></div>'
     +'<div class="fb"><button class="pri" id="eS">保存</button><button id="eC">取消</button>'
     +(it._edited?'<button id="eR">还原默认</button>':'')+'</div>';
   el.querySelector('#eS').onclick=()=>{
@@ -909,8 +924,9 @@ function editForm(it){
     const pv=el.querySelector('#eP').value.trim();
     const p=pv===''?null:Number(pv);
     const b=el.querySelector('#eB').value;
-    if(it._added){ const a=(st.added||[]).find(x=>x.id===it.id); if(a){ a.n=n; a.nt=nt; a.p=p; a.b=b; } }
-    else { st.edited[it.id]=Object.assign({},st.edited[it.id],{n:n,nt:nt,p:p,b:b}); }
+    const g=el.querySelector('#eG').value;
+    if(it._added){ const a=(st.added||[]).find(x=>x.id===it.id); if(a){ a.n=n; a.nt=nt; a.p=p; a.b=b; a.g=g; } }
+    else { st.edited[it.id]=Object.assign({},st.edited[it.id],{n:n,nt:nt,p:p,b:b,g:g}); }
     editingId=null; persist(); toast('已保存'); renderAll();
   };
   el.querySelector('#eC').onclick=()=>{ editingId=null; renderAll(); };
@@ -924,12 +940,13 @@ function addForm(bid){
     +'<div class="fr"><input id="aP" placeholder="金额（留空=待估）" inputmode="numeric">'
     +'<select id="aTg"><option value="t-measure">先量尺</option><option value="t-must">必须</option>'
     +'<option value="t-1111">双11</option><option value="t-end">收尾</option><option value="t-gray">未定</option></select></div>'
+    +'<div class="fr"><select id="aG">'+GRP.map(g=>'<option>'+g+'</option>').join('')+'</select></div>'
     +'<div class="fb"><button class="pri" id="aS">添加</button><button id="aC">取消</button></div>';
   el.querySelector('#aS').onclick=()=>{
     const n=el.querySelector('#aN').value.trim(); if(!n){ toast('请填名称'); return; }
     const pv=el.querySelector('#aP').value.trim();
     st.added.push({id:'x'+Date.now().toString(36),b:bid,n:n,nt:el.querySelector('#aT').value.trim(),
-      p:pv===''?null:Number(pv),tg:el.querySelector('#aTg').value,tt:'自定义'});
+      p:pv===''?null:Number(pv),tg:el.querySelector('#aTg').value,g:el.querySelector('#aG').value,tt:'自定义'});
     addingBatch=null; persist(); toast('已添加'); renderAll();
   };
   el.querySelector('#aC').onclick=()=>{ addingBatch=null; renderAll(); };
