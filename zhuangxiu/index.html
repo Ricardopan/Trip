@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- 装修总览 · 待办(V29)+采购+预算 · 线上版 v31
+<!-- 装修总览 · 待办(V29)+采购+预算 · 线上版 v32
      源文件（本地真源）：workspace 装修总览_待办+采购_20260929.html
      线上部署路径：github.com/Ricardopan/Trip → zhuangxiu/index.html
      线上链接：https://ricardopan.github.io/Trip/zhuangxiu/
@@ -473,7 +473,7 @@
     <button class="tb" id="btnReset">↺ 清空打勾</button>
   </div>
   <div class="hint" id="storeHint">改动会自动保存：连了云端就同步到仓库，没连就只存本机浏览器。</div>
-  <div class="say">🏷 <b>甲醛标签</b>（按类目经验，实际看材质与背板）：<span class="fh h">甲醛·高</span> 板式/人造板为主 <span class="fh m">甲醛·中</span> 实木指接·布艺·胶漆 <span class="fh l">甲醛·低</span> 可水洗 / 释放少 —— <b>带标签的都尽量早下单</b>，越早进场越早散味。</div>
+  <div class="say">🏷 <b>只标真正板材源</b>：<span class="fh h">甲醛·高</span> = 板式 / 人造板为主（定制柜、板式床、床头柜、斗柜）。<b>电器、五金、灯具、布艺、饰品一律不标</b>——它们不是甲醛矛盾点。</div>
   <div class="say">✅ <b>10/19 晚改版：按房间 + 类型双级分类</b>（餐客厅 / 主卧 / 次卧·老人房 / 儿童房 / 书房 / 厨房 / 卫生间 / 阳台 / 玄关 / 全屋）<br>✅ <b>按房间</b>视图：每房间内再按<b>家具 / 家电 / 灯具 / 软装 / 主材 / 生活用品 / 施工收尾</b>分小类<br>✅ <b>10/19 改版：按「房间」分类</b>（客厅 / 餐厅 / 厨房 / 主卧·次卧 / 儿童房 / 书房 / 卫生间 / 阳台 / 玄关 / 全屋）。<b>🛒 第1批 = 双11 集中采购</b>，10/20 开启后一次性下单。价格已更新：<b>电视 ¥14,000 · 书房桌 ¥7,000 · 工学椅 OC1 Pro ¥3,700</b>。<br>✅ 已同步 <b>待办 V29（10/12）+ 预算表 10/12</b>：已定/已付项移出采购（主次卧床 / 床垫 / 岩板 / 餐桌 / 不锈钢门套 / 台面 / 踢脚线）；新增 <b>美缝+美容胶 ¥3,500 · 珐琅板 ¥10,000 · 洞洞板 ¥10,000</b>；<b>电脑 ¥30,000 已从预算删除</b>；金额栏 = 预算表口径。</div>
 
   <div class="say">📌 <b>10/19 20:16 固化</b>：皇上在网页上填的 <b>9 项预估价（合计 ¥20,500）</b>已写进正式清单——主卧床头柜 ¥1,000 · 沙发边几 ¥1,000 · 洗地机 ¥3,000 · 落地灯 ¥1,000 · 餐边收纳柜 ¥5,000 · 儿童房珐琅板 ¥2,000 · 儿童房洞洞板+毛毡板 ¥1,000 · 书房洞洞板 ¥2,000 · 电子画屏 ¥4,500（<b>全部为预算表未列的新增项</b>）；"晾衣架"已按皇上操作删除。<b>待估项还剩 20 项</b>。</div>
@@ -1003,7 +1003,7 @@ function itemRow(it,dead){
   el.dataset.id=it.id;
   const marks=(it._added?'<span class="mk">新增</span>':'')+(it._edited?'<span class="mk gray">已改</span>':'');
   el.innerHTML='<span class="box"></span>'
-    +'<span class="main"><span class="nm">'+esc(it.n)+marks+(it.fh?'<span class="fh '+it.fh+'">甲醛·'+(it.fh==='h'?'高':it.fh==='m'?'中':'低')+'</span>':'')+'</span><span class="nt">'+esc(it.nt)+'</span></span>'
+    +'<span class="main"><span class="nm">'+esc(it.n)+marks+(it.fh==='h'?'<span class="fh h">甲醛·高</span>':'')+'</span><span class="nt">'+esc(it.nt)+'</span></span>'
     +'<span class="rt"><span class="pr'+(it.p?'':' est')+'">'+money(it.p)+'</span><br>'
     +'<span class="tg '+esc(it.tg)+'">'+esc(it.tt)+'</span></span>'
     +'<span class="acts">'
